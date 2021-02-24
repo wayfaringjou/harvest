@@ -1,11 +1,33 @@
 import React from 'react';
+import PromptCard from '../PromptCard';
+
+const func1 = (a = 'hi') => console.log(a);
 
 const element = {
   name: 'Garden Area',
+  collection: 'A collection of areas',
+  prompts: [
+    {
+      action: 'Add new area',
+      desc: 'Add a representation of an area of your garden',
+      handler: func1,
+    },
+  ],
 };
+
+const renderPrompts = (prompts) => prompts.map((prompt) => (
+  <PromptCard
+    key={prompt.action}
+    action={prompt.action}
+    description={prompt.desc}
+    handler={prompt.handler}
+  />
+));
+
 const ElementOverview = () => (
   <article
     className="element-overview"
+    id={element.id}
   >
     <header
       className="overview-header"
@@ -15,7 +37,12 @@ const ElementOverview = () => (
     <section
       className="overview-prompts"
     >
-      <button type="button">Do something</button>
+      {renderPrompts(element.prompts)}
+    </section>
+    <section
+      className="overview-display"
+    >
+      {element.collection}
     </section>
   </article>
 );
