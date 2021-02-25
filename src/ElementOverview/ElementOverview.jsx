@@ -1,7 +1,7 @@
 import React from 'react';
 import PromptCard from '../PromptCard';
 
-const func1 = (a = 'hi') => console.log(a);
+const func1 = (e) => console.log(e);
 
 const element = {
   name: 'Garden Area',
