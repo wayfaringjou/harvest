@@ -8,13 +8,21 @@ const RS = {
 };
 
 // Reducer function to handle responses and request status
-const reducer = (state, status, res = {}) => {
+const reducer = (state, action) => {
+  const { status, res } = action;
+  console.log('reducer called');
+  console.log(state);
+  console.log(status);
+  console.log(res);
   switch (status) {
     case RS.REQUESTING:
       return { ...state, status };
     case RS.RESPONDED:
       return { ...state, status, data: res };
     case RS.ERROR:
+      console.log('Error case, passing:');
+      console.log(res);
+      console.log({ ...state, status, error: res });
       return { ...state, status, error: res };
     default:
       return state;
@@ -30,38 +38,45 @@ const useAPIRequest = (url, options) => {
     error: null,
     data: [],
   };
-
+  console.log('state is');
   const [state, dispatch] = useReducer(reducer, initState);
+  console.log(state);
 
   // When the component is mounted, invoke fetch call
   useEffect(() => {
+    console.log('useEffect loaded');
     let cancelRequest = false;
     if (!url) return;
 
     // Declare fetch request function proper
     const reqData = async () => {
       // Set status to 'requesting'. Will change when response is received
-      dispatch({ type: RS.REQUESTING });
+      dispatch({ status: RS.REQUESTING });
       // If there is data stored in current for this url
       if (cache.current[url]) {
+        console.log('Using cached');
+        console.log(cache);
         // Use cached data
         const data = cache.current[url];
         // Pass status and data to reducer to be returned by useAPIRequest
-        dispatch({ type: RS.RESPONDED, res: data });
+        dispatch({ status: RS.RESPONDED, res: data });
       } else {
         try {
           console.log(`Making fetch request to ${url}`);
-          const response = await fetch(url, options);
-          const data = await response.json();
+          const res = await fetch(url, options);
+          if (!res.ok) throw new Error(`${res.status}: ${res.statusText}`);
+          const data = await res.json();
           cache.current[url] = data;
           // If component was unmounted while awaiting response, return
           if (cancelRequest) return;
           // Pass fetched data and status to reducer
-          dispatch({ type: RS.RESPONDED, res: data });
+          dispatch({ status: RS.RESPONDED, res: data });
         } catch (error) {
+          console.log(`There was an error with message: '${error.message}'`);
           // If component was unmounted while awaiting response, return
           if (cancelRequest) return;
-          dispatch({ type: RS.ERROR, res: error.message });
+          console.log(`Will dispatch with error: ${error.message}`);
+          dispatch({ status: RS.ERROR, res: error.message });
         }
       }
     };
@@ -77,6 +92,8 @@ const useAPIRequest = (url, options) => {
   }, [url]);
 
   // Return state with status and response data
+  console.log('will return:');
+  console.log(state);
   return state;
 };
 

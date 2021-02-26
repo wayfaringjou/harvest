@@ -11,9 +11,11 @@ const options = (method, body) => ({
 // const areasEndpoint = `${config.API_BASEPATH}/garden/areas`;
 
 const AreasAPIService = {
-  postArea(url, data, errorHandler) {
-    const apiRes = useAPIRequest(url, options('POST', data));
+  async postArea(url, data, errorHandler) {
+    const apiRes = await useAPIRequest(url, options('POST', data));
+    console.log(apiRes);
     if (apiRes.error) {
+      console.log('Error so passing to handler');
       errorHandler(apiRes.error);
       return;
     }

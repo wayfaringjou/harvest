@@ -1,19 +1,6 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import PromptCard from '../PromptCard';
-
-const func1 = (e) => console.log(e);
-
-const element = {
-  name: 'Garden Area',
-  collection: 'A collection of areas',
-  prompts: [
-    {
-      action: 'Add new area',
-      desc: 'Add a representation of an area of your garden',
-      handler: func1,
-    },
-  ],
-};
 
 const renderPrompts = (prompts) => prompts.map((prompt) => (
   <PromptCard
@@ -24,7 +11,7 @@ const renderPrompts = (prompts) => prompts.map((prompt) => (
   />
 ));
 
-const ElementOverview = () => (
+const ElementOverview = ({ element }) => (
   <article
     className="element-overview"
     id={element.id}
@@ -42,9 +29,18 @@ const ElementOverview = () => (
     <section
       className="overview-display"
     >
-      {element.collection}
+      {element.collection.item}
     </section>
   </article>
 );
+
+ElementOverview.propTypes = {
+  element: PropTypes.shape({
+    id: PropTypes.string,
+    name: PropTypes.string,
+    prompts: PropTypes.arrayOf(PropTypes.object),
+    collection: PropTypes.arrayOf(PropTypes.object),
+  }).isRequired,
+};
 
 export default ElementOverview;
