@@ -1,12 +1,23 @@
 import React from 'react';
-import ElementOverview from '../../components/ElementOverview';
+import ElementOverview from '../../common/ElementOverview';
 
 const func1 = (e) => console.log(e);
 
 const gardenAreasElement = {
   id: 'areas-overview',
   name: 'Garden Area',
-  collection: [{ item: 'item' }],
+  collection: [{
+    id: 1,
+    name: 'Backyard raised bed',
+    length_cm: '135',
+    width_cm: '150',
+  },
+  {
+    id: 2,
+    name: 'Backyard raised bed 2',
+    length_cm: '135',
+    width_cm: '150',
+  }],
   prompts: [
     {
       action: 'Add new area',

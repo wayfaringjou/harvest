@@ -11,6 +11,17 @@ const renderPrompts = (prompts) => prompts.map((prompt) => (
   />
 ));
 
+const renderCollection = (items) => (
+  <ul>
+    {items.map((item) => (
+      <li key={item.id}>
+        <p>{item.name}</p>
+        <p>{`${item.length_cm}cm x ${item.width_cm}cm`}</p>
+      </li>
+    ))}
+  </ul>
+);
+
 const ElementOverview = ({ element }) => (
   <article
     className="element-overview"
@@ -29,7 +40,7 @@ const ElementOverview = ({ element }) => (
     <section
       className="overview-display"
     >
-      {element.collection.item}
+      {renderCollection(element.collection)}
     </section>
   </article>
 );
