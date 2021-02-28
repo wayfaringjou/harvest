@@ -16,7 +16,7 @@ const areasData = [
   },
 ];
 
-const actions = [
+const areasActions = [
   {
     action: 'Add new area',
     desc: 'Add a representation of an area of your garden',
@@ -26,6 +26,7 @@ const actions = [
 
 const GardenAreas = () => {
   if (isLoading) return <p>Loading</p>;
+
   return (
     <GardenAreasCollection />
   );
