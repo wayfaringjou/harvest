@@ -1,43 +1,4 @@
-export default function fetchProfileData() {
-  const userPromise = fetchUser();
-  const postsPromise = fetchPosts();
-  return {
-    user: wrapPromise(userPromise),
-    posts: wrapPromise(postsPromise),
-  };
-}
-
-// Suspense integrations like Relay implement
-// a contract like this to integrate with React.
-// Real implementations can be significantly more complex.
-// Don't copy-paste this into your project!
-function wrapPromise(promise) {
-  let status = 'pending';
-  let result;
-  const suspender = promise.then(
-    (r) => {
-      status = 'success';
-      result = r;
-    },
-    (e) => {
-      status = 'error';
-      result = e;
-    },
-  );
-  return {
-    read() {
-      if (status === 'pending') {
-        throw suspender;
-      } else if (status === 'error') {
-        throw result;
-      } else if (status === 'success') {
-        return result;
-      }
-    },
-  };
-}
-
-function fetchUser() {
+export function fetchUser() {
   console.log('fetch user...');
   return new Promise((resolve) => {
     setTimeout(() => {
@@ -49,7 +10,7 @@ function fetchUser() {
   });
 }
 
-function fetchPosts() {
+export function fetchPosts() {
   console.log('fetch posts...');
   return new Promise((resolve) => {
     setTimeout(() => {
@@ -71,6 +32,45 @@ function fetchPosts() {
             'You got that sand all over your feet',
         },
       ]);
+    }, 2000);
+  });
+}
+
+export function fetchGardenAreas() {
+  console.log('Fetching garden areas');
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      console.log('fetched areas');
+      resolve({
+        data: [
+          {
+            id: 1,
+            name: 'Backyard raised bed',
+            length_cm: 135,
+            width_cm: 150,
+          },
+          {
+            id: 2,
+            name: 'Backyard raised bed 2',
+            length_cm: 125,
+            width_cm: 130,
+          },
+        ],
+        error: false,
+      });
+    }, 2000);
+  });
+}
+
+export function fetchError() {
+  console.log('Fetching garden areas');
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      console.log('fetched areas');
+      resolve({
+        data: new Error('Fetch error'),
+        error: true,
+      });
     }, 2000);
   });
 }

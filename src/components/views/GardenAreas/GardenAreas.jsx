@@ -1,34 +1,37 @@
 import React from 'react';
 import GardenAreasCollection from '../../layout/GardenAreasCollection/GardenAreasCollection';
+import useAPIResource from '../../../hooks/useAPIResource';
+// import { fetchGardenAreas } from '../../../services/fakeAPI';
+import { gardenAreasCollection } from '../../../services/resources';
 
-const areasData = [
-  {
-    id: 1,
-    name: 'Backyard raised bed',
-    length_cm: '135',
-    width_cm: '150',
-  },
-  {
-    id: 2,
-    name: 'Backyard raised bed 2',
-    length_cm: '135',
-    width_cm: '150',
-  },
-];
-
-const areasActions = [
-  {
-    action: 'Add new area',
-    desc: 'Add a representation of an area of your garden',
-    handler: func1,
-  },
-];
+const areas = gardenAreasCollection();
 
 const GardenAreas = () => {
-  if (isLoading) return <p>Loading</p>;
+  const {
+    data,
+    isRequesting,
+    isFailed,
+    // isSuccess,
+    error,
+  // } = useAPIResource(fetchGardenAreas);
+  } = useAPIResource(areas.getAll);
+  if (isRequesting) return <p>Loading</p>;
+
+  if (isFailed) {
+    return (
+      <p>
+        There was an error:
+        {error.message}
+      </p>
+    );
+  }
 
   return (
-    <GardenAreasCollection />
+    <>
+      <GardenAreasCollection
+        data={data}
+      />
+    </>
   );
 };
 

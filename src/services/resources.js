@@ -1,7 +1,7 @@
 import { collection, singleton } from './api-methods';
-import { API_BASEPATH } from '../config/api';
+import config from '../config/api';
 
-const areasPath = `${API_BASEPATH}/garden/areas`;
+const areasPath = `${config.API_BASEPATH}/garden/areas`;
 
 // Factories for data resources
 const gardenArea = ({ path = areasPath, data }) => {
@@ -18,13 +18,12 @@ const gardenArea = ({ path = areasPath, data }) => {
   };
 };
 
-export const gardenAreasCollection = ({ data }) => (
-  {
-    ...gardenArea({ data }),
-    ...collection(),
-  }
-);
-
+export const gardenAreasCollection = () => ({
+  // console.log(data);
+  // const areas = { data };
+  // ...areas,
+  ...collection({ path: areasPath }),
+});
 export const gardenAreaSingleton = () => (
   {
     ...gardenArea(),

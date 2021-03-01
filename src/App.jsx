@@ -28,6 +28,7 @@ function App() {
       <div className="App">
         {errorMsg && <aside>{errorMsg}</aside>}
         <main className="app-main">
+          <h4>App</h4>
           <Route
             path={GARDEN_AREAS}
             component={GardenAreas}

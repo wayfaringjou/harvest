@@ -1,11 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-const PromptCard = ({ action, description, handler }) => (
+const PromptCard = ({
+  action, description, dialog, dialogHandler,
+}) => (
   <article>
     <h4>{description}</h4>
     <button
-      onClick={handler}
+      onClick={() => dialogHandler({ content: dialog, open: true })}
       type="button"
     >
       {action}
@@ -16,7 +18,18 @@ const PromptCard = ({ action, description, handler }) => (
 export default PromptCard;
 
 PromptCard.propTypes = {
-  action: PropTypes.string.isRequired,
-  description: PropTypes.string.isRequired,
-  handler: PropTypes.func.isRequired,
+  action: PropTypes.string,
+  description: PropTypes.string,
+  // handler: PropTypes.func,
+  // eslint-disable-next-line react/forbid-prop-types
+  dialog: PropTypes.object.isRequired,
+  dialogHandler: PropTypes.func,
+};
+
+PromptCard.defaultProps = {
+  action: '',
+  description: '',
+  // handler: () => {},
+  // dialog: Symbol(''),
+  dialogHandler: () => {},
 };
