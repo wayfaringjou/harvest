@@ -1,13 +1,23 @@
+/* eslint-disable react/prop-types */
 import React from 'react';
 import PropTypes from 'prop-types';
 
 const PromptCard = ({
-  action, description, dialog, dialogHandler,
+  action,
+  description,
+  submitHandler,
+  dialog,
+  dialogHandler,
+  actionFeedback,
 }) => (
   <article>
     <h4>{description}</h4>
     <button
-      onClick={() => dialogHandler({ content: dialog, open: true })}
+      onClick={() => dialogHandler({
+        content: dialog({ submitHandler, actionFeedback }),
+        open: true,
+        actionFeedback,
+      })}
       type="button"
     >
       {action}
@@ -22,7 +32,7 @@ PromptCard.propTypes = {
   description: PropTypes.string,
   // handler: PropTypes.func,
   // eslint-disable-next-line react/forbid-prop-types
-  dialog: PropTypes.object.isRequired,
+  dialog: PropTypes.func.isRequired,
   dialogHandler: PropTypes.func,
 };
 

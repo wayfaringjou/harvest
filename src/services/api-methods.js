@@ -1,3 +1,4 @@
+/* eslint-disable no-param-reassign */
 const composeOptions = (method, body) => ({
   method,
   headers: {
@@ -17,7 +18,7 @@ const apiRequest = async (url = '', options = {}) => {
   }
 };
 
-export const collection = ({ path = '' }) => (
+export const apiCollection = ({ path = '' }) => (
   {
     getAll: () => apiRequest(path, composeOptions('GET')),
     getWithQuery: (query = '') => {
@@ -27,12 +28,14 @@ export const collection = ({ path = '' }) => (
   }
 );
 
-export const singleton = ({ path = '', id = '', data = {} }) => (
-  {
-    getById: () => {
-      const requestUrl = `${path}/${id}`;
+export const apiSingleton = ({ data = {} }) => {
+  console.log(data);
+  return {
+    getById: (queryId = '') => {
+      const requestUrl = `${data.path}/${queryId}`;
       return apiRequest(requestUrl, composeOptions('GET'));
     },
-    postToPath: () => apiRequest(path, composeOptions('POST', data)),
-  }
-);
+    post: () => apiRequest(data.path, composeOptions('POST', data)),
+    updateWithId: (queryId = '') => console.log(queryId, data),
+  };
+};

@@ -2,29 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import ElementOverview from '../../common/ElementOverview';
 import gardenAreaPropStyle from '../../../propTypes/gardenArea';
-
-const handleAddGardenArea = (e, data) => {
-  e.preventDefault();
-  console.log(data);
-};
-
-const addGardenAreaDialog = (data) => (
-  <form onSubmit={(e) => handleAddGardenArea(e, data)}>
-    <label htmlFor="area-name">
-      <p>New area name:</p>
-      <input
-        id="area-name"
-        type="text"
-        placeholder="'Raised bed', 'Backyard'"
-      />
-    </label>
-    <button
-      type="submit"
-    >
-      Submit
-    </button>
-  </form>
-);
+import AddGardenAreaDialog from '../AddGardenAreaDialog';
 
 const renderCollection = (items) => (
   <ul>
@@ -42,26 +20,35 @@ const renderCollection = (items) => (
   </ul>
 );
 
-const GardenAreasCollection = ({ data }) => {
-// Element overview component takes this object
-  const gardenAreasElement = {
+const GardenAreasCollection = ({ data, onAreaSubmit, submitStatus }) => {
+  // Element overview component takes this object
+  console.log(submitStatus);
+  const gardenAreasElement = () => ({
     id: 'areas-overview',
     name: 'Garden Area',
     collection: data,
     prompts: [{
       action: 'Add new area',
       desc: 'Add a representation of an area of your garden',
-      dialog: addGardenAreaDialog(),
-      handler: handleAddGardenArea,
+      // eslint-disable-next-line react/prop-types
+      dialog: ({ submitHandler, statusData }) => (
+        <AddGardenAreaDialog
+          onAreaSubmit={submitHandler}
+          submitStatus={statusData}
+        />
+      ),
+      submitHandler: onAreaSubmit,
     }],
-  };
-  console.log(gardenAreasElement);
+  });
+  console.log(gardenAreasElement());
   return (
     <section id="garden-areas-collection">
       <h2>Garden areas Collection</h2>
       <ElementOverview
-        element={gardenAreasElement}
+        element={gardenAreasElement()}
         renderCollection={renderCollection}
+        actionFeedback={submitStatus}
+        customDialog={AddGardenAreaDialog({ onAreaSubmit, submitStatus })}
       />
     </section>
   );
@@ -69,10 +56,20 @@ const GardenAreasCollection = ({ data }) => {
 
 GardenAreasCollection.propTypes = {
   data: PropTypes.arrayOf(gardenAreaPropStyle),
+  onAreaSubmit: PropTypes.func,
+  submitStatus: PropTypes.shape({
+    isSubmitting: PropTypes.bool,
+    submitError: PropTypes.string,
+  }),
 };
 
 GardenAreasCollection.defaultProps = {
   data: [],
+  onAreaSubmit: () => {},
+  submitStatus: {
+    isSubmitting: false,
+    submitError: '',
+  },
 };
 
 export default GardenAreasCollection;

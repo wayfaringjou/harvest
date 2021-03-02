@@ -3,24 +3,24 @@
 
 import { useEffect, useState } from 'react';
 
-export default function useAPIResource(requestFunction) {
+export default function useAPIResource(requestFunction, query) {
   const [resourceState, setResourceState] = useState({
-    isRequesting: true,
+    isRetrieving: true,
     isSuccess: false,
     isFailed: false,
     data: null,
     error: null,
   });
-
-  const refresh = false;
+  console.log(query);
   useEffect(async () => {
+    console.log('effect ran');
     let componentUnmounted = false;
     try {
       const { data, error } = await requestFunction();
       if (error) throw new Error(data);
       if (componentUnmounted) return;
       setResourceState({
-        isRequesting: false,
+        isRetrieving: false,
         isSucces: true,
         isFailed: false,
         error: null,
@@ -29,7 +29,7 @@ export default function useAPIResource(requestFunction) {
     } catch (error) {
       if (componentUnmounted) return;
       setResourceState({
-        isRequesting: false,
+        isRetrieving: false,
         isSuccess: false,
         isFailed: true,
         data: null,
@@ -37,7 +37,7 @@ export default function useAPIResource(requestFunction) {
       });
     }
     return () => componentUnmounted = true;
-  }, [refresh]);
+  }, [query]);
 
   return resourceState;
 }

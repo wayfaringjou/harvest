@@ -1,20 +1,24 @@
+/* eslint-disable react/prop-types */
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import PromptCard from '../PromptCard';
 
-const renderPrompts = (prompts, wrapper) => prompts.map((prompt) => (
+const renderPrompts = (prompts, wrapperHandler, actionFeedback) => prompts.map((prompt) => (
   <PromptCard
     key={prompt.action}
     action={prompt.action}
     description={prompt.desc}
-    // handler={prompt.handler}
+    submitHandler={prompt.submitHandler}
     dialog={prompt.dialog}
-    dialogHandler={wrapper}
+    dialogHandler={wrapperHandler}
+    actionFeedback={actionFeedback}
   />
 ));
 
-const ElementOverview = ({ element, renderCollection }) => {
-  const [dialog, setDialog] = useState({ content: '', open: false });
+const ElementOverview = ({
+  element, renderCollection, actionFeedback, customDialog,
+}) => {
+  const [dialog, setDialog] = useState({ content: '', open: false, actionFeedback });
   return (
     <article
       className="element-overview"
@@ -28,13 +32,12 @@ const ElementOverview = ({ element, renderCollection }) => {
       <section
         className="overview-prompts"
       >
-        {renderPrompts(element.prompts, setDialog)}
+        {renderPrompts(element.prompts, setDialog, actionFeedback)}
 
         {(dialog.open) && (
         <section
           className="dialog-wrapper"
         >
-          {console.log(dialog.content)}
           <button type="button" onClick={() => setDialog({ ...dialog, open: false })}>
             X
           </button>
@@ -43,6 +46,9 @@ const ElementOverview = ({ element, renderCollection }) => {
         )}
 
       </section>
+      <aside>
+        {customDialog}
+      </aside>
       <section
         className="overview-display"
       >
@@ -56,7 +62,7 @@ ElementOverview.propTypes = {
   element: PropTypes.shape({
     id: PropTypes.string,
     name: PropTypes.string,
-    prompts: PropTypes.arrayOf(PropTypes.object),
+    prompts: PropTypes.arrayOf(PropTypes.oneOfType([PropTypes.object, PropTypes.func])),
     collection: PropTypes.arrayOf(PropTypes.object),
   }).isRequired,
   renderCollection: PropTypes.func.isRequired,
