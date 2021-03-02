@@ -1,16 +1,16 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 
-const AddGardenAreaDialog = ({ onAreaSubmit, submitStatus }) => {
+const AddGardenAreaDialog = ({ onAreaSubmit, areaSubmitStatus }) => {
   const [newArea, setNewArea] = useState({
     name: '',
     length_cm: '',
     width_cm: '',
   });
   // eslint-disable-next-line no-unused-vars
-  const [test, setTest] = useState(submitStatus);
+  const [test, setTest] = useState(areaSubmitStatus);
 
-  console.log(submitStatus);
+  console.log(areaSubmitStatus);
   return (
     <form onSubmit={(e) => onAreaSubmit(e, newArea)}>
       <label htmlFor="area-name">
@@ -50,7 +50,7 @@ const AddGardenAreaDialog = ({ onAreaSubmit, submitStatus }) => {
       <button
         type="submit"
       >
-        {submitStatus.isSubmitting ? 'Saving...' : 'Submit'}
+        {areaSubmitStatus.isSubmitting ? 'Saving...' : 'Submit'}
       </button>
     </form>
   );
@@ -58,7 +58,7 @@ const AddGardenAreaDialog = ({ onAreaSubmit, submitStatus }) => {
 
 AddGardenAreaDialog.propTypes = {
   onAreaSubmit: PropTypes.func,
-  submitStatus: PropTypes.shape({
+  areaSubmitStatus: PropTypes.shape({
     isSubmitting: PropTypes.bool,
     submitError: PropTypes.string,
   }),
@@ -66,7 +66,7 @@ AddGardenAreaDialog.propTypes = {
 
 AddGardenAreaDialog.defaultProps = {
   onAreaSubmit: () => {},
-  submitStatus: {
+  areaSubmitStatus: {
     isSubmitting: false,
     submitError: '',
   },

@@ -2,7 +2,9 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import ElementOverview from '../../common/ElementOverview';
 import gardenAreaPropStyle from '../../../propTypes/gardenArea';
-import AddGardenAreaDialog from '../AddGardenAreaDialog';
+// import AddGardenAreaDialog from '../AddGardenAreaDialog';
+import GardenAreasPrompts from '../GardenAreasPrompts';
+import useModal from '../../../hooks/useModal';
 
 const renderCollection = (items) => (
   <ul>
@@ -20,35 +22,37 @@ const renderCollection = (items) => (
   </ul>
 );
 
-const GardenAreasCollection = ({ data, onAreaSubmit, submitStatus }) => {
+const GardenAreasCollection = ({ data, onAreaSubmit, areaSubmitStatus }) => {
   // Element overview component takes this object
-  console.log(submitStatus);
+  console.log(areaSubmitStatus);
   const gardenAreasElement = () => ({
     id: 'areas-overview',
     name: 'Garden Area',
     collection: data,
-    prompts: [{
-      action: 'Add new area',
-      desc: 'Add a representation of an area of your garden',
-      // eslint-disable-next-line react/prop-types
-      dialog: ({ submitHandler, statusData }) => (
-        <AddGardenAreaDialog
-          onAreaSubmit={submitHandler}
-          submitStatus={statusData}
-        />
-      ),
-      submitHandler: onAreaSubmit,
-    }],
   });
   console.log(gardenAreasElement());
+
+  const {
+    isModalOpen,
+    modalContent,
+    setModalContent,
+    toggleModal,
+  } = useModal();
+
   return (
     <section id="garden-areas-collection">
       <h2>Garden areas Collection</h2>
       <ElementOverview
         element={gardenAreasElement()}
         renderCollection={renderCollection}
-        actionFeedback={submitStatus}
-        customDialog={AddGardenAreaDialog({ onAreaSubmit, submitStatus })}
+        elementPrompts={GardenAreasPrompts({
+          onAreaSubmit,
+          areaSubmitStatus,
+          toggleModal,
+          setModalContent,
+        })}
+        modalState={{ isModalOpen, modalContent }}
+        toggleModal={toggleModal}
       />
     </section>
   );
@@ -57,7 +61,7 @@ const GardenAreasCollection = ({ data, onAreaSubmit, submitStatus }) => {
 GardenAreasCollection.propTypes = {
   data: PropTypes.arrayOf(gardenAreaPropStyle),
   onAreaSubmit: PropTypes.func,
-  submitStatus: PropTypes.shape({
+  areaSubmitStatus: PropTypes.shape({
     isSubmitting: PropTypes.bool,
     submitError: PropTypes.string,
   }),
@@ -66,7 +70,7 @@ GardenAreasCollection.propTypes = {
 GardenAreasCollection.defaultProps = {
   data: [],
   onAreaSubmit: () => {},
-  submitStatus: {
+  areaSubmitStatus: {
     isSubmitting: false,
     submitError: '',
   },

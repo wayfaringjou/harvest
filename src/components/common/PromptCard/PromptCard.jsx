@@ -6,18 +6,18 @@ const PromptCard = ({
   action,
   description,
   submitHandler,
-  dialog,
-  dialogHandler,
   actionFeedback,
+  dialog,
+  dialogContentHandler,
+  dialogHandler,
 }) => (
   <article>
     <h4>{description}</h4>
     <button
-      onClick={() => dialogHandler({
-        content: dialog({ submitHandler, actionFeedback }),
-        open: true,
-        actionFeedback,
-      })}
+      onClick={() => {
+        dialogContentHandler(dialog({ submitHandler, actionFeedback }));
+        dialogHandler();
+      }}
       type="button"
     >
       {action}
@@ -32,7 +32,7 @@ PromptCard.propTypes = {
   description: PropTypes.string,
   // handler: PropTypes.func,
   // eslint-disable-next-line react/forbid-prop-types
-  dialog: PropTypes.func.isRequired,
+  // dialog: PropTypes.func.isRequired,
   dialogHandler: PropTypes.func,
 };
 

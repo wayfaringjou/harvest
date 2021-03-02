@@ -62,7 +62,7 @@ const GardenAreas = () => {
       <GardenAreasCollection
         data={data}
         onAreaSubmit={handleNewAreaSubmit}
-        submitStatus={{ isSubmitting, submitError }}
+        areaSubmitStatus={{ isSubmitting, submitError }}
       />
     </>
   );

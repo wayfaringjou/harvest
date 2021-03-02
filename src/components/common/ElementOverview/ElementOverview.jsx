@@ -1,24 +1,15 @@
 /* eslint-disable react/prop-types */
-import React, { useState } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
-import PromptCard from '../PromptCard';
-
-const renderPrompts = (prompts, wrapperHandler, actionFeedback) => prompts.map((prompt) => (
-  <PromptCard
-    key={prompt.action}
-    action={prompt.action}
-    description={prompt.desc}
-    submitHandler={prompt.submitHandler}
-    dialog={prompt.dialog}
-    dialogHandler={wrapperHandler}
-    actionFeedback={actionFeedback}
-  />
-));
 
 const ElementOverview = ({
-  element, renderCollection, actionFeedback, customDialog,
+  element,
+  renderCollection,
+  elementPrompts,
+  modalState,
+  toggleModal,
 }) => {
-  const [dialog, setDialog] = useState({ content: '', open: false, actionFeedback });
+  console.log('');
   return (
     <article
       className="element-overview"
@@ -32,23 +23,19 @@ const ElementOverview = ({
       <section
         className="overview-prompts"
       >
-        {renderPrompts(element.prompts, setDialog, actionFeedback)}
-
-        {(dialog.open) && (
+        {elementPrompts}
+        {(modalState.isModalOpen) && (
         <section
           className="dialog-wrapper"
         >
-          <button type="button" onClick={() => setDialog({ ...dialog, open: false })}>
+          <button type="button" onClick={() => toggleModal()}>
             X
           </button>
-          {dialog.content}
+          {modalState.modalContent}
         </section>
         )}
 
       </section>
-      <aside>
-        {customDialog}
-      </aside>
       <section
         className="overview-display"
       >
