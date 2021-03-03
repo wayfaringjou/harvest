@@ -1,15 +1,43 @@
 /* eslint-disable react/prop-types */
-import React from 'react';
+import React, { useRef } from 'react';
 import PropTypes from 'prop-types';
+import PromptCard from '../PromptCard';
+
+const renderPrompts = (
+  prompts,
+  dialogControls,
+  currentDialogControls,
+) => Object.keys(prompts).map((key) => {
+  const prompt = prompts[key];
+  return (
+    <PromptCard
+      key={key}
+      action={prompt.action}
+      description={prompt.desc}
+      dialogControls={dialogControls}
+      currentDialogControls={currentDialogControls}
+      promptId={key}
+    />
+  );
+});
 
 const ElementOverview = ({
   element,
-  renderCollection,
-  elementPrompts,
-  modalState,
-  toggleModal,
+  collection,
+  dialogControls,
 }) => {
-  console.log('');
+  const actionDialog = useRef();
+  const {
+    isDialogOpen,
+    openDialog,
+    closeDialog,
+    toggleDialog,
+  } = dialogControls;
+
+  const handleSetActionDialog = (promptKey) => {
+    actionDialog.current = promptKey;
+  };
+
   return (
     <article
       className="element-overview"
@@ -23,23 +51,30 @@ const ElementOverview = ({
       <section
         className="overview-prompts"
       >
-        {elementPrompts}
-        {(modalState.isModalOpen) && (
+
+        {renderPrompts(
+          element.prompts,
+          {
+            isDialogOpen, openDialog, closeDialog, toggleDialog,
+          },
+          { handleSetActionDialog, activeDialogId: actionDialog.current },
+        )}
+
+        {(isDialogOpen) && (
         <section
           className="dialog-wrapper"
         >
-          <button type="button" onClick={() => toggleModal()}>
-            X
-          </button>
-          {modalState.modalContent}
+          {React.createElement(
+            element.prompts[actionDialog.current].dialogComponent,
+            element.prompts[actionDialog.current].dialogProps,
+          )}
         </section>
         )}
-
       </section>
       <section
         className="overview-display"
       >
-        {renderCollection(element.collection)}
+        {collection}
       </section>
     </article>
   );
@@ -49,10 +84,10 @@ ElementOverview.propTypes = {
   element: PropTypes.shape({
     id: PropTypes.string,
     name: PropTypes.string,
-    prompts: PropTypes.arrayOf(PropTypes.oneOfType([PropTypes.object, PropTypes.func])),
+    prompts: PropTypes.objectOf(PropTypes.oneOfType([PropTypes.object, PropTypes.func])),
     collection: PropTypes.arrayOf(PropTypes.object),
   }).isRequired,
-  renderCollection: PropTypes.func.isRequired,
+  // renderCollection: PropTypes.func.isRequired,
 };
 
 export default ElementOverview;

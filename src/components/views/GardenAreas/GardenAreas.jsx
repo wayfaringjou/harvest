@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
-import GardenAreasCollection from '../../layout/GardenAreasCollection/GardenAreasCollection';
+import GardenAreasOverview from '../../layout/GardenAreasOverview/GardenAreasOverview';
 import useAPIResource from '../../../hooks/useAPIResource';
 // import { fetchGardenAreas } from '../../../services/fakeAPI';
-// eslint-disable-next-line no-unused-vars
 import { gardenAreasCollection, gardenAreaSingleton } from '../../../services/resources';
 
 const areas = gardenAreasCollection();
@@ -12,6 +11,7 @@ const areas = gardenAreasCollection();
 const GardenAreas = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState('');
+  const [submitSuccess, setSubmitSuccess] = useState(false);
   const [reload, setReload] = useState(false);
 
   const {
@@ -38,17 +38,18 @@ const GardenAreas = () => {
     e.preventDefault();
     setSubmitError('');
     try {
+      setSubmitSuccess(false);
       setIsSubmitting(true);
       const newArea = gardenAreaSingleton(postData);
       const res = await newArea.post(postData);
-      console.log(res);
-
-      console.log(reload);
-      setReload(!reload);
       if (res.error) throw new Error(res.data);
+
+      setReload(!reload);
       setIsSubmitting(false);
+      setSubmitSuccess(true);
     } catch (err) {
       setIsSubmitting(false);
+      setSubmitSuccess(false);
       setSubmitError(err.message);
     }
     // const res = await newArea.post();
@@ -59,10 +60,15 @@ const GardenAreas = () => {
 
   return (
     <>
-      <GardenAreasCollection
+      <GardenAreasOverview
         data={data}
         onAreaSubmit={handleNewAreaSubmit}
-        areaSubmitStatus={{ isSubmitting, submitError }}
+        areaSubmitStatus={{
+          isSubmitting,
+          submitError,
+          submitSuccess,
+          setSubmitSuccess,
+        }}
       />
     </>
   );

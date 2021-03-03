@@ -1,18 +1,33 @@
-import React, { useState } from 'react';
+/* eslint-disable react/prop-types */
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 
-const AddGardenAreaDialog = ({ onAreaSubmit, areaSubmitStatus }) => {
+const AddGardenAreaDialog = ({ onAreaSubmit, areaSubmitStatus, closeDialog }) => {
   const [newArea, setNewArea] = useState({
     name: '',
     length_cm: '',
     width_cm: '',
   });
-  // eslint-disable-next-line no-unused-vars
-  const [test, setTest] = useState(areaSubmitStatus);
+  useEffect(() => () => {
+    areaSubmitStatus.setSubmitSuccess(false);
+  }, []);
+  // eslint-disable-next-line react/prop-types
+  if (areaSubmitStatus.submitSuccess) {
+    setTimeout(() => closeDialog(), 2000);
+    return <p>Success</p>;
+  }
 
-  console.log(areaSubmitStatus);
   return (
     <form onSubmit={(e) => onAreaSubmit(e, newArea)}>
+      <button
+        type="button"
+        onClick={() => {
+          closeDialog();
+        }}
+      >
+        X
+      </button>
+      {areaSubmitStatus.submitError && <h4>There was an error</h4>}
       <label htmlFor="area-name">
         <p>New area name:</p>
         <input
@@ -49,6 +64,7 @@ const AddGardenAreaDialog = ({ onAreaSubmit, areaSubmitStatus }) => {
       />
       <button
         type="submit"
+        disabled={areaSubmitStatus.isSubmitting}
       >
         {areaSubmitStatus.isSubmitting ? 'Saving...' : 'Submit'}
       </button>
@@ -62,6 +78,7 @@ AddGardenAreaDialog.propTypes = {
     isSubmitting: PropTypes.bool,
     submitError: PropTypes.string,
   }),
+  closeDialog: PropTypes.func,
 };
 
 AddGardenAreaDialog.defaultProps = {
@@ -70,6 +87,7 @@ AddGardenAreaDialog.defaultProps = {
     isSubmitting: false,
     submitError: '',
   },
+  closeDialog: () => {},
 };
 
 export default AddGardenAreaDialog;

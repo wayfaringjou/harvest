@@ -2,21 +2,39 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
+const actionClickHandler = (diagCont, currDiagCont, promptId) => {
+  if (currDiagCont.activeDialogId === undefined) {
+    currDiagCont.handleSetActionDialog(promptId);
+    diagCont.openDialog();
+  } else if (currDiagCont.activeDialogId !== promptId) {
+    currDiagCont.handleSetActionDialog(promptId);
+    if (diagCont.isDialogOpen) {
+      diagCont.closeDialog();
+      setTimeout(() => diagCont.openDialog(), 0);
+    } else {
+      diagCont.openDialog();
+    }
+  } else {
+    diagCont.toggleDialog();
+  }
+};
+
 const PromptCard = ({
   action,
   description,
-  submitHandler,
-  actionFeedback,
-  dialog,
-  dialogContentHandler,
-  dialogHandler,
+  dialogControls,
+  currentDialogControls,
+  promptId,
 }) => (
   <article>
     <h4>{description}</h4>
     <button
       onClick={() => {
-        dialogContentHandler(dialog({ submitHandler, actionFeedback }));
-        dialogHandler();
+        actionClickHandler(
+          dialogControls,
+          currentDialogControls,
+          promptId,
+        );
       }}
       type="button"
     >
@@ -33,7 +51,7 @@ PromptCard.propTypes = {
   // handler: PropTypes.func,
   // eslint-disable-next-line react/forbid-prop-types
   // dialog: PropTypes.func.isRequired,
-  dialogHandler: PropTypes.func,
+  // dialogHandler: PropTypes.func,
 };
 
 PromptCard.defaultProps = {
@@ -41,5 +59,5 @@ PromptCard.defaultProps = {
   description: '',
   // handler: () => {},
   // dialog: Symbol(''),
-  dialogHandler: () => {},
+  // dialogHandler: () => {},
 };
