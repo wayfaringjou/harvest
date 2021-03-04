@@ -11,6 +11,7 @@ import { Route } from 'react-router-dom';
 import {
   GARDEN_AREAS,
   // GARDEN_AREA_DETAIL,
+  PLANTS,
 } from './config/routes';
 
 // CSS
@@ -18,6 +19,7 @@ import './App.css';
 
 // Components
 const GardenAreas = lazy(() => import('./components/views/GardenAreas'));
+const Plants = lazy(() => import('./components/views/Plants'));
 
 function App() {
   // eslint-disable-next-line no-unused-vars
@@ -32,6 +34,11 @@ function App() {
             path={GARDEN_AREAS}
             component={GardenAreas}
           />
+          <Route
+            path={PLANTS}
+            component={Plants}
+          />
+          {console.log(process.env)}
         </main>
       </div>
     </Suspense>
