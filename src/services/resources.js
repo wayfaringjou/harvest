@@ -11,8 +11,14 @@ export const gardenAreasCollection = () => ({
   ...apiCollection({ path: areasPath }),
 });
 
-export const gardenAreaSingleton = ({ name = '', length_cm = '', width_cm = '' } = {}) => {
+export const gardenAreaSingleton = ({
+  id = '',
+  name = '',
+  length_cm = '',
+  width_cm = '',
+} = {}) => {
   const data = {
+    id,
     name,
     length_cm,
     width_cm,

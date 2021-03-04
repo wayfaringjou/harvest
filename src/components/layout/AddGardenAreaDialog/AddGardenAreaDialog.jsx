@@ -1,17 +1,20 @@
-/* eslint-disable react/prop-types */
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
+import areaPropTypes from '../../../propTypes/gardenArea';
 
-const AddGardenAreaDialog = ({ onAreaSubmit, areaSubmitStatus, closeDialog }) => {
-  const [newArea, setNewArea] = useState({
-    name: '',
-    length_cm: '',
-    width_cm: '',
-  });
+// onAreaSubmit can be used for POST or PATCH methods
+const AddGardenAreaDialog = ({
+  onAreaSubmit,
+  areaSubmitStatus,
+  closeDialog,
+  areaData,
+}) => {
+  const [newArea, setNewArea] = useState(areaData);
+
   useEffect(() => () => {
     areaSubmitStatus.setSubmitSuccess(false);
   }, []);
-  // eslint-disable-next-line react/prop-types
+
   if (areaSubmitStatus.submitSuccess) {
     setTimeout(() => closeDialog(), 2000);
     return <p>Success</p>;
@@ -53,15 +56,18 @@ const AddGardenAreaDialog = ({ onAreaSubmit, areaSubmitStatus, closeDialog }) =>
           placeholder="125"
         />
       </label>
-      <input
-        id="area-width"
-        type="number"
-        value={newArea.width_cm}
-        onChange={({ target: { value } }) => setNewArea(
-          { ...newArea, width_cm: value },
-        )}
-        placeholder="125"
-      />
+      <label htmlFor="area-width">
+        <p>New area width in cm:</p>
+        <input
+          id="area-width"
+          type="number"
+          value={newArea.width_cm}
+          onChange={({ target: { value } }) => setNewArea(
+            { ...newArea, width_cm: value },
+          )}
+          placeholder="125"
+        />
+      </label>
       <button
         type="submit"
         disabled={areaSubmitStatus.isSubmitting}
@@ -77,17 +83,32 @@ AddGardenAreaDialog.propTypes = {
   areaSubmitStatus: PropTypes.shape({
     isSubmitting: PropTypes.bool,
     submitError: PropTypes.string,
+    submitSuccess: PropTypes.bool,
+    submitResponse: areaPropTypes,
+    setSubmitSuccess: PropTypes.func,
+    setSubmitError: PropTypes.func,
   }),
   closeDialog: PropTypes.func,
+  areaData: areaPropTypes,
 };
 
 AddGardenAreaDialog.defaultProps = {
   onAreaSubmit: () => {},
   areaSubmitStatus: {
     isSubmitting: false,
-    submitError: '',
+    submitError: null,
+    submitSuccess: false,
+    submitResponse: null,
+    setSubmitSuccess: () => {},
+    setSubmitError: () => {},
   },
   closeDialog: () => {},
+  areaData: {
+    id: '',
+    name: '',
+    length_cm: '',
+    width_cm: '',
+  },
 };
 
 export default AddGardenAreaDialog;

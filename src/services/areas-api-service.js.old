@@ -1,5 +1,5 @@
 // import config from './config';
-import useAPIRequest from './useAPIRequest';
+import useAPIRequest from '../hooks/useAPIRequest.js.old';
 
 const options = (method, body) => ({
   method,

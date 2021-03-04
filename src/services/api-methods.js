@@ -28,14 +28,22 @@ export const apiCollection = ({ path = '' }) => (
   }
 );
 
-export const apiSingleton = ({ data = {} }) => {
-  console.log(data);
-  return {
-    getById: (queryId = '') => {
-      const requestUrl = `${data.path}/${queryId}`;
-      return apiRequest(requestUrl, composeOptions('GET'));
-    },
-    post: () => apiRequest(data.path, composeOptions('POST', data)),
-    updateWithId: (queryId = '') => console.log(queryId, data),
-  };
-};
+export const apiSingleton = ({ data = {} }) => ({
+  getById: (queryId = '') => {
+    const requestUrl = `${data.path}/${queryId}`;
+    return apiRequest(requestUrl, composeOptions('GET'));
+  },
+  post: () => apiRequest(data.path, composeOptions('POST', data)),
+  patch: () => {
+    const patchData = Object.keys(data)
+      .reduce((acc, key) => {
+        if (data[key] && key !== 'path' && key !== 'id') {
+          acc[key] = data[key];
+          return acc;
+        }
+        return acc;
+      }, {});
+    return apiRequest(`${data.path}/${data.id}`, composeOptions('PATCH', patchData));
+  },
+  delete: () => apiRequest(`${data.path}/${data.id}`, composeOptions('DELETE')),
+});

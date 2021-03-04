@@ -3,7 +3,7 @@
 
 import { useEffect, useState } from 'react';
 
-export default function useAPIResource(requestFunction, query) {
+export default function useAPIRetrieve(requestFunction, query) {
   const [resourceState, setResourceState] = useState({
     isRetrieving: true,
     isSuccess: false,
@@ -11,9 +11,7 @@ export default function useAPIResource(requestFunction, query) {
     data: null,
     error: null,
   });
-  console.log(query);
   useEffect(async () => {
-    console.log('effect ran');
     let componentUnmounted = false;
     try {
       const { data, error } = await requestFunction();

@@ -1,18 +1,16 @@
 import React, { useState } from 'react';
 import GardenAreasOverview from '../../layout/GardenAreasOverview/GardenAreasOverview';
-import useAPIResource from '../../../hooks/useAPIResource';
+import useAPIRetrieve from '../../../hooks/useAPIRetrieve';
+import useAPISend from '../../../hooks/useAPISend';
 // import { fetchGardenAreas } from '../../../services/fakeAPI';
 import { gardenAreasCollection, gardenAreaSingleton } from '../../../services/resources';
 
 const areas = gardenAreasCollection();
 
-// const handleAreaRemove()
-
 const GardenAreas = () => {
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [submitError, setSubmitError] = useState('');
-  const [submitSuccess, setSubmitSuccess] = useState(false);
   const [reload, setReload] = useState(false);
+  const [request, setRequest] = useState(false);
+  const [requestFunction, setRequestFunction] = useState(null);
 
   const {
     data,
@@ -21,7 +19,19 @@ const GardenAreas = () => {
     // isSuccess,
     error,
   // } = useAPIResource(fetchGardenAreas);
-  } = useAPIResource(areas.getAll, reload);
+  } = useAPIRetrieve(areas.getAll, reload);
+
+  const {
+    requestState,
+    setRequestState,
+  } = useAPISend(requestFunction, request, { reload, setReload });
+
+  const {
+    isSubmitting,
+    submitSuccess,
+    submitError,
+    submitResponse,
+  } = requestState;
 
   if (isRetrieving) return <p>Loading</p>;
 
@@ -34,40 +44,53 @@ const GardenAreas = () => {
     );
   }
 
-  const handleNewAreaSubmit = async (e, postData) => {
+  const handleAreaRequest = async (e, reqData, reqType) => {
     e.preventDefault();
-    setSubmitError('');
-    try {
-      setSubmitSuccess(false);
-      setIsSubmitting(true);
-      const newArea = gardenAreaSingleton(postData);
-      const res = await newArea.post(postData);
-      if (res.error) throw new Error(res.data);
+    // Create a new area object with data from request
+    const area = gardenAreaSingleton(reqData);
 
-      setReload(!reload);
-      setIsSubmitting(false);
-      setSubmitSuccess(true);
-    } catch (err) {
-      setIsSubmitting(false);
-      setSubmitSuccess(false);
-      setSubmitError(err.message);
+    switch (reqType) {
+      case 'POST':
+        setRequestFunction({ request: area.post });
+        setRequest(!request);
+        break;
+      case 'PATCH':
+        setRequestFunction({ request: area.patch });
+        setRequest(!request);
+        break;
+      case 'DELETE':
+        setRequestFunction({ request: area.delete });
+        setRequest(!request);
+        break;
+      default:
+        throw new Error('Invalid method');
     }
-    // const res = await newArea.post();
-    // console.log(res);
-
-  // return res;
   };
 
   return (
     <>
       <GardenAreasOverview
         data={data}
-        onAreaSubmit={handleNewAreaSubmit}
+        onAreaPost={(e, newArea) => {
+          handleAreaRequest(e, newArea, 'POST');
+        }}
+        onAreaUpdate={(e, updateArea) => {
+          handleAreaRequest(e, updateArea, 'PATCH');
+        }}
+        onAreaDelete={(e, idToDelete) => {
+          handleAreaRequest(e, idToDelete, 'DELETE');
+        }}
         areaSubmitStatus={{
           isSubmitting,
           submitError,
           submitSuccess,
-          setSubmitSuccess,
+          submitResponse,
+          setSubmitSuccess: (value) => setRequestState(
+            { ...requestState, submitSuccess: value },
+          ),
+          setSubmitError: (value) => setRequestState(
+            { ...requestState, submitError: value },
+          ),
         }}
       />
     </>
