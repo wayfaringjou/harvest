@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import GardenAreasOverview from '../../layout/GardenAreasOverview/GardenAreasOverview';
+import GardenAreasOverview from '../../garden-areas-layout/GardenAreasOverview/GardenAreasOverview';
 import useAPIRetrieve from '../../../hooks/useAPIRetrieve';
 import useAPISend from '../../../hooks/useAPISend';
 // import { fetchGardenAreas } from '../../../services/fakeAPI';
