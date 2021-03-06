@@ -16,6 +16,7 @@ import {
 
 // CSS
 import './App.css';
+import RegistrationForm from './components/common/RegistrationForm';
 
 // Components
 const GardenAreas = lazy(() => import('./components/views/GardenAreas'));
@@ -38,7 +39,7 @@ function App() {
             path={PLANTS}
             component={Plants}
           />
-          {console.log(process.env)}
+          <RegistrationForm />
         </main>
       </div>
     </Suspense>
