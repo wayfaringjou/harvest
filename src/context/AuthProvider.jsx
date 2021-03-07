@@ -1,6 +1,8 @@
 import React, { createContext, useState } from 'react';
 import PropTypes from 'prop-types';
+// import { useHistory } from 'react-router-dom';
 import config from '../config/api';
+// import { HOME } from '../config/routes';
 import storageAccess from '../services/localStorage-methods';
 import credentials from '../services/api-auth-service';
 import useAPISend from '../hooks/useAPISend';
@@ -14,6 +16,8 @@ const AuthProvider = ({ children }) => {
   const [password, setPassword] = useState('');
   const [authRequest, setAuthRequest] = useState(false);
   const [authFunction, setAuthFunction] = useState(null);
+  // isAuthenticated is a check if the user has a token in their storage
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   // Create token with storage access and credential methods
   const token = {
@@ -39,7 +43,13 @@ const AuthProvider = ({ children }) => {
   };
 
   // logout is removing the token from local storage
-  const logout = token.removeItem;
+  // const history = useHistory();
+  const logout = () => {
+    // e.preventDefault();
+    token.removeItem();
+    setIsAuthenticated(false);
+    // return history.push(HOME);
+  };
 
   // Add user
   const addNewUser = (e) => {
@@ -56,16 +66,16 @@ const AuthProvider = ({ children }) => {
       token.setItem(submitResponse.authToken);
       setUserName('');
       setPassword('');
-      setRequestState({ ...requestState, submitSuccess: false, submitError: null });
+      setIsAuthenticated(Boolean(token.getItem()));
+      setRequestState({
+        ...requestState, submitSuccess: false, submitError: null, submitResponse: null,
+      });
     } else if (submitResponse.user_name) {
       setRequestState({ ...requestState, submitSuccess: false, submitError: null });
       setAuthFunction({ request: token.getToken });
       setAuthRequest(!authRequest);
     }
   }
-
-  // isAuthenticated is a check if the user has a token in their storage
-  const isAuthenticated = Boolean(token.getItem());
 
   const value = {
     isAuthenticated,

@@ -3,13 +3,11 @@ import React, { useState, lazy, Suspense } from 'react';
 import { Switch } from 'react-router-dom';
 
 // Handlers and services
-// import AreasAPIService from './services/areas-api-service';
-// import useAPIRequest from './services/useAPIRequest';
-// import FH from '../../handlers/form-handlers';
 
 // Routes
 import {
   HOME,
+  GARDEN,
   GARDEN_AREAS,
   // GARDEN_AREA_DETAIL,
   PLANTS,
@@ -20,11 +18,12 @@ import './App.css';
 
 // Components
 import PrivateRoute from './components/routes/PrivateRoute';
-// import RegistrationForm from './components/common/RegistrationForm';
 import AuthProvider from './context/AuthProvider';
-import LoginForm from './components/common/LoginForm';
 import PublicRoute from './components/routes/PublicRoute';
+import Header from './components/common/Header';
 
+const Home = lazy(() => import('./components/views/Home'));
+const Garden = lazy(() => import('./components/views/Garden'));
 const GardenAreas = lazy(() => import('./components/views/GardenAreas'));
 const Plants = lazy(() => import('./components/views/Plants'));
 
@@ -35,24 +34,29 @@ function App() {
     <Suspense fallback="Loading...">
       <AuthProvider>
         <div className="App">
+          <Header />
           {errorMsg && <aside>{errorMsg}</aside>}
           <main className="app-main">
             <Switch>
+              <PublicRoute
+                exact
+                path={HOME}
+                component={Home}
+              />
               <PrivateRoute
+                exact
+                path={GARDEN}
+                component={Garden}
+              />
+              <PrivateRoute
+                exact
                 path={GARDEN_AREAS}
                 component={GardenAreas}
               />
               <PrivateRoute
+                exact
                 path={PLANTS}
                 component={Plants}
-              />
-              <PublicRoute
-                path={HOME}
-                component={() => (
-                  <>
-                    <LoginForm />
-                  </>
-                )}
               />
             </Switch>
           </main>
