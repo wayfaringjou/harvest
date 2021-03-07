@@ -23,7 +23,7 @@ import PrivateRoute from './components/routes/PrivateRoute';
 import RegistrationForm from './components/common/RegistrationForm';
 import AuthProvider from './context/AuthProvider';
 import LoginForm from './components/common/LoginForm';
-import PublicRoute from './components/routes/PublicRoute/PublicRoute';
+import PublicRoute from './components/routes/PublicRoute';
 
 const GardenAreas = lazy(() => import('./components/views/GardenAreas'));
 const Plants = lazy(() => import('./components/views/Plants'));

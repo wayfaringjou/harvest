@@ -12,8 +12,8 @@ export const AuthContext = createContext();
 const AuthProvider = ({ children }) => {
   const [userName, setUserName] = useState('');
   const [password, setPassword] = useState('');
-  const [loginRequest, setLoginRequest] = useState(false);
-  const [loginFunction, setLoginFunction] = useState(null);
+  const [authRequest, setAuthRequest] = useState(false);
+  const [authFunction, setAuthFunction] = useState(null);
 
   // Create token with storage access and credential methods
   const token = {
@@ -25,7 +25,7 @@ const AuthProvider = ({ children }) => {
   const {
     requestState,
     setRequestState,
-  } = useAPISend(loginFunction, loginRequest);
+  } = useAPISend(authFunction, authRequest);
 
   const {
     isSubmitting, submitSuccess, submitError, submitResponse,
@@ -35,6 +35,7 @@ const AuthProvider = ({ children }) => {
   // reset hook's state
 
   if (submitSuccess) {
+    console.log(submitResponse);
     token.setItem(submitResponse.authToken);
     setUserName('');
     setPassword('');
@@ -47,20 +48,28 @@ const AuthProvider = ({ children }) => {
   // login is storing a token in local storage
   const login = (e) => {
     e.preventDefault();
-    setLoginFunction({ request: token.getToken });
-    setLoginRequest(!loginRequest);
+    setAuthFunction({ request: token.getToken });
+    setAuthRequest(!authRequest);
   };
 
   // logout is removing the token from local storage
   const logout = token.removeItem;
 
+  // Add user
+  const addNewUser = (e) => {
+    e.preventDefault();
+    setAuthFunction({ request: token.postNewUser });
+    setAuthRequest(!authRequest);
+  };
+
   const value = {
     isAuthenticated,
     login,
-    loginStatus: { isSubmitting, submitSuccess, submitError },
+    authStatus: { isSubmitting, submitSuccess, submitError },
     logout,
     setUserName,
     setPassword,
+    addNewUser,
   };
 
   return (

@@ -1,28 +1,31 @@
-import React, { useState } from 'react';
-import FH from '../../../handlers/form-handlers';
+import React from 'react';
+import useAuthContext from '../../../hooks/useAuthContext';
 
 const RegistrationForm = () => {
-  // const [userName, setUserName] = useState('');
-  // const [passWord, setPassword] = useState('');
-  const [formState, setFromState] = useState({
-    username: '',
-    password: '',
-    ...FH,
-  });
+  const {
+    addNewUser,
+    setUserName,
+    setPassword,
+    authStatus,
+  } = useAuthContext();
 
-  formState.test();
+  if (authStatus.isSubmitting) return <p>Signing up...</p>;
 
-  function logme(e) {
-    console.log(e);
-  }
   return (
-    <form>
+    <form onSubmit={(e) => addNewUser(e)}>
+      {authStatus.submitError && (
+      <p>
+        There was an error:
+        {' '}
+        {authStatus.submitError}
+      </p>
+      )}
       <label htmlFor="username-input">
         <p>User name:</p>
         <input
           id="username-input"
           type="text"
-          onChange={(e) => formState.handleChange(e, 'username', setFromState)}
+          onChange={({ target: { value } }) => setUserName(value)}
         />
       </label>
       <label htmlFor="password-input">
@@ -30,9 +33,12 @@ const RegistrationForm = () => {
         <input
           id="password-input"
           type="text"
-          onChange={logme}
+          onChange={({ target: { value } }) => setPassword(value)}
         />
       </label>
+      <button type="submit">
+        Submit
+      </button>
     </form>
   );
 };

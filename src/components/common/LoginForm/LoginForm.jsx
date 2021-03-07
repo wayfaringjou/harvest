@@ -6,14 +6,20 @@ const LoginForm = () => {
     login,
     setUserName,
     setPassword,
-    loginStatus,
+    authStatus,
   } = useAuthContext();
 
-  if (loginStatus.isSubmitting) return <p>Loging in...</p>;
+  if (authStatus.isSubmitting) return <p>Signing in...</p>;
 
   return (
     <form onSubmit={(e) => login(e)}>
-      {loginStatus.submitError && <p>There was an error</p>}
+      {authStatus.submitError && (
+      <p>
+        There was an error:
+        {' '}
+        {authStatus.submitError}
+      </p>
+      )}
       <label htmlFor="username-input">
         <p>User name:</p>
         <input
