@@ -1,6 +1,6 @@
 // React modules
 import React, { useState, lazy, Suspense } from 'react';
-import { Route } from 'react-router-dom';
+import { Switch } from 'react-router-dom';
 
 // Handlers and services
 // import AreasAPIService from './services/areas-api-service';
@@ -9,6 +9,7 @@ import { Route } from 'react-router-dom';
 
 // Routes
 import {
+  HOME,
   GARDEN_AREAS,
   // GARDEN_AREA_DETAIL,
   PLANTS,
@@ -16,32 +17,48 @@ import {
 
 // CSS
 import './App.css';
-import RegistrationForm from './components/common/RegistrationForm';
 
 // Components
+import PrivateRoute from './components/routes/PrivateRoute';
+import RegistrationForm from './components/common/RegistrationForm';
+import AuthProvider from './context/AuthProvider';
+import LoginForm from './components/common/LoginForm';
+import PublicRoute from './components/routes/PublicRoute/PublicRoute';
+
 const GardenAreas = lazy(() => import('./components/views/GardenAreas'));
 const Plants = lazy(() => import('./components/views/Plants'));
 
 function App() {
   // eslint-disable-next-line no-unused-vars
   const [errorMsg, setErrorMsg] = useState(null);
-
   return (
     <Suspense fallback="Loading...">
-      <div className="App">
-        {errorMsg && <aside>{errorMsg}</aside>}
-        <main className="app-main">
-          <Route
-            path={GARDEN_AREAS}
-            component={GardenAreas}
-          />
-          <Route
-            path={PLANTS}
-            component={Plants}
-          />
-          <RegistrationForm />
-        </main>
-      </div>
+      <AuthProvider>
+        <div className="App">
+          {errorMsg && <aside>{errorMsg}</aside>}
+          <main className="app-main">
+            <Switch>
+              <PrivateRoute
+                path={GARDEN_AREAS}
+                component={GardenAreas}
+              />
+              <PrivateRoute
+                path={PLANTS}
+                component={Plants}
+              />
+              <PublicRoute
+                path={HOME}
+                component={() => (
+                  <>
+                    <LoginForm />
+                    <RegistrationForm />
+                  </>
+                )}
+              />
+            </Switch>
+          </main>
+        </div>
+      </AuthProvider>
     </Suspense>
   );
 }

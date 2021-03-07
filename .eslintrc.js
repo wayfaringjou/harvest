@@ -21,5 +21,6 @@ module.exports = {
   rules: {
     'no-underscore-dangle': 'off',
     camelcase: 'warn',
+    'react/jsx-props-no-spreading': 'off',
   },
 };
