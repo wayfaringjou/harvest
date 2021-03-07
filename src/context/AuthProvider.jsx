@@ -31,20 +31,6 @@ const AuthProvider = ({ children }) => {
     isSubmitting, submitSuccess, submitError, submitResponse,
   } = requestState;
 
-  // If the post request done by the hook is successful store token and
-  // reset hook's state
-
-  if (submitSuccess) {
-    console.log(submitResponse);
-    token.setItem(submitResponse.authToken);
-    setUserName('');
-    setPassword('');
-    setRequestState({ ...requestState, submitSuccess: false, submitError: null });
-  }
-
-  // isAuthenticated is a check if the user has a token in their storage
-  const isAuthenticated = Boolean(token.getItem());
-
   // login is storing a token in local storage
   const login = (e) => {
     e.preventDefault();
@@ -61,6 +47,25 @@ const AuthProvider = ({ children }) => {
     setAuthFunction({ request: token.postNewUser });
     setAuthRequest(!authRequest);
   };
+
+  // If the post request done by the hook is successful store token and
+  // reset hook's state
+
+  if (submitSuccess) {
+    if (submitResponse.authToken) {
+      token.setItem(submitResponse.authToken);
+      setUserName('');
+      setPassword('');
+      setRequestState({ ...requestState, submitSuccess: false, submitError: null });
+    } else if (submitResponse.user_name) {
+      setRequestState({ ...requestState, submitSuccess: false, submitError: null });
+      setAuthFunction({ request: token.getToken });
+      setAuthRequest(!authRequest);
+    }
+  }
+
+  // isAuthenticated is a check if the user has a token in their storage
+  const isAuthenticated = Boolean(token.getItem());
 
   const value = {
     isAuthenticated,

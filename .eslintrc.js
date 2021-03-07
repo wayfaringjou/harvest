@@ -20,7 +20,7 @@ module.exports = {
   ],
   rules: {
     'no-underscore-dangle': 'off',
-    camelcase: 'warn',
+    camelcase: 'off',
     'react/jsx-props-no-spreading': 'off',
   },
 };

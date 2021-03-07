@@ -11,16 +11,13 @@ const apiRequest = async (url = '', options = {}) => {
   try {
     const res = await fetch(url, options);
     if (!res.ok) {
-      console.log(res);
       const body = await res.json();
-      console.log(body);
       throw new Error(body.error);
     }
 
     const data = await res.json();
     return { data, error: false };
   } catch (error) {
-    console.log(error);
     return { data: error.message, error: true };
   }
 };
@@ -40,10 +37,7 @@ export const apiSingleton = ({ data = {} }) => ({
     const requestUrl = `${data.path}/${queryId}`;
     return apiRequest(requestUrl, composeOptions('GET'));
   },
-  post: () => {
-    console.log(data);
-    return apiRequest(data.path, composeOptions('POST', data));
-  },
+  post: () => apiRequest(data.path, composeOptions('POST', data)),
   patch: () => {
     const patchData = Object.keys(data)
       .reduce((acc, key) => {
