@@ -21,12 +21,10 @@ export default function useAPISend(
 
   // Destructure reloadControl
   const { reload, setReload } = reloadControl;
-
   // Trigger effect when component mounts and when 'request' changes value
   useEffect(async () => {
     // Prevent running on mount when there is no send request
     if (requestFunction === null) return;
-
     // Short circuit in case component unmounts while waiting async
     let componentUnmounted = false;
 
@@ -36,7 +34,6 @@ export default function useAPISend(
       setRequestState({ ...requestState, isSubmitting: true });
       // Make async call using function passed in arguments
       const { data, error } = await requestFunction.request();
-
       setReload(!reload);
 
       // Handle failure

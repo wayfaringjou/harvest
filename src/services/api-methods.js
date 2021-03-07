@@ -10,7 +10,11 @@ const composeOptions = (method, body) => ({
 const apiRequest = async (url = '', options = {}) => {
   try {
     const res = await fetch(url, options);
-    if (!res.ok) throw new Error(`${res.status}: ${res.statusText}`);
+    if (!res.ok) {
+      const body = await res.json();
+      throw new Error(body.error);
+    }
+
     const data = await res.json();
     return { data, error: false };
   } catch (error) {
