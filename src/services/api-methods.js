@@ -26,16 +26,21 @@ export const apiCollection = ({ path = '' }) => (
   {
     getAll: () => apiRequest(path, composeOptions('GET')),
     getWithQuery: (query = '') => {
-      const requestUrl = `${path}${query}`;
+      const requestUrl = `${path}?${query}`;
       return apiRequest(requestUrl, composeOptions('GET'));
     },
   }
 );
 
 export const apiSingleton = ({ data = {} }) => ({
-  getById: (queryId = '') => {
-    const requestUrl = `${data.path}/${queryId}`;
+  getFromPath: () => apiRequest(data.path, composeOptions('GET')),
+  getById: (id = '') => {
+    const requestUrl = `${data.path}/${id}`;
     return apiRequest(requestUrl, composeOptions('GET'));
+  },
+  getWithQuery: (query = '') => {
+    const request = `${data.path}?${query}`;
+    return apiRequest(request, composeOptions('GET'));
   },
   post: () => apiRequest(data.path, composeOptions('POST', data)),
   patch: () => {

@@ -3,36 +3,12 @@ export function fetchUser() {
   return new Promise((resolve) => {
     setTimeout(() => {
       console.log('fetched user');
-      resolve({
-        name: 'Ringo Starr',
-      });
+      resolve(
+        {
+          authToken: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxLCJpYXQiOjE2MTUyMjAzMDMsInN1YiI6ImRlbW8ifQ.EzzHk4OIOhSULuBauA6xksedBf3KT8uAv11bMcK1qqY',
+        },
+      );
     }, 1000);
-  });
-}
-
-export function fetchPosts() {
-  console.log('fetch posts...');
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      console.log('fetched posts');
-      resolve([
-        {
-          id: 0,
-          text:
-            'I get by with a little help from my friends',
-        },
-        {
-          id: 1,
-          text:
-            "I'd like to be under the sea in an octupus's garden",
-        },
-        {
-          id: 2,
-          text:
-            'You got that sand all over your feet',
-        },
-      ]);
-    }, 2000);
   });
 }
 
@@ -41,6 +17,63 @@ export function fetchGardenAreas() {
   return new Promise((resolve) => {
     setTimeout(() => {
       console.log('fetched areas');
+      resolve({
+        data:
+        [
+          {
+            id: 2,
+            name: 'Pots table',
+            length_cm: '',
+            width_cm: '',
+          },
+          {
+            id: 4,
+            name: 'Frontyard Plot',
+            length_cm: 200,
+            width_cm: 200,
+          },
+          {
+            id: 1,
+            name: 'Backyard raised bed corner',
+            length_cm: 134,
+            width_cm: 134,
+          },
+          {
+            id: 5,
+            name: 'Raised bed with trellis north',
+            length_cm: 55,
+            width_cm: 238,
+          },
+          {
+            id: 6,
+            name: 'Raised bed with trellis south',
+            length_cm: 55,
+            width_cm: 238,
+          },
+          {
+            id: 3,
+            name: 'Backyard Plot #1',
+            length_cm: 124,
+            width_cm: 124,
+          },
+          {
+            id: 40,
+            name: 'Small perennials plot',
+            length_cm: 78,
+            width_cm: 78,
+          },
+        ],
+        error: false,
+      });
+    }, 2000);
+  });
+}
+
+export function fetchPlants() {
+  console.log('Fetching plants');
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      console.log('fetched plants');
       resolve({
         data: [
           {
@@ -63,10 +96,10 @@ export function fetchGardenAreas() {
 }
 
 export function fetchError() {
-  console.log('Fetching garden areas');
+  console.log('Fetching erroneous response');
   return new Promise((resolve) => {
     setTimeout(() => {
-      console.log('fetched areas');
+      console.log('fetched error');
       resolve({
         data: new Error('Fetch error'),
         error: true,

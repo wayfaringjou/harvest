@@ -37,7 +37,7 @@ const Home = () => {
       <section className="features">
         <article>
           <header>
-            <h3>Organize your crops by garden&apos;s areas</h3>
+            <h3>Organize your crops by garden areas</h3>
           </header>
           <section>
             <p>Add each area of your garden and the plants they contain.</p>

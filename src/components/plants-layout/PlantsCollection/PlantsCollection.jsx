@@ -62,9 +62,9 @@ const PlantsCollection = ({
 
           return (
             <li key={item.id}>
-              <p>
+              <h4>
                 {item.name}
-              </p>
+              </h4>
               <p>Confirm delete:</p>
               {plantSubmitStatus.submitError && <p>There was an error</p>}
               <button
@@ -89,9 +89,9 @@ const PlantsCollection = ({
           return (
             <li key={item.id}>
               <p>Edit info:</p>
-              <p>
+              <h4>
                 {item.name}
-              </p>
+              </h4>
               <AddPlantDialog
                 key={item.id}
                 plantData={item}
@@ -105,11 +105,11 @@ const PlantsCollection = ({
 
         return (
           <li key={item.id}>
-            <p>
+            <h4>
               <Link to={`${PLANTS}/${item.id}`}>
                 {item.name}
               </Link>
-            </p>
+            </h4>
             <button
               type="button"
               onClick={() => {

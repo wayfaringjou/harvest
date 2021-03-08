@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import PropTypes from 'prop-types';
 import PlantsOverview from '../../plants-layout/PlantsOverview';
 import useAPIRetrieve from '../../../hooks/useAPIRetrieve';
 import useAPISend from '../../../hooks/useAPISend';
@@ -6,12 +7,10 @@ import { plantsCollection, plantSingleton } from '../../../services/resources';
 
 // import { fetchPlants } from '../../../services/fakeAPI';
 
-const plants = plantsCollection();
 // console.log(plants.searchPlantsData('strawberry'));
 
-console.log(plants);
-
-const Plants = () => {
+const Plants = ({ garden_id }) => {
+  const plants = plantsCollection(garden_id);
   const [reload, setReload] = useState(false);
   const [request, setRequest] = useState(false);
   const [requestFunction, setRequestFunction] = useState(null);
@@ -48,7 +47,7 @@ const Plants = () => {
 
   const handlePlantRequest = async (e, reqData, reqType) => {
     e.preventDefault();
-    // Create a new area object with data from request
+    // Create a new plant object with data from request
     const plant = plantSingleton(reqData);
     switch (reqType) {
       case 'POST':
@@ -94,6 +93,14 @@ const Plants = () => {
       }}
     />
   );
+};
+
+Plants.propTypes = {
+  garden_id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+};
+
+Plants.defaultProps = {
+  garden_id: '',
 };
 
 export default Plants;

@@ -6,14 +6,20 @@ import localStorage from './localStorage-methods';
 
 const ls = localStorage(config.AUTH_TOKEN_KEY);
 
-const areasPath = `${config.API_BASEPATH}/garden/areas`;
-const plantsPath = `${config.API_BASEPATH}/garden/plants`;
+// Areas and plants collections are from a garden
+const gardenPlantsPath = (gardenId) => `${config.API_BASEPATH}/gardens/${gardenId}/plants`;
+const gardenAreasPath = (gardenId) => `${config.API_BASEPATH}/gardens/${gardenId}/areas`;
+// Individual plants and areas can be accessed without a garden reference
+const plantsPath = `${config.API_BASEPATH}/plants`;
+const areasPath = `${config.API_BASEPATH}/areas`;
+// Notes and gardens are from a user
 const notesPath = `${config.API_BASEPATH}/users/${ls.decodeUserData().user_id}/garden/notes`;
-console.log(notesPath);
-// Factories for data resources
+const userGardensPath = `${config.API_BASEPATH}/users/${ls.decodeUserData().user_id}/gardens`;
 
-export const gardenAreasCollection = () => ({
-  ...apiCollection({ path: areasPath }),
+// Factories for data resources
+// Garden areas
+export const gardenAreasCollection = (garden_id) => ({
+  ...apiCollection({ path: gardenAreasPath(garden_id) }),
 });
 
 export const gardenAreaSingleton = ({
@@ -24,12 +30,7 @@ export const gardenAreaSingleton = ({
   garden_id = '',
 } = {}) => {
   const data = {
-    id,
-    name,
-    length_cm,
-    width_cm,
-    garden_id,
-    path: areasPath,
+    id, name, length_cm, width_cm, garden_id, path: areasPath,
   };
 
   return {
@@ -38,8 +39,9 @@ export const gardenAreaSingleton = ({
   };
 };
 
-export const plantsCollection = () => ({
-  ...apiCollection({ path: plantsPath }),
+// Plants
+export const plantsCollection = (garden_id) => ({
+  ...apiCollection({ path: gardenPlantsPath(garden_id) }),
   ...trefleCollection(),
 });
 
@@ -50,11 +52,7 @@ export const plantSingleton = ({
   area_id = '',
 } = {}) => {
   const data = {
-    id,
-    name,
-    garden_id,
-    area_id,
-    path: plantsPath,
+    id, name, garden_id, area_id, path: plantsPath,
   };
 
   return {
@@ -63,6 +61,7 @@ export const plantSingleton = ({
   };
 };
 
+// Notes
 export const notesCollection = () => ({
   ...apiCollection({ path: notesPath }),
 });
@@ -77,17 +76,30 @@ export const noteSingleton = ({
   title = '',
 } = {}) => {
   const data = {
-    id,
-    user_id,
-    garden_id,
-    area_id,
-    plant_id,
-    content,
-    title,
+    id, user_id, garden_id, area_id, plant_id, content, title, path: notesPath,
   };
 
   return {
     ...data,
     ...apiSingleton({ data }),
+  };
+};
+
+// Garden
+export const gardenSingleton = ({
+  id = '',
+  user_id = '',
+  name = '',
+} = {}) => {
+  const data = {
+    id,
+    user_id,
+    name,
+    path: userGardensPath,
+  };
+  return {
+    ...data,
+    ...apiSingleton({ data }),
+    // ...localStorage(config.AUTH_TOKEN_KEY),
   };
 };

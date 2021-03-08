@@ -10,6 +10,7 @@ import {
   GARDEN,
   GARDEN_AREAS,
   // GARDEN_AREA_DETAIL,
+  NOTE_DETAIL,
   PLANTS,
 } from './config/routes';
 
@@ -25,6 +26,7 @@ const Home = lazy(() => import('./components/views/Home'));
 const Garden = lazy(() => import('./components/views/Garden'));
 const GardenAreas = lazy(() => import('./components/views/GardenAreas'));
 const Plants = lazy(() => import('./components/views/Plants'));
+const NoteDetail = lazy(() => import('./components/views/NoteDetail'));
 
 function App() {
   // eslint-disable-next-line no-unused-vars
@@ -55,6 +57,11 @@ function App() {
               exact
               path={PLANTS}
               component={Plants}
+            />
+            <PrivateRoute
+              exact
+              path={NOTE_DETAIL}
+              component={NoteDetail}
             />
           </Switch>
         </main>

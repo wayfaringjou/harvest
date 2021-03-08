@@ -62,9 +62,9 @@ const NotesCollection = ({
 
           return (
             <li key={item.id}>
-              <p>
+              <h4>
                 {item.title}
-              </p>
+              </h4>
               <p>Confirm delete:</p>
               {noteSubmitStatus.submitError && <p>There was an error</p>}
               <button
@@ -89,9 +89,9 @@ const NotesCollection = ({
           return (
             <li key={item.id}>
               <p>Edit info:</p>
-              <p>
+              <h4>
                 {item.title}
-              </p>
+              </h4>
               <AddNoteDialog
                 key={item.id}
                 noteData={item}
@@ -105,11 +105,11 @@ const NotesCollection = ({
 
         return (
           <li key={item.id}>
-            <p>
+            <h4>
               <Link to={`${NOTES}/${item.id}`}>
                 {item.title}
               </Link>
-            </p>
+            </h4>
             <button
               type="button"
               onClick={() => {

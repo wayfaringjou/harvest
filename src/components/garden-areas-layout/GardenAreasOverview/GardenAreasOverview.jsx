@@ -9,6 +9,7 @@ import useDialog from '../../../hooks/useDialog';
 
 const GardenAreasOverview = ({
   data,
+  garden_id,
   onAreaPost,
   areaSubmitStatus,
   onAreaUpdate,
@@ -63,6 +64,7 @@ const GardenAreasOverview = ({
         collection={(
           <GardenAreasCollection
             items={data}
+            garden_id={garden_id}
             filterString={collectionFilter}
             deleteControl={{ idToDelete, setIdToDelete }}
             editControl={{ idToEdit, setIdToEdit }}
@@ -84,6 +86,7 @@ const GardenAreasOverview = ({
 
 GardenAreasOverview.propTypes = {
   data: PropTypes.arrayOf(areaPropTypes),
+  garden_id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   onAreaPost: PropTypes.func,
   onAreaUpdate: PropTypes.func,
   onAreaDelete: PropTypes.func,
@@ -99,6 +102,7 @@ GardenAreasOverview.propTypes = {
 
 GardenAreasOverview.defaultProps = {
   data: [],
+  garden_id: '',
   onAreaPost: () => {},
   onAreaUpdate: () => {},
   onAreaDelete: () => {},

@@ -35,7 +35,6 @@ const AuthProvider = ({ children }) => {
   // isAuthenticated is a check if the user has a token in their storage
   const [isAuthenticated, setIsAuthenticated] = useState(Boolean(token.getItem()));
   // logedUser stores data parsed from token in storage
-  console.log(token.getItem());
   // eslint-disable-next-line no-unused-vars
   const [logedUser, setLogedUser] = useState(isAuthenticated
      && JSON.parse(window.atob(token.getItem().split('.')[1])));

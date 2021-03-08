@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
+import PropTypes from 'prop-types';
 import GardenAreasOverview from '../../garden-areas-layout/GardenAreasOverview/GardenAreasOverview';
 import useAPIRetrieve from '../../../hooks/useAPIRetrieve';
 import useAPISend from '../../../hooks/useAPISend';
 // import { fetchGardenAreas } from '../../../services/fakeAPI';
 import { gardenAreasCollection, gardenAreaSingleton } from '../../../services/resources';
 
-const areas = gardenAreasCollection();
-
-const GardenAreas = () => {
+const GardenAreas = ({ garden_id }) => {
+  const areas = gardenAreasCollection(garden_id);
   const [reload, setReload] = useState(false);
   const [request, setRequest] = useState(false);
   const [requestFunction, setRequestFunction] = useState(null);
@@ -71,6 +71,7 @@ const GardenAreas = () => {
     <>
       <GardenAreasOverview
         data={data}
+        garden_id={garden_id}
         onAreaPost={(e, newArea) => {
           handleAreaRequest(e, newArea, 'POST');
         }}
@@ -95,6 +96,14 @@ const GardenAreas = () => {
       />
     </>
   );
+};
+
+GardenAreas.propTypes = {
+  garden_id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+};
+
+GardenAreas.defaultProps = {
+  garden_id: '',
 };
 
 export default GardenAreas;
