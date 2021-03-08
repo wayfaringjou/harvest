@@ -2,18 +2,18 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import ElementOverview from '../../common/ElementOverview';
 import useDialog from '../../../hooks/useDialog';
-import PlantsCollection from '../PlantsCollection';
-import AddPlantDialog from '../AddPlantDialog';
-import SearchPlantDialog from '../SearchPlantDialog';
-import plantPropTypes from '../../../propTypes/plant';
+import NotesCollection from '../NotesCollection';
+import AddNoteDialog from '../AddNoteDialog';
+import SearchNoteDialog from '../SearchNoteDialog';
+import notePropTypes from '../../../propTypes/note';
 import submitStatusPropTypes from '../../../propTypes/submitStatus';
 
-const PlantsOverview = ({
+const NotesOverview = ({
   data,
-  onPlantPost,
-  plantSubmitStatus,
-  onPlantUpdate,
-  onPlantDelete,
+  onNotePost,
+  noteSubmitStatus,
+  onNoteUpdate,
+  onNoteDelete,
 }) => {
   const [collectionFilter, setCollectionFilter] = useState('');
   const [idToDelete, setIdToDelete] = useState('');
@@ -26,27 +26,27 @@ const PlantsOverview = ({
     closeDialog,
   } = useDialog();
 
-  const plantsElement = () => ({
-    id: 'plants-overview',
-    name: 'Your plants',
+  const notesElement = () => ({
+    id: 'notess-overview',
+    name: 'Notes',
     // collection: data,
     prompts: {
-      addPlant: {
+      addNote: {
         id: 1,
-        action: 'Add new plant',
-        desc: 'Add a representation of a plant in your garden',
-        dialogComponent: AddPlantDialog,
+        action: 'Add new note',
+        desc: 'Add a note for your garden, area or plant',
+        dialogComponent: AddNoteDialog,
         dialogProps: {
-          onPlantSubmit: onPlantPost,
-          plantSubmitStatus,
+          onNoteSubmit: onNotePost,
+          noteSubmitStatus,
           closeDialog,
         },
       },
-      filterPlantList: {
+      filterNoteList: {
         id: 2,
         action: 'Filter',
         desc: 'Enter a name to filter the list',
-        dialogComponent: SearchPlantDialog,
+        dialogComponent: SearchNoteDialog,
         dialogProps: {
           filter: collectionFilter,
           filterHandler: setCollectionFilter,
@@ -57,18 +57,18 @@ const PlantsOverview = ({
   });
 
   return (
-    <section id="plants-overview">
+    <section id="notes-overview">
       <ElementOverview
-        element={plantsElement()}
+        element={notesElement()}
         collection={(
-          <PlantsCollection
+          <NotesCollection
             items={data}
             filterString={collectionFilter}
             deleteControl={{ idToDelete, setIdToDelete }}
             editControl={{ idToEdit, setIdToEdit }}
-            onPlantUpdate={onPlantUpdate}
-            onPlantDelete={onPlantDelete}
-            plantSubmitStatus={plantSubmitStatus}
+            onNoteUpdate={onNoteUpdate}
+            onNoteDelete={onNoteDelete}
+            noteSubmitStatus={noteSubmitStatus}
           />
         )}
         dialogControls={{
@@ -82,23 +82,23 @@ const PlantsOverview = ({
   );
 };
 
-PlantsOverview.propTypes = {
-  data: PropTypes.arrayOf(plantPropTypes),
-  onPlantPost: PropTypes.func,
-  onPlantUpdate: PropTypes.func,
-  onPlantDelete: PropTypes.func,
-  plantSubmitStatus: PropTypes.shape({
+NotesOverview.propTypes = {
+  data: PropTypes.arrayOf(notePropTypes),
+  onNotePost: PropTypes.func,
+  onNoteUpdate: PropTypes.func,
+  onNoteDelete: PropTypes.func,
+  noteSubmitStatus: PropTypes.shape({
     ...submitStatusPropTypes,
-    submitResponse: plantPropTypes,
+    submitResponse: notePropTypes,
   }),
 };
 
-PlantsOverview.defaultProps = {
+NotesOverview.defaultProps = {
   data: [],
-  onPlantPost: () => {},
-  onPlantUpdate: () => {},
-  onPlantDelete: () => {},
-  plantSubmitStatus: {
+  onNotePost: () => {},
+  onNoteUpdate: () => {},
+  onNoteDelete: () => {},
+  noteSubmitStatus: {
     isSubmitting: false,
     submitError: null,
     submitSuccess: false,
@@ -108,4 +108,4 @@ PlantsOverview.defaultProps = {
   },
 };
 
-export default PlantsOverview;
+export default NotesOverview;

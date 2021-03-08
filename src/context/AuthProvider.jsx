@@ -1,4 +1,4 @@
-import React, { createContext, useState } from 'react';
+import React, { createContext, useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 // import { useHistory } from 'react-router-dom';
 import config from '../config/api';
@@ -16,9 +16,6 @@ const AuthProvider = ({ children }) => {
   const [password, setPassword] = useState('');
   const [authRequest, setAuthRequest] = useState(false);
   const [authFunction, setAuthFunction] = useState(null);
-  // isAuthenticated is a check if the user has a token in their storage
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-
   // Create token with storage access and credential methods
   const token = {
     ...storageAccess(config.AUTH_TOKEN_KEY),
@@ -35,6 +32,23 @@ const AuthProvider = ({ children }) => {
     isSubmitting, submitSuccess, submitError, submitResponse,
   } = requestState;
 
+  // isAuthenticated is a check if the user has a token in their storage
+  const [isAuthenticated, setIsAuthenticated] = useState(Boolean(token.getItem()));
+  // logedUser stores data parsed from token in storage
+  console.log(token.getItem());
+  // eslint-disable-next-line no-unused-vars
+  const [logedUser, setLogedUser] = useState(isAuthenticated
+     && JSON.parse(window.atob(token.getItem().split('.')[1])));
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      setLogedUser(
+        JSON.parse(window.atob(token.getItem().split('.')[1])),
+      );
+    }
+  },
+  [isAuthenticated]);
+
   // login is storing a token in local storage
   const login = (e) => {
     e.preventDefault();
@@ -48,6 +62,7 @@ const AuthProvider = ({ children }) => {
     // e.preventDefault();
     token.removeItem();
     setIsAuthenticated(false);
+    setLogedUser(null);
     // return history.push(HOME);
   };
 
@@ -85,6 +100,7 @@ const AuthProvider = ({ children }) => {
     setUserName,
     setPassword,
     addNewUser,
+    logedUser,
   };
 
   return (

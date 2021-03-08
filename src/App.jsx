@@ -18,7 +18,6 @@ import './App.css';
 
 // Components
 import PrivateRoute from './components/routes/PrivateRoute';
-import AuthProvider from './context/AuthProvider';
 import PublicRoute from './components/routes/PublicRoute';
 import Header from './components/common/Header';
 
@@ -32,36 +31,34 @@ function App() {
   const [errorMsg, setErrorMsg] = useState(null);
   return (
     <Suspense fallback="Loading...">
-      <AuthProvider>
-        <div className="App">
-          <Header />
-          {errorMsg && <aside>{errorMsg}</aside>}
-          <main className="app-main">
-            <Switch>
-              <PublicRoute
-                exact
-                path={HOME}
-                component={Home}
-              />
-              <PrivateRoute
-                exact
-                path={GARDEN}
-                component={Garden}
-              />
-              <PrivateRoute
-                exact
-                path={GARDEN_AREAS}
-                component={GardenAreas}
-              />
-              <PrivateRoute
-                exact
-                path={PLANTS}
-                component={Plants}
-              />
-            </Switch>
-          </main>
-        </div>
-      </AuthProvider>
+      <div className="App">
+        <Header />
+        {errorMsg && <aside>{errorMsg}</aside>}
+        <main className="app-main">
+          <Switch>
+            <PublicRoute
+              exact
+              path={HOME}
+              component={Home}
+            />
+            <PrivateRoute
+              exact
+              path={GARDEN}
+              component={Garden}
+            />
+            <PrivateRoute
+              exact
+              path={GARDEN_AREAS}
+              component={GardenAreas}
+            />
+            <PrivateRoute
+              exact
+              path={PLANTS}
+              component={Plants}
+            />
+          </Switch>
+        </main>
+      </div>
     </Suspense>
   );
 }
