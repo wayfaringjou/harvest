@@ -6,12 +6,17 @@ import { gardenAreaSingleton } from '../../../services/resources';
 import useAPIRetrieve from '../../../hooks/useAPIRetrieve';
 import useAPISend from '../../../hooks/useAPISend';
 import usePrevious from '../../../hooks/usePrevious';
+import Plants from '../Plants';
+import useGardenContext from '../../../hooks/useGardenContext';
+import AreaPlantsCollection from '../../garden-areas-layout/AreaPlantsCollection';
 
 const area = gardenAreaSingleton();
 const GardenAreaDetail = ({ match: { params: { areaId } } }) => {
   const [reload, setReload] = useState(false);
   const [request, setRequest] = useState(false);
   const [requestFunction, setRequestFunction] = useState(null);
+
+  const { gardenData } = useGardenContext();
 
   const {
     data,
@@ -73,6 +78,7 @@ const GardenAreaDetail = ({ match: { params: { areaId } } }) => {
           </label>
         </fieldset>
       </form>
+      <AreaPlantsCollection garden_id={gardenData.current.id} area_id={areaId} />
     </article>
   );
 };
