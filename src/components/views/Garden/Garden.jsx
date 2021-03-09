@@ -1,23 +1,13 @@
-import React, { useRef } from 'react';
+import React from 'react';
 import GardenAreas from '../GardenAreas';
 import Notes from '../Notes/Notes';
 import Plants from '../Plants';
-import { gardenSingleton } from '../../../services/resources';
-import useAPIRetrieve from '../../../hooks/useAPIRetrieve';
+import useGardenContext from '../../../hooks/useGardenContext';
 
-const garden = gardenSingleton();
 const Garden = () => {
   const {
-    data,
-    isRetrieving,
-    isFailed,
-    error,
-  } = useAPIRetrieve(garden.getFromPath);
-
-  const garden_id = useRef(null);
-  if (data) {
-    garden_id.current = data[0].id;
-  }
+    gardenData, isRetrieving, isFailed, error,
+  } = useGardenContext();
 
   if (isRetrieving) return <p>Loading</p>;
 
@@ -32,9 +22,9 @@ const Garden = () => {
 
   return (
     <section className="garden-overview">
-      <GardenAreas garden_id={garden_id.current} />
-      <Plants garden_id={garden_id.current} />
-      <Notes />
+      <GardenAreas garden_id={gardenData.current.id} />
+      <Plants garden_id={gardenData.current.id} />
+      <Notes garden_id={gardenData.current.id} />
     </section>
   );
 };

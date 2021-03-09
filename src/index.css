@@ -87,3 +87,8 @@ hr {
 .planted-on-flair {
   background-color: #cfcfcf;
 }
+
+input, textarea {
+  border: 0;
+  border-bottom: medium solid black;
+}

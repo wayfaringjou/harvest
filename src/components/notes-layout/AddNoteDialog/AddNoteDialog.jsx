@@ -9,7 +9,7 @@ const AddNoteDialog = ({
   closeDialog,
   noteData,
 }) => {
-  const [newNote, setNewNote] = useState(noteData);
+  const [newNote, setNewNote] = useState({ ...noteData });
 
   const lastStatus = usePrevious(noteSubmitStatus.isSubmitting);
 
@@ -85,7 +85,12 @@ AddNoteDialog.defaultProps = {
   closeDialog: () => {},
   noteData: {
     id: '',
-    name: '',
+    title: '',
+    user_id: '',
+    garden_id: '',
+    area_id: '',
+    plant_id: '',
+    content: '',
   },
 };
 export default AddNoteDialog;

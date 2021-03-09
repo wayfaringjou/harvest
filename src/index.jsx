@@ -5,12 +5,15 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import AuthProvider from './context/AuthProvider';
+import GardenProvider from './context/GardenProvider';
 
 ReactDOM.render(
   <React.StrictMode>
     <BrowserRouter>
       <AuthProvider>
-        <App />
+        <GardenProvider>
+          <App />
+        </GardenProvider>
       </AuthProvider>
     </BrowserRouter>
   </React.StrictMode>,

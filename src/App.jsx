@@ -1,5 +1,7 @@
 // React modules
-import React, { useState, lazy, Suspense } from 'react';
+import React, {
+  useState, lazy, Suspense,
+} from 'react';
 import { Switch } from 'react-router-dom';
 
 // Handlers and services
@@ -22,7 +24,6 @@ import './App.css';
 import PrivateRoute from './components/routes/PrivateRoute';
 import PublicRoute from './components/routes/PublicRoute';
 import Header from './components/common/Header';
-import PlantDetail from './components/views/PlantDetail';
 
 const Home = lazy(() => import('./components/views/Home'));
 const Garden = lazy(() => import('./components/views/Garden'));
@@ -30,10 +31,12 @@ const GardenAreas = lazy(() => import('./components/views/GardenAreas'));
 const Plants = lazy(() => import('./components/views/Plants'));
 const NoteDetail = lazy(() => import('./components/views/NoteDetail'));
 const GardenAreaDetail = lazy(() => import('./components/views/GardenAreaDetail/GardenAreaDetail'));
+const PlantDetail = lazy(() => import('./components/views/PlantDetail'));
 
 function App() {
   // eslint-disable-next-line no-unused-vars
   const [errorMsg, setErrorMsg] = useState(null);
+
   return (
     <Suspense fallback="Loading...">
       <div className="App">

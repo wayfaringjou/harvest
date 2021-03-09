@@ -7,6 +7,7 @@ import AddNoteDialog from '../AddNoteDialog';
 import SearchNoteDialog from '../SearchNoteDialog';
 import notePropTypes from '../../../propTypes/note';
 import submitStatusPropTypes from '../../../propTypes/submitStatus';
+import useGardenContext from '../../../hooks/useGardenContext';
 
 const NotesOverview = ({
   data,
@@ -19,6 +20,8 @@ const NotesOverview = ({
   const [idToDelete, setIdToDelete] = useState('');
   const [idToEdit, setIdToEdit] = useState('');
 
+  const { gardenData } = useGardenContext();
+
   const {
     isDialogOpen,
     toggleDialog,
@@ -27,7 +30,7 @@ const NotesOverview = ({
   } = useDialog();
 
   const notesElement = () => ({
-    id: 'notess-overview',
+    id: 'notes-overview',
     name: 'Notes',
     // collection: data,
     prompts: {
@@ -40,6 +43,15 @@ const NotesOverview = ({
           onNoteSubmit: onNotePost,
           noteSubmitStatus,
           closeDialog,
+          noteData: {
+            id: '',
+            title: '',
+            user_id: gardenData.current.user_id,
+            garden_id: gardenData.current.id,
+            area_id: '',
+            plant_id: '',
+            content: '',
+          },
         },
       },
       filterNoteList: {

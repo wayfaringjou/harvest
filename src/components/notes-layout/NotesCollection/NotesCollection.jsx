@@ -1,7 +1,6 @@
 import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import AddNoteDialog from '../AddNoteDialog';
 import notePropTypes from '../../../propTypes/note';
 import usePrevious from '../../../hooks/usePrevious';
 import { NOTES } from '../../../config/routes';
@@ -10,8 +9,6 @@ const NotesCollection = ({
   items,
   filterString,
   deleteControl,
-  editControl,
-  onNoteUpdate,
   onNoteDelete,
   noteSubmitStatus,
 }) => {
@@ -85,24 +82,6 @@ const NotesCollection = ({
           );
         }
 
-        if (item.id === editControl.idToEdit) {
-          return (
-            <li key={item.id}>
-              <p>Edit info:</p>
-              <h4>
-                {item.title}
-              </h4>
-              <AddNoteDialog
-                key={item.id}
-                noteData={item}
-                closeDialog={() => editControl.setIdToEdit('')}
-                onNoteSubmit={onNoteUpdate}
-                noteSubmitStatus={noteSubmitStatus}
-              />
-            </li>
-          );
-        }
-
         return (
           <li key={item.id}>
             <h4>
@@ -114,19 +93,9 @@ const NotesCollection = ({
               type="button"
               onClick={() => {
                 deleteControl.setIdToDelete(item.id);
-                editControl.setIdToEdit('');
               }}
             >
               Delete
-            </button>
-            <button
-              type="button"
-              onClick={() => {
-                editControl.setIdToEdit(item.id);
-                deleteControl.setIdToDelete('');
-              }}
-            >
-              Edit
             </button>
           </li>
         );
@@ -143,11 +112,6 @@ NotesCollection.propTypes = {
     idToDelete: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   }),
   onNoteDelete: PropTypes.func,
-  editControl: PropTypes.shape({
-    setIdToEdit: PropTypes.func,
-    idToEdit: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-  }),
-  onNoteUpdate: PropTypes.func,
   noteSubmitStatus: PropTypes.shape({
     isSubmitting: PropTypes.bool,
     submitError: PropTypes.string,
@@ -161,11 +125,6 @@ NotesCollection.propTypes = {
 NotesCollection.defaultProps = {
   items: [],
   filterString: '',
-  editControl: {
-    setIdToEdit: () => {},
-    idToEdit: '',
-  },
-  onNoteUpdate: () => {},
   deleteControl: {
     setIdToDelete: () => {},
     idToDelete: '',
