@@ -9,9 +9,10 @@ import {
   HOME,
   GARDEN,
   GARDEN_AREAS,
-  // GARDEN_AREA_DETAIL,
   NOTE_DETAIL,
   PLANTS,
+  GARDEN_AREA_DETAIL,
+  PLANT_DETAIL,
 } from './config/routes';
 
 // CSS
@@ -21,12 +22,14 @@ import './App.css';
 import PrivateRoute from './components/routes/PrivateRoute';
 import PublicRoute from './components/routes/PublicRoute';
 import Header from './components/common/Header';
+import PlantDetail from './components/views/PlantDetail';
 
 const Home = lazy(() => import('./components/views/Home'));
 const Garden = lazy(() => import('./components/views/Garden'));
 const GardenAreas = lazy(() => import('./components/views/GardenAreas'));
 const Plants = lazy(() => import('./components/views/Plants'));
 const NoteDetail = lazy(() => import('./components/views/NoteDetail'));
+const GardenAreaDetail = lazy(() => import('./components/views/GardenAreaDetail/GardenAreaDetail'));
 
 function App() {
   // eslint-disable-next-line no-unused-vars
@@ -55,8 +58,18 @@ function App() {
             />
             <PrivateRoute
               exact
+              path={GARDEN_AREA_DETAIL}
+              component={GardenAreaDetail}
+            />
+            <PrivateRoute
+              exact
               path={PLANTS}
               component={Plants}
+            />
+            <PrivateRoute
+              exact
+              path={PLANT_DETAIL}
+              component={PlantDetail}
             />
             <PrivateRoute
               exact

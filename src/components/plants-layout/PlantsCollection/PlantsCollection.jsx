@@ -5,9 +5,11 @@ import AddPlantDialog from '../AddPlantDialog';
 import plantPropTypes from '../../../propTypes/plant';
 import usePrevious from '../../../hooks/usePrevious';
 import { PLANTS } from '../../../config/routes';
+import AreaFlair from '../AreaFlair';
 
 const PlantsCollection = ({
   items,
+  garden_id,
   filterString,
   deleteControl,
   editControl,
@@ -110,6 +112,8 @@ const PlantsCollection = ({
                 {item.name}
               </Link>
             </h4>
+            <AreaFlair garden_id={garden_id} area_id={item.area_id} />
+            <hr />
             <button
               type="button"
               onClick={() => {
@@ -137,6 +141,7 @@ const PlantsCollection = ({
 
 PlantsCollection.propTypes = {
   items: PropTypes.arrayOf(plantPropTypes),
+  garden_id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   filterString: PropTypes.string,
   deleteControl: PropTypes.shape({
     setIdToDelete: PropTypes.func,
@@ -160,6 +165,7 @@ PlantsCollection.propTypes = {
 
 PlantsCollection.defaultProps = {
   items: [],
+  garden_id: '',
   filterString: '',
   editControl: {
     setIdToEdit: () => {},

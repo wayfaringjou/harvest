@@ -2,13 +2,13 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { useHistory } from 'react-router-dom';
-import { noteSingleton } from '../../../services/resources';
+import { gardenAreaSingleton } from '../../../services/resources';
 import useAPIRetrieve from '../../../hooks/useAPIRetrieve';
 import useAPISend from '../../../hooks/useAPISend';
 import usePrevious from '../../../hooks/usePrevious';
 
-const note = noteSingleton();
-const NoteDetail = ({ match: { params: { noteId } } }) => {
+const area = gardenAreaSingleton();
+const GardenAreaDetail = ({ match: { params: { areaId } } }) => {
   const [reload, setReload] = useState(false);
   const [request, setRequest] = useState(false);
   const [requestFunction, setRequestFunction] = useState(null);
@@ -18,7 +18,7 @@ const NoteDetail = ({ match: { params: { noteId } } }) => {
     isRetrieving,
     isFailed,
     error,
-  } = useAPIRetrieve(() => note.getById(noteId), reload);
+  } = useAPIRetrieve(() => area.getById(areaId), reload);
 
   const {
     requestState,
@@ -32,14 +32,14 @@ const NoteDetail = ({ match: { params: { noteId } } }) => {
     submitResponse,
   } = requestState;
 
-  const [noteData, setNoteData] = useState({ title: '', content: '' });
+  const [areaData, setAreaData] = useState({ name: '', length_cm: '', width_cm: '' });
   const history = useHistory();
 
   const lastRetrieveStatus = usePrevious(isRetrieving);
 
   useEffect(() => {
     if (lastRetrieveStatus === true && isRetrieving === false && isFailed === false) {
-      setNoteData(data);
+      setAreaData(data);
     }
   }, [isRetrieving, isSubmitting]);
 
@@ -54,29 +54,21 @@ const NoteDetail = ({ match: { params: { noteId } } }) => {
     );
   }
   return (
-    <article className="note">
+    <article className="area">
       <form>
         <button type="button" onClick={() => history.goBack()}>Back</button>
         <fieldset>
           <legend>
             <h2>
-              Note
+              Area
             </h2>
           </legend>
-          <label htmlFor="note-title">
-            <p>Note title:</p>
+          <label htmlFor="area-title">
+            <p>Area name:</p>
             <input
               type="text"
-              value={noteData.title}
-              onChange={({ target: { value } }) => setNoteData({ ...noteData, title: value })}
-            />
-          </label>
-          <label htmlFor="note-content">
-            <p>Note content:</p>
-            <textarea
-              type="text"
-              value={noteData.content}
-              onChange={({ target: { value } }) => setNoteData({ ...noteData, content: value })}
+              value={areaData.name}
+              onChange={({ target: { value } }) => setAreaData({ ...areaData, title: value })}
             />
           </label>
         </fieldset>
@@ -85,11 +77,11 @@ const NoteDetail = ({ match: { params: { noteId } } }) => {
   );
 };
 
-NoteDetail.propTypes = {
+GardenAreaDetail.propTypes = {
   match: PropTypes.objectOf(PropTypes.any),
 };
 
-NoteDetail.defaultProps = {
+GardenAreaDetail.defaultProps = {
   match: {},
 };
-export default NoteDetail;
+export default GardenAreaDetail;

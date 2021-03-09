@@ -10,6 +10,7 @@ import submitStatusPropTypes from '../../../propTypes/submitStatus';
 
 const PlantsOverview = ({
   data,
+  garden_id,
   onPlantPost,
   plantSubmitStatus,
   onPlantUpdate,
@@ -63,6 +64,7 @@ const PlantsOverview = ({
         collection={(
           <PlantsCollection
             items={data}
+            garden_id={garden_id}
             filterString={collectionFilter}
             deleteControl={{ idToDelete, setIdToDelete }}
             editControl={{ idToEdit, setIdToEdit }}
@@ -84,6 +86,7 @@ const PlantsOverview = ({
 
 PlantsOverview.propTypes = {
   data: PropTypes.arrayOf(plantPropTypes),
+  garden_id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   onPlantPost: PropTypes.func,
   onPlantUpdate: PropTypes.func,
   onPlantDelete: PropTypes.func,
@@ -95,6 +98,7 @@ PlantsOverview.propTypes = {
 
 PlantsOverview.defaultProps = {
   data: [],
+  garden_id: '',
   onPlantPost: () => {},
   onPlantUpdate: () => {},
   onPlantDelete: () => {},

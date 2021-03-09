@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 /* eslint camelcase: "off" */
 import { apiCollection, apiSingleton } from './api-methods';
 import config from '../config/api';
@@ -13,8 +14,13 @@ const gardenAreasPath = (gardenId) => `${config.API_BASEPATH}/gardens/${gardenId
 const plantsPath = `${config.API_BASEPATH}/plants`;
 const areasPath = `${config.API_BASEPATH}/areas`;
 // Notes and gardens are from a user
-const notesPath = `${config.API_BASEPATH}/users/${ls.decodeUserData().user_id}/garden/notes`;
-const userGardensPath = `${config.API_BASEPATH}/users/${ls.decodeUserData().user_id}/gardens`;
+let notesPath = '';
+let userGardensPath = '';
+
+if (ls.getItem()) {
+  notesPath = `${config.API_BASEPATH}/users/${ls.decodeUserData().user_id}/garden/notes`;
+  userGardensPath = `${config.API_BASEPATH}/users/${ls.decodeUserData().user_id}/gardens`;
+}
 
 // Factories for data resources
 // Garden areas

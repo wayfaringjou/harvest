@@ -72,3 +72,18 @@ background-color: #cfcfcf;
 button {
   margin: 8px;
 }
+
+
+textarea {
+  width: 100%;
+  height: 200px;
+  overflow-y: auto;
+}
+
+hr {
+  border: solid thin #cfcfcf;
+}
+
+.planted-on-flair {
+  background-color: #cfcfcf;
+}

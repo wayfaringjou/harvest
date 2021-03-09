@@ -70,6 +70,7 @@ const Plants = ({ garden_id }) => {
   return (
     <PlantsOverview
       data={data}
+      garden_id={garden_id}
       onPlantPost={(e, newPlant) => {
         handlePlantRequest(e, newPlant, 'POST');
       }}
