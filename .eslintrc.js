@@ -22,5 +22,7 @@ module.exports = {
     'no-underscore-dangle': 'off',
     camelcase: 'off',
     'react/jsx-props-no-spreading': 'off',
+    'no-unused-vars': 'warn',
+    '@typescript-eslint/camelcase': 'off',
   },
 };

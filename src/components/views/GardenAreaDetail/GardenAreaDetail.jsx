@@ -9,6 +9,7 @@ import usePrevious from '../../../hooks/usePrevious';
 import Plants from '../Plants';
 import useGardenContext from '../../../hooks/useGardenContext';
 import AreaPlantsCollection from '../../garden-areas-layout/AreaPlantsCollection';
+import { fetchGardenAreas } from '../../../services/fakeAPI';
 
 const area = gardenAreaSingleton();
 const GardenAreaDetail = ({ match: { params: { areaId } } }) => {
@@ -23,7 +24,8 @@ const GardenAreaDetail = ({ match: { params: { areaId } } }) => {
     isRetrieving,
     isFailed,
     error,
-  } = useAPIRetrieve(() => area.getById(areaId), reload);
+  // } = useAPIRetrieve(() => area.getById(areaId), reload);
+  } = useAPIRetrieve(() => fetchGardenAreas({ area_id: areaId }), reload);
 
   const {
     requestState,

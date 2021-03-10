@@ -6,6 +6,7 @@ import { plantSingleton } from '../../../services/resources';
 import useAPIRetrieve from '../../../hooks/useAPIRetrieve';
 import useAPISend from '../../../hooks/useAPISend';
 import usePrevious from '../../../hooks/usePrevious';
+import { fetchPlants } from '../../../services/fakeAPI';
 
 const plant = plantSingleton();
 const PlantDetail = ({ match: { params: { plantId } } }) => {
@@ -18,7 +19,8 @@ const PlantDetail = ({ match: { params: { plantId } } }) => {
     isRetrieving,
     isFailed,
     error,
-  } = useAPIRetrieve(() => plant.getById(plantId), reload);
+  // } = useAPIRetrieve(() => plant.getById(plantId), reload);
+  } = useAPIRetrieve(() => fetchPlants({ plant_id: plantId }), reload);
 
   const {
     requestState,

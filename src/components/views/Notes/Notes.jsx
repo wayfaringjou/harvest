@@ -1,8 +1,10 @@
+/* eslint-disable no-unused-vars */
 import React, { useState } from 'react';
 import NotesOverview from '../../notes-layout/NotesOverview';
 import useAPIRetrieve from '../../../hooks/useAPIRetrieve';
 import useAPISend from '../../../hooks/useAPISend';
 import { notesCollection, noteSingleton } from '../../../services/resources';
+import { fetchNotes } from '../../../services/fakeAPI';
 
 const notes = notesCollection();
 
@@ -16,7 +18,8 @@ const Notes = () => {
     isRetrieving,
     isFailed,
     error,
-  } = useAPIRetrieve(notes.getAll, reload);
+  // } = useAPIRetrieve(notes.getAll, reload);
+  } = useAPIRetrieve(fetchNotes, reload);
 
   const {
     requestState,

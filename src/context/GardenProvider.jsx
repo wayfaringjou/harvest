@@ -1,9 +1,11 @@
+/* eslint-disable no-unused-vars */
 import React, { createContext, useRef } from 'react';
 import PropTypes from 'prop-types';
 import useAuthContext from '../hooks/useAuthContext';
 
 import useAPIRetrieve from '../hooks/useAPIRetrieve';
 import { gardenSingleton } from '../services/resources';
+import { fetchGarden } from '../services/fakeAPI';
 
 export const GardenContext = createContext();
 
@@ -18,7 +20,9 @@ const GardenProvider = ({ children }) => {
     isRetrieving,
     isFailed,
     error,
-  } = useAPIRetrieve(garden.getFromPath, isAuthenticated);
+  // } = useAPIRetrieve(garden.getFromPath, isAuthenticated);
+  } = useAPIRetrieve(fetchGarden, isAuthenticated);
+
   if (isAuthenticated && (!gardenData.current)) {
     if (data) {
       // eslint-disable-next-line prefer-destructuring

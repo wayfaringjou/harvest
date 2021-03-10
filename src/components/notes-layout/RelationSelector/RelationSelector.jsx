@@ -1,18 +1,22 @@
+/* eslint-disable no-unused-vars */
 import React from 'react';
 import PropTypes from 'prop-types';
 import useAPIRetrieve from '../../../hooks/useAPIRetrieve';
 import useGardenContext from '../../../hooks/useGardenContext';
 import { gardenAreasCollection, plantsCollection } from '../../../services/resources';
+import { fetchGardenAreas, fetchPlants } from '../../../services/fakeAPI';
 
 const RelationSelector = ({ type, onSelect, selection }) => {
   const { gardenData } = useGardenContext();
   let options;
   switch (type) {
     case 'Area':
-      options = useAPIRetrieve(gardenAreasCollection(gardenData.current.id).getAll);
+      // options = useAPIRetrieve(gardenAreasCollection(gardenData.current.id).getAll);
+      options = useAPIRetrieve(fetchPlants);
       break;
     case 'Plant':
-      options = useAPIRetrieve(plantsCollection(gardenData.current.id).getAll);
+      // options = useAPIRetrieve(plantsCollection(gardenData.current.id).getAll);
+      options = useAPIRetrieve(fetchPlants);
       break;
     default: throw new Error('Invalid type');
   }

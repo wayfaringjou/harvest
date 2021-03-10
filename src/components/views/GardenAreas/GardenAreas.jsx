@@ -1,9 +1,10 @@
+/* eslint-disable no-unused-vars */
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import GardenAreasOverview from '../../garden-areas-layout/GardenAreasOverview/GardenAreasOverview';
 import useAPIRetrieve from '../../../hooks/useAPIRetrieve';
 import useAPISend from '../../../hooks/useAPISend';
-// import { fetchGardenAreas } from '../../../services/fakeAPI';
+import { fetchGardenAreas } from '../../../services/fakeAPI';
 import { gardenAreasCollection, gardenAreaSingleton } from '../../../services/resources';
 
 const GardenAreas = ({ garden_id }) => {
@@ -18,8 +19,8 @@ const GardenAreas = ({ garden_id }) => {
     isFailed,
     // isSuccess,
     error,
-  // } = useAPIResource(fetchGardenAreas);
-  } = useAPIRetrieve(areas.getAll, reload);
+  // } = useAPIRetrieve(areas.getAll, reload);
+  } = useAPIRetrieve(fetchGardenAreas, reload);
 
   const {
     requestState,

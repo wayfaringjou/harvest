@@ -1,11 +1,11 @@
+/* eslint-disable no-unused-vars */
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import PlantsOverview from '../../plants-layout/PlantsOverview';
 import useAPIRetrieve from '../../../hooks/useAPIRetrieve';
 import useAPISend from '../../../hooks/useAPISend';
 import { plantsCollection, plantSingleton } from '../../../services/resources';
-
-// import { fetchPlants } from '../../../services/fakeAPI';
+import { fetchPlants } from '../../../services/fakeAPI';
 
 // console.log(plants.searchPlantsData('strawberry'));
 
@@ -20,7 +20,8 @@ const Plants = ({ garden_id }) => {
     isRetrieving,
     isFailed,
     error,
-  } = useAPIRetrieve(plants.getAll, reload);
+  // } = useAPIRetrieve(plants.getAll, reload);
+  } = useAPIRetrieve(fetchPlants, reload);
 
   const {
     requestState,

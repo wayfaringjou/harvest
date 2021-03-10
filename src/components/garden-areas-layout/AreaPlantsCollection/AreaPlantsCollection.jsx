@@ -1,7 +1,9 @@
+/* eslint-disable no-unused-vars */
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { plantsCollection } from '../../../services/resources';
 import useAPIRetrieve from '../../../hooks/useAPIRetrieve';
+import { fetchPlants } from '../../../services/fakeAPI';
 
 const AreaPlantsCollection = ({ garden_id, area_id }) => {
   const plants = plantsCollection(garden_id);
@@ -13,7 +15,8 @@ const AreaPlantsCollection = ({ garden_id, area_id }) => {
     isRetrieving,
     isFailed,
     error,
-  } = useAPIRetrieve(() => plants.getWithQuery(`area_id=${area_id}`));
+  // } = useAPIRetrieve(() => plants.getWithQuery(`area_id=${area_id}`));
+  } = useAPIRetrieve(() => fetchPlants({ area_id }));
 
   if (isRetrieving) return <p>Loading</p>;
 

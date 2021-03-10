@@ -8,6 +8,7 @@ import useAPISend from '../../../hooks/useAPISend';
 import usePrevious from '../../../hooks/usePrevious';
 import useGardenContext from '../../../hooks/useGardenContext';
 import RelationSelector from '../../notes-layout/RelationSelector';
+import { fetchNotes } from '../../../services/fakeAPI';
 
 const note = noteSingleton();
 
@@ -24,7 +25,8 @@ const NoteDetail = ({ match: { params: { noteId } } }) => {
     isRetrieving,
     isFailed,
     error,
-  } = useAPIRetrieve(() => note.getById(noteId), reload);
+  // } = useAPIRetrieve(() => note.getById(noteId), reload);
+  } = useAPIRetrieve(() => fetchNotes({ note_id: noteId }), reload);
 
   const {
     requestState,

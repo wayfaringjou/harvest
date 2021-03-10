@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import React, { createContext, useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 // import { useHistory } from 'react-router-dom';
@@ -6,6 +7,7 @@ import config from '../config/api';
 import storageAccess from '../services/localStorage-methods';
 import credentials from '../services/api-auth-service';
 import useAPISend from '../hooks/useAPISend';
+import { fetchUser } from '../services/fakeAPI';
 
 // Create a new context with no default values
 export const AuthContext = createContext();
@@ -27,6 +29,7 @@ const AuthProvider = ({ children }) => {
     requestState,
     setRequestState,
   } = useAPISend(authFunction, authRequest);
+  // } = useAPISend(, authRequest);
 
   const {
     isSubmitting, submitSuccess, submitError, submitResponse,
@@ -51,7 +54,8 @@ const AuthProvider = ({ children }) => {
   // login is storing a token in local storage
   const login = (e) => {
     e.preventDefault();
-    setAuthFunction({ request: token.getToken });
+    // setAuthFunction({ request: token.getToken });
+    setAuthFunction({ request: fetchUser });
     setAuthRequest(!authRequest);
   };
 
@@ -68,7 +72,8 @@ const AuthProvider = ({ children }) => {
   // Add user
   const addNewUser = (e) => {
     e.preventDefault();
-    setAuthFunction({ request: token.postNewUser });
+    // setAuthFunction({ request: token.postNewUser });
+    setAuthFunction({ request: fetchUser });
     setAuthRequest(!authRequest);
   };
 
@@ -86,7 +91,8 @@ const AuthProvider = ({ children }) => {
       });
     } else if (submitResponse.user_name) {
       setRequestState({ ...requestState, submitSuccess: false, submitError: null });
-      setAuthFunction({ request: token.getToken });
+      // setAuthFunction({ request: token.getToken });
+      setAuthFunction({ request: fetchUser });
       setAuthRequest(!authRequest);
     }
   }
