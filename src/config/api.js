@@ -3,6 +3,7 @@ const config = {
   AUTH_BASEPATH: 'http://localhost:5000/auth',
   API_USERPATH: (logedUser) => `/users/${logedUser.user_id}`,
   AUTH_TOKEN_KEY: 'harvest-token',
+  TREFLE_KEY: 'trefle-token',
 };
 
 export default config;

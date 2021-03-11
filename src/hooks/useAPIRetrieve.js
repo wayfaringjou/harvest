@@ -3,17 +3,23 @@
 
 import { useEffect, useState } from 'react';
 
-export default function useAPIRetrieve(requestFunction, query) {
+export default function useAPIRetrieve(requestFunction, query, preventFetch = false) {
   const [resourceState, setResourceState] = useState({
-    isRetrieving: true,
+    isRetrieving: (!preventFetch),
     isSuccess: false,
     isFailed: false,
     data: null,
     error: null,
   });
+
   useEffect(async () => {
     let componentUnmounted = false;
+    if (preventFetch) {
+      setResourceState({ ...resourceState, isRetrieving: false });
+      return;
+    }
     try {
+      setResourceState({ ...resourceState, isRetrieving: true });
       const { data, error } = await requestFunction();
       if (error) throw new Error(data);
       if (componentUnmounted) return;

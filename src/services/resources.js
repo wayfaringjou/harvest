@@ -4,6 +4,7 @@ import { apiCollection, apiSingleton } from './api-methods';
 import config from '../config/api';
 import { trefleCollection } from './trefle-methods';
 import localStorage from './localStorage-methods';
+import { gbifCollection, gbifSingleton } from './gbif-methods';
 
 const ls = localStorage(config.AUTH_TOKEN_KEY);
 
@@ -49,6 +50,7 @@ export const gardenAreaSingleton = ({
 export const plantsCollection = (garden_id) => ({
   ...apiCollection({ path: gardenPlantsPath(garden_id) }),
   ...trefleCollection(),
+  ...gbifCollection(),
 });
 
 export const plantSingleton = ({
@@ -56,14 +58,16 @@ export const plantSingleton = ({
   name = '',
   garden_id = '',
   area_id = '',
+  gbifSpeciesKey = '',
 } = {}) => {
   const data = {
-    id, name, garden_id, area_id, path: plantsPath,
+    id, name, garden_id, area_id, path: plantsPath, gbifSpeciesKey,
   };
 
   return {
     ...data,
     ...apiSingleton({ data }),
+    ...gbifSingleton({ speciesKey: gbifSpeciesKey }),
   };
 };
 

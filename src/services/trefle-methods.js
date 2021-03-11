@@ -1,5 +1,5 @@
-// const token = process.env.REACT_APP_TREFLE_TOKEN;
 import config from '../config/api';
+import localStorage from './localStorage-methods';
 
 const apiRequest = async (url = '', options = {}) => {
   try {
@@ -11,14 +11,30 @@ const apiRequest = async (url = '', options = {}) => {
     return { data: error.message, error: true };
   }
 };
+const ls = localStorage(config.TREFLE_KEY);
 
+// eslint-disable-next-line consistent-return
 const trefleToken = async () => {
+  // Check if token has been stored
+  if (ls.getItem()) {
+    const tokenExpiration = ls.decodeUserData().exp;
+    const now = Math.floor(Date.now() / 1000);
+    // Check that token is still valid
+    const validity = ((tokenExpiration - now) > 0);
+    if (validity) {
+      // If stored and hasn't expired, return token from storage
+      return ls.getItem();
+    }
+  }
+  // If token isn't stored or is expired fetch a new one
   const res = await apiRequest(
     `${config.AUTH_BASEPATH}/trefle`,
     { method: 'Get' },
   );
-  console.log(res);
-  return res.data.token;
+  // Save new token in storage
+  ls.setItem(res.data.token);
+  // Return from storage
+  return ls.getItem();
 };
 
 const composeOptions = (method, token, body) => ({
@@ -38,7 +54,6 @@ export const trefleCollection = ({ trefleBase = trefleBaseUrl } = {}) => (
     searchPlantsData: async (query = '') => {
       const requestUrl = `${trefleBase}/plants/search?q=${query}`;
       const token = await trefleToken();
-      console.log(`using ${token}`);
       return apiRequest(requestUrl, composeOptions('GET', token));
     },
   }

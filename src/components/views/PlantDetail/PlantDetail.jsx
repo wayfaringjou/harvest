@@ -6,6 +6,7 @@ import { plantSingleton } from '../../../services/resources';
 import useAPIRetrieve from '../../../hooks/useAPIRetrieve';
 import useAPISend from '../../../hooks/useAPISend';
 import usePrevious from '../../../hooks/usePrevious';
+import ApiAutocomplete from '../../common/ApiAutocomplete';
 
 const plant = plantSingleton();
 const PlantDetail = ({ match: { params: { plantId } } }) => {
@@ -73,6 +74,7 @@ const PlantDetail = ({ match: { params: { plantId } } }) => {
           </label>
         </fieldset>
       </form>
+      <ApiAutocomplete />
     </article>
   );
 };
