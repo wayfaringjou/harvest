@@ -9,6 +9,51 @@ import useAPIRetrieve from '../../../hooks/useAPIRetrieve';
 import { plantSingleton } from '../../../services/resources';
 import useGardenContext from '../../../hooks/useGardenContext';
 
+const serializeNewPlantData = (newPlantData) => {
+  const growthData = {};
+  const images = {};
+
+  /*
+    Object.keys(newPlantData.growth).forEach((key) => {
+      if (newPlantData.growth[key]) {
+        growthData[key] = newPlantData.growth[key];
+      }
+    });
+    */
+  Object.keys(newPlantData.images).forEach((key) => {
+    if (newPlantData.images[key] && key !== '') {
+      images[key] = newPlantData.images[key][0];
+    }
+  });
+
+  const {
+    sowing,
+    light,
+    days_to_harvest,
+    row_spacing,
+    spread,
+    fruit_months,
+  } = newPlantData.growth;
+
+  return ({
+    name: newPlantData.common_name || '',
+    names: newPlantData.common_names.eng || [],
+    scientific_name: newPlantData.scientific_name || '',
+    growth: {
+      sowing: sowing || '',
+      light: light || '',
+      days_to_harvest: days_to_harvest || '',
+      row_spacing: row_spacing.cm || '',
+      spread: spread.cm || '',
+      fruit_months: fruit_months ? fruit_months.join(', ') : '',
+    } || {},
+    distribution: {
+      native: newPlantData.distribution.native || [],
+    },
+    images: images || {},
+  });
+};
+
 const AddPlantDialog = ({
   onPlantSubmit,
   plantSubmitStatus,
@@ -31,37 +76,14 @@ const AddPlantDialog = ({
   const lastStatus = usePrevious(plantSubmitStatus.isSubmitting);
   const lastSelected = usePrevious(setSelectedPlant);
 
-  const serializeNewPlantData = (newPlantData) => {
-    const growthData = {};
-    const images = {};
-
-    Object.keys(newPlantData.growth).forEach((key) => {
-      if (newPlantData.growth[key]) {
-        growthData[key] = newPlantData.growth[key];
-      }
-    });
-
-    Object.keys(newPlantData.images).forEach((key) => {
-      if (newPlantData.images[key]) {
-        images[key] = newPlantData.images[key][0];
-      }
-    });
-
-    return ({
-      name: newPlantData.common_name,
-      names: newPlantData.common_names.eng,
-      scientific_name: newPlantData.scientific_name,
-      growth: growthData || {},
-      images: images || {},
-    });
-  };
   useEffect(() => {
     if (lastStatus === true && plantSubmitStatus.isSubmitting === false) {
       setTimeout(() => closeDialog(), 2000);
     }
 
     if (data) {
-      setNewPlant({ ...newPlant, description: data.data.growth.description });
+      const trefleData = serializeNewPlantData(data.data);
+      setNewPlant({ ...newPlant, ...trefleData });
     }
 
     return () => () => plantSubmitStatus.setSubmitSuccess(false);
@@ -72,7 +94,7 @@ const AddPlantDialog = ({
   }
 
   if (data) {
-    console.log(serializeNewPlantData(data.data));
+    console.log(data);
   }
 
   return (
@@ -86,34 +108,144 @@ const AddPlantDialog = ({
         X
       </button>
       {plantSubmitStatus.submitError && <h4>There was an error</h4>}
-      <label htmlFor="plant-name">
-        <p>New plant name:</p>
-        <input
-          required
-          id="plant-name"
-          type="text"
-          onChange={({ target: { value } }) => setNewPlant(
-            { ...newPlant, name: value },
-          )}
-          value={newPlant.name}
-          placeholder="'Tomato', 'Dill'"
-        />
-      </label>
+      <section className="plant-name-data">
 
-      <label htmlFor="plant-description">
-        <p>Description:</p>
-        <textarea
-          required
-          id="plant-description"
-          type="text"
-          onChange={({ target: { value } }) => setNewPlant(
-            { ...newPlant, description: value },
-          )}
-          value={newPlant.description}
-          placeholder="'Description'"
-        />
-      </label>
-
+        <label htmlFor="plant-name">
+          <p>New plant name:</p>
+          <input
+            required
+            id="plant-name"
+            type="text"
+            onChange={({ target: { value } }) => setNewPlant(
+              { ...newPlant, name: value },
+            )}
+            value={newPlant.name}
+            placeholder="'Tomato', 'Dill'"
+          />
+        </label>
+        <label htmlFor="plant-scientific-name">
+          <p>Scientific name:</p>
+          <input
+            required
+            id="plant-scientific-name"
+            type="text"
+            onChange={({ target: { value } }) => setNewPlant(
+              { ...newPlant, scientific_name: value },
+            )}
+            value={newPlant.scientific_name}
+            placeholder="'Tomato', 'Dill'"
+          />
+        </label>
+        {(newPlant.names && newPlant.names.length > 0) && (
+          <section className="common-names">
+            <ul>
+              {newPlant.names.map((name) => (
+                <li key={name}>
+                  <small>{name}</small>
+                </li>
+              ))}
+            </ul>
+          </section>
+        )}
+      </section>
+      <section className="plant-images">
+        <ul>
+          {newPlant.images && Object.keys(newPlant.images).map((key) => (
+            <li key={newPlant.images[key].id}>
+              <p>{key}</p>
+              <img
+                style={{ height: '150px' }}
+                src={newPlant.images[key].image_url}
+                alt={`${newPlant.name} ${key}`}
+              />
+            </li>
+          ))}
+        </ul>
+      </section>
+      <section className="growth-data">
+        <label htmlFor="plant-sowing">
+          <p>Sowing recommendations:</p>
+          <textarea
+            required
+            id="plant-sowing"
+            type="text"
+            onChange={({ target: { value } }) => setNewPlant(
+              { ...newPlant, growth: { ...newPlant.growth, sowing: value } },
+            )}
+            value={newPlant.growth.sowing}
+            placeholder="'Sowing info'"
+          />
+        </label>
+        <label htmlFor="plant-light">
+          <p>Required amount of light:</p>
+          <p>{'On a scale from 0 (no light, <= 10 lux) to 10 (very intensive insolation, >= 100 000 lux)'}</p>
+          <input
+            required
+            id="plant-light"
+            type="number"
+            onChange={({ target: { value } }) => setNewPlant(
+              { ...newPlant, growth: { ...newPlant.growth, light: value } },
+            )}
+            value={newPlant.growth.light}
+            placeholder="'0 to 10'"
+          />
+        </label>
+        <label htmlFor="plant-days-to-harvest">
+          <p>Average days to harvest:</p>
+          <input
+            required
+            id="plant-days-to-harvest"
+            type="number"
+            onChange={({ target: { value } }) => setNewPlant(
+              { ...newPlant, growth: { ...newPlant.growth, days_to_harvest: value } },
+            )}
+            value={newPlant.growth.days_to_harvest}
+            placeholder="'45'"
+          />
+        </label>
+        <label htmlFor="plant-row-spacing">
+          <p>Row spacing:</p>
+          <p>The minimum spacing between each rows of plants, in centimeters</p>
+          <input
+            required
+            id="plant-row-spacing"
+            type="number"
+            onChange={({ target: { value } }) => setNewPlant(
+              { ...newPlant, growth: { ...newPlant.growth, row_spacing: value } },
+            )}
+            value={newPlant.growth.row_spacing}
+            placeholder="'45'"
+          />
+        </label>
+        <label htmlFor="plant-spread">
+          <p>Spread:</p>
+          <p>The average spreading of the plant, in centimeters</p>
+          <input
+            required
+            id="plant-spread"
+            type="number"
+            onChange={({ target: { value } }) => setNewPlant(
+              { ...newPlant, growth: { ...newPlant.growth, spread: value } },
+            )}
+            value={newPlant.growth.spread}
+            placeholder="'45'"
+          />
+        </label>
+        <label htmlFor="plant-fruit-months">
+          <p>Fruit months:</p>
+          <p>The months the species usually produces fruits</p>
+          <input
+            required
+            id="plant-fruit-months"
+            type="text"
+            onChange={({ target: { value } }) => setNewPlant(
+              { ...newPlant, growth: { ...newPlant.growth, fruit_months: value } },
+            )}
+            value={newPlant.growth.fruit_months}
+            placeholder="'April, May'"
+          />
+        </label>
+      </section>
       <ApiAutocomplete setSelected={setSelectedPlant} />
       <button
         type="submit"
@@ -154,6 +286,20 @@ AddPlantDialog.defaultProps = {
     name: '',
     garden_id: '',
     area_id: '',
+    names: [],
+    scientific_name: '',
+    growth: {
+      sowing: '',
+      light: '',
+      days_to_harvest: '',
+      row_spacing: '',
+      spread: '',
+      fruit_months: '',
+    },
+    distribution: {
+      native: [],
+    },
+    images: {},
   },
 };
 export default AddPlantDialog;
