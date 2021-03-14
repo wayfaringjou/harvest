@@ -1,11 +1,12 @@
 /* eslint-disable no-unused-vars */
 import React, { useState, useEffect } from 'react';
+import PropTypes from 'prop-types';
 import useAPIRetrieve from '../../../hooks/useAPIRetrieve';
 import useGardenContext from '../../../hooks/useGardenContext';
 import usePrevious from '../../../hooks/usePrevious';
 import { plantsCollection } from '../../../services/resources';
 
-const ApiAutocomplete = () => {
+const ApiAutocomplete = ({ setSelected }) => {
   const garden = useGardenContext().gardenData.current;
   const plants = plantsCollection(garden.id);
 
@@ -25,11 +26,14 @@ const ApiAutocomplete = () => {
     error,
   } = useAPIRetrieve(() => plants.searchPlantsData(string), reload, preventFetch);
 
+  // gbif data hook
+  const gbif = useAPIRetrieve();
+
   const lastRetrieveStatus = usePrevious();
 
   useEffect(async () => {
     // If string is longer than 3 characters
-    // and after 2 seconds of input trigger search string in api
+    // and after 1 seconds of input trigger search string in api
     if (string.length >= 3) {
       console.log('retrieving');
 
@@ -59,10 +63,20 @@ const ApiAutocomplete = () => {
       {(data) && (data.data.length > 0 && clear === false) && (
         <ul>
           {data.data.map((match) => (
-            <li key={match.id}>
-              {match.common_name}
+            <li
+              key={match.id}
+            >
+              <button
+                type="button"
+                onClick={() => {
+                  setSelected(match.links.self);
+                  setString('');
+                }}
+              >
+                {match.common_name}
+              </button>
               {` (${match.scientific_name})`}
-              <img style={{ height: '150px' }} alt={match.common_name} src={match.image_url} />
+              <img style={{ height: '150px' }} alt={match.common_name} src={match.image_url !== null && match.image_url} />
             </li>
           ))}
         </ul>
@@ -71,4 +85,11 @@ const ApiAutocomplete = () => {
   );
 };
 
+ApiAutocomplete.propTypes = {
+  setSelected: PropTypes.func,
+};
+
+ApiAutocomplete.defaultProps = {
+  setSelected: () => {},
+};
 export default ApiAutocomplete;

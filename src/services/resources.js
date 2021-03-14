@@ -2,7 +2,7 @@
 /* eslint camelcase: "off" */
 import { apiCollection, apiSingleton } from './api-methods';
 import config from '../config/api';
-import { trefleCollection } from './trefle-methods';
+import { trefleCollection, trefleSingleton } from './trefle-methods';
 import localStorage from './localStorage-methods';
 import { gbifCollection, gbifSingleton } from './gbif-methods';
 
@@ -67,6 +67,7 @@ export const plantSingleton = ({
   return {
     ...data,
     ...apiSingleton({ data }),
+    ...trefleSingleton(),
     ...gbifSingleton({ speciesKey: gbifSpeciesKey }),
   };
 };

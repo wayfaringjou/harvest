@@ -59,4 +59,10 @@ export const trefleCollection = ({ trefleBase = trefleBaseUrl } = {}) => (
   }
 );
 
-export const trefleSingleton = () => ({});
+export const trefleSingleton = ({ trefleBase = trefleBaseUrl } = {}) => ({
+  getDataWithPath: async (path = '') => {
+    const requestUrl = `${trefleBase}${path.replace('/api/v1', '')}`;
+    const token = await trefleToken();
+    return apiRequest(requestUrl, composeOptions('GET', token));
+  },
+});

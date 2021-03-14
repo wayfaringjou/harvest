@@ -4,6 +4,7 @@
 import { useEffect, useState } from 'react';
 
 export default function useAPIRetrieve(requestFunction, query, preventFetch = false) {
+  console.log(preventFetch);
   const [resourceState, setResourceState] = useState({
     isRetrieving: (!preventFetch),
     isSuccess: false,

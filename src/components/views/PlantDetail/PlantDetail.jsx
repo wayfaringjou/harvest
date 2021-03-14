@@ -74,7 +74,6 @@ const PlantDetail = ({ match: { params: { plantId } } }) => {
           </label>
         </fieldset>
       </form>
-      <ApiAutocomplete />
     </article>
   );
 };
