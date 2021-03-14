@@ -8,6 +8,7 @@ import ApiAutocomplete from '../../common/ApiAutocomplete';
 import useAPIRetrieve from '../../../hooks/useAPIRetrieve';
 import { plantSingleton } from '../../../services/resources';
 import useGardenContext from '../../../hooks/useGardenContext';
+import RelationSelector from '../../notes-layout/RelationSelector';
 
 const serializeNewPlantData = (newPlantData) => {
   const growthData = {};
@@ -39,17 +40,13 @@ const serializeNewPlantData = (newPlantData) => {
     name: newPlantData.common_name || '',
     names: newPlantData.common_names.eng || [],
     scientific_name: newPlantData.scientific_name || '',
-    growth: {
-      sowing: sowing || '',
-      light: light || '',
-      days_to_harvest: days_to_harvest || '',
-      row_spacing: row_spacing.cm || '',
-      spread: spread.cm || '',
-      fruit_months: fruit_months ? fruit_months.join(', ') : '',
-    } || {},
-    distribution: {
-      native: newPlantData.distribution.native || [],
-    },
+    sowing: sowing || '',
+    light: light || '',
+    days_to_harvest: days_to_harvest || '',
+    row_spacing: row_spacing.cm || '',
+    spread: spread.cm || '',
+    fruit_months: fruit_months ? fruit_months.join(', ') : '',
+    native: newPlantData.distribution.native || [],
     images: images || {},
   });
 };
@@ -60,11 +57,12 @@ const AddPlantDialog = ({
   closeDialog,
   plantData,
 }) => {
-  const [newPlant, setNewPlant] = useState(plantData);
+  const garden = useGardenContext().gardenData.current;
+
+  const [newPlant, setNewPlant] = useState({ ...plantData, garden_id: garden.id });
   const [selectedPlant, setSelectedPlant] = useState('');
 
-  const garden = useGardenContext().gardenData.current;
-  const plant = plantSingleton(garden.id);
+  const plant = plantSingleton({ ...newPlant });
 
   const {
     data,
@@ -80,10 +78,9 @@ const AddPlantDialog = ({
     if (lastStatus === true && plantSubmitStatus.isSubmitting === false) {
       setTimeout(() => closeDialog(), 2000);
     }
-
     if (data) {
       const trefleData = serializeNewPlantData(data.data);
-      setNewPlant({ ...newPlant, ...trefleData });
+      setNewPlant({ ...newPlant, ...trefleData, treflePath: selectedPlant });
     }
 
     return () => () => plantSubmitStatus.setSubmitSuccess(false);
@@ -92,11 +89,11 @@ const AddPlantDialog = ({
   if (plantSubmitStatus.submitSuccess) {
     return <p>Success</p>;
   }
-
-  if (data) {
-    console.log(data);
+  /*
+  if (newPlant) {
+    console.log(newPlant);
   }
-
+*/
   return (
     <form onSubmit={(e) => onPlantSubmit(e, newPlant)}>
       <button
@@ -109,7 +106,11 @@ const AddPlantDialog = ({
       </button>
       {plantSubmitStatus.submitError && <h4>There was an error</h4>}
       <section className="plant-name-data">
-
+        <p>
+          Fill plant information below or enter the plant&apos;s
+          scientific or common name here to gather it&apos;s data:
+        </p>
+        <ApiAutocomplete setSelected={setSelectedPlant} />
         <label htmlFor="plant-name">
           <p>New plant name:</p>
           <input
@@ -120,9 +121,21 @@ const AddPlantDialog = ({
               { ...newPlant, name: value },
             )}
             value={newPlant.name}
-            placeholder="'Tomato', 'Dill'"
+            placeholder="'Garden tomato'"
           />
         </label>
+        {(newPlant.names && newPlant.names.length > 0) && (
+          <section className="common-names">
+            <p>Other names:</p>
+            <ul>
+              {newPlant.names.map((name) => (
+                <li key={name}>
+                  <small>{name}</small>
+                </li>
+              ))}
+            </ul>
+          </section>
+        )}
         <label htmlFor="plant-scientific-name">
           <p>Scientific name:</p>
           <input
@@ -133,21 +146,24 @@ const AddPlantDialog = ({
               { ...newPlant, scientific_name: value },
             )}
             value={newPlant.scientific_name}
-            placeholder="'Tomato', 'Dill'"
+            placeholder="'Solanum lycopersicum'"
           />
         </label>
-        {(newPlant.names && newPlant.names.length > 0) && (
-          <section className="common-names">
-            <ul>
-              {newPlant.names.map((name) => (
-                <li key={name}>
-                  <small>{name}</small>
-                </li>
-              ))}
-            </ul>
-          </section>
-        )}
+
       </section>
+      {(newPlant.native.length > 0)
+      && (
+      <section className="plant-native">
+        <p>Native to:</p>
+        <ul>
+          {newPlant.native.map((place) => (
+            <li key={place}>
+              <small>{place}</small>
+            </li>
+          ))}
+        </ul>
+      </section>
+      )}
       <section className="plant-images">
         <ul>
           {newPlant.images && Object.keys(newPlant.images).map((key) => (
@@ -170,9 +186,9 @@ const AddPlantDialog = ({
             id="plant-sowing"
             type="text"
             onChange={({ target: { value } }) => setNewPlant(
-              { ...newPlant, growth: { ...newPlant.growth, sowing: value } },
+              { ...newPlant, sowing: value },
             )}
-            value={newPlant.growth.sowing}
+            value={newPlant.sowing}
             placeholder="'Sowing info'"
           />
         </label>
@@ -184,10 +200,10 @@ const AddPlantDialog = ({
             id="plant-light"
             type="number"
             onChange={({ target: { value } }) => setNewPlant(
-              { ...newPlant, growth: { ...newPlant.growth, light: value } },
+              { ...newPlant, light: value },
             )}
-            value={newPlant.growth.light}
-            placeholder="'0 to 10'"
+            value={newPlant.light}
+            placeholder="'8'"
           />
         </label>
         <label htmlFor="plant-days-to-harvest">
@@ -197,10 +213,10 @@ const AddPlantDialog = ({
             id="plant-days-to-harvest"
             type="number"
             onChange={({ target: { value } }) => setNewPlant(
-              { ...newPlant, growth: { ...newPlant.growth, days_to_harvest: value } },
+              { ...newPlant, days_to_harvest: value },
             )}
-            value={newPlant.growth.days_to_harvest}
-            placeholder="'45'"
+            value={newPlant.days_to_harvest}
+            placeholder="'80'"
           />
         </label>
         <label htmlFor="plant-row-spacing">
@@ -211,10 +227,10 @@ const AddPlantDialog = ({
             id="plant-row-spacing"
             type="number"
             onChange={({ target: { value } }) => setNewPlant(
-              { ...newPlant, growth: { ...newPlant.growth, row_spacing: value } },
+              { ...newPlant, row_spacing: value },
             )}
-            value={newPlant.growth.row_spacing}
-            placeholder="'45'"
+            value={newPlant.row_spacing}
+            placeholder="'54'"
           />
         </label>
         <label htmlFor="plant-spread">
@@ -225,10 +241,10 @@ const AddPlantDialog = ({
             id="plant-spread"
             type="number"
             onChange={({ target: { value } }) => setNewPlant(
-              { ...newPlant, growth: { ...newPlant.growth, spread: value } },
+              { ...newPlant, spread: value },
             )}
-            value={newPlant.growth.spread}
-            placeholder="'45'"
+            value={newPlant.spread}
+            placeholder="'76'"
           />
         </label>
         <label htmlFor="plant-fruit-months">
@@ -239,14 +255,20 @@ const AddPlantDialog = ({
             id="plant-fruit-months"
             type="text"
             onChange={({ target: { value } }) => setNewPlant(
-              { ...newPlant, growth: { ...newPlant.growth, fruit_months: value } },
+              { ...newPlant, fruit_months: value },
             )}
-            value={newPlant.growth.fruit_months}
-            placeholder="'April, May'"
+            value={newPlant.fruit_months}
+            placeholder="'June, July, August'"
           />
         </label>
       </section>
-      <ApiAutocomplete setSelected={setSelectedPlant} />
+      <section className="plant-area">
+        <RelationSelector
+          type="Area"
+          onSelect={(value) => setNewPlant({ ...newPlant, area_id: value })}
+          selection={newPlant.area_id}
+        />
+      </section>
       <button
         type="submit"
         disabled={plantSubmitStatus.isSubmitting}
@@ -254,6 +276,7 @@ const AddPlantDialog = ({
         {plantSubmitStatus.isSubmitting ? 'Saving...' : 'Submit'}
       </button>
     </form>
+
   );
 };
 
@@ -288,18 +311,16 @@ AddPlantDialog.defaultProps = {
     area_id: '',
     names: [],
     scientific_name: '',
-    growth: {
-      sowing: '',
-      light: '',
-      days_to_harvest: '',
-      row_spacing: '',
-      spread: '',
-      fruit_months: '',
-    },
-    distribution: {
-      native: [],
-    },
+    sowing: '',
+    light: '',
+    days_to_harvest: '',
+    row_spacing: '',
+    spread: '',
+    fruit_months: '',
+    native: [],
     images: {},
+    treflePath: '',
+    gbifSpeciesKey: '',
   },
 };
 export default AddPlantDialog;
