@@ -9,6 +9,7 @@ import AreaFlair from '../AreaFlair';
 
 const PlantsCollection = ({
   items,
+  isRetrieving,
   garden_id,
   filterString,
   deleteControl,
@@ -17,25 +18,28 @@ const PlantsCollection = ({
   onPlantDelete,
   plantSubmitStatus,
 }) => {
-  let itemsToRender = items;
-  itemsToRender.sort((a, b) => a.id - b.id);
+  let itemsToRender = [];
+  if (!isRetrieving) {
+    itemsToRender = items;
+    itemsToRender.sort((a, b) => a.id - b.id);
 
-  if (items.length === 0) {
-    return (
-      <p>
-        No plants added yet.
-      </p>
-    );
-  }
-  if (filterString) {
-    itemsToRender = itemsToRender
-      .filter((i) => i.name.toLowerCase().includes(filterString.toLowerCase()));
-    if (itemsToRender.length === 0) {
+    if (items.length === 0) {
       return (
         <p>
-          No matches.
+          No plants added yet.
         </p>
       );
+    }
+    if (filterString) {
+      itemsToRender = itemsToRender
+        .filter((i) => i.name.toLowerCase().includes(filterString.toLowerCase()));
+      if (itemsToRender.length === 0) {
+        return (
+          <p>
+            No matches.
+          </p>
+        );
+      }
     }
   }
   const lastStatus = usePrevious(plantSubmitStatus.isSubmitting);
@@ -112,7 +116,9 @@ const PlantsCollection = ({
                 {item.name}
               </Link>
             </h4>
+            {item.area_id && (
             <AreaFlair garden_id={garden_id} area_id={item.area_id} />
+            )}
             <hr />
             <button
               type="button"
@@ -141,6 +147,7 @@ const PlantsCollection = ({
 
 PlantsCollection.propTypes = {
   items: PropTypes.arrayOf(plantPropTypes),
+  isRetrieving: PropTypes.bool,
   garden_id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   filterString: PropTypes.string,
   deleteControl: PropTypes.shape({
@@ -165,6 +172,7 @@ PlantsCollection.propTypes = {
 
 PlantsCollection.defaultProps = {
   items: [],
+  isRetrieving: false,
   garden_id: '',
   filterString: '',
   editControl: {

@@ -17,7 +17,7 @@ const RelationSelector = ({ type, onSelect, selection }) => {
     default: throw new Error('Invalid type');
   }
 
-  if (options.isRetrieving) return <p>Loading Note</p>;
+  if (options.isRetrieving) return <p>Loading</p>;
 
   if (options.isFailed) {
     return (
@@ -37,7 +37,7 @@ const RelationSelector = ({ type, onSelect, selection }) => {
         value={selection}
         onChange={({ target: { value } }) => onSelect(value)}
       >
-        <option value="none">none</option>
+        <option value="">none</option>
         {options.data.map((option) => (
           <option key={option.id} value={option.id}>
             {option.name}

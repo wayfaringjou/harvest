@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import GardenAreasOverview from '../../garden-areas-layout/GardenAreasOverview/GardenAreasOverview';
 import useAPIRetrieve from '../../../hooks/useAPIRetrieve';
 import useAPISend from '../../../hooks/useAPISend';
-// import { fetchGardenAreas } from '../../../services/fakeAPI';
 import { gardenAreasCollection, gardenAreaSingleton } from '../../../services/resources';
 
 const GardenAreas = ({ garden_id }) => {
@@ -18,7 +17,6 @@ const GardenAreas = ({ garden_id }) => {
     isFailed,
     // isSuccess,
     error,
-  // } = useAPIResource(fetchGardenAreas);
   } = useAPIRetrieve(areas.getAll, reload);
 
   const {
@@ -32,8 +30,6 @@ const GardenAreas = ({ garden_id }) => {
     submitError,
     submitResponse,
   } = requestState;
-
-  if (isRetrieving) return <p>Loading</p>;
 
   if (isFailed) {
     return (
@@ -66,35 +62,33 @@ const GardenAreas = ({ garden_id }) => {
         throw new Error('Invalid method');
     }
   };
-
   return (
-    <>
-      <GardenAreasOverview
-        data={data}
-        garden_id={garden_id}
-        onAreaPost={(e, newArea) => {
-          handleAreaRequest(e, newArea, 'POST');
-        }}
-        onAreaUpdate={(e, updateArea) => {
-          handleAreaRequest(e, updateArea, 'PATCH');
-        }}
-        onAreaDelete={(e, idToDelete) => {
-          handleAreaRequest(e, idToDelete, 'DELETE');
-        }}
-        areaSubmitStatus={{
-          isSubmitting,
-          submitError,
-          submitSuccess,
-          submitResponse,
-          setSubmitSuccess: (value) => setRequestState(
-            { ...requestState, submitSuccess: value },
-          ),
-          setSubmitError: (value) => setRequestState(
-            { ...requestState, submitError: value },
-          ),
-        }}
-      />
-    </>
+    <GardenAreasOverview
+      data={data}
+      isRetrieving={isRetrieving}
+      garden_id={garden_id}
+      onAreaPost={(e, newArea) => {
+        handleAreaRequest(e, newArea, 'POST');
+      }}
+      onAreaUpdate={(e, updateArea) => {
+        handleAreaRequest(e, updateArea, 'PATCH');
+      }}
+      onAreaDelete={(e, idToDelete) => {
+        handleAreaRequest(e, idToDelete, 'DELETE');
+      }}
+      areaSubmitStatus={{
+        isSubmitting,
+        submitError,
+        submitSuccess,
+        submitResponse,
+        setSubmitSuccess: (value) => setRequestState(
+          { ...requestState, submitSuccess: value },
+        ),
+        setSubmitError: (value) => setRequestState(
+          { ...requestState, submitError: value },
+        ),
+      }}
+    />
   );
 };
 

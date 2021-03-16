@@ -37,8 +37,8 @@ const ApiAutocomplete = ({ setSelected }) => {
     if (string.length >= 3) {
       setPreventFetch(false);
       setClear(false);
-      setTimeout(setReload(!reload), 1000);
-      // setReload(!reload);
+      // setTimeout(setReload(!reload), 1000);
+      setReload(!reload);
     }
 
     if (string.length < 3) {
@@ -71,10 +71,12 @@ const ApiAutocomplete = ({ setSelected }) => {
                   setString('');
                 }}
               >
-                {match.common_name}
+                {match.common_name || match.scientific_name}
               </button>
               {` (${match.scientific_name})`}
-              <img style={{ height: '150px' }} alt={match.common_name} src={match.image_url !== null && match.image_url} />
+              {match.image_url && (
+              <img style={{ height: '150px' }} alt={match.common_name} src={match.image_url} />
+              )}
             </li>
           ))}
         </ul>

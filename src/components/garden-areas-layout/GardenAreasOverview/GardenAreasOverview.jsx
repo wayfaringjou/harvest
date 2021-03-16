@@ -9,6 +9,7 @@ import useDialog from '../../../hooks/useDialog';
 
 const GardenAreasOverview = ({
   data,
+  isRetrieving,
   garden_id,
   onAreaPost,
   areaSubmitStatus,
@@ -64,6 +65,7 @@ const GardenAreasOverview = ({
         collection={(
           <GardenAreasCollection
             items={data}
+            isRetrieving={isRetrieving}
             garden_id={garden_id}
             filterString={collectionFilter}
             deleteControl={{ idToDelete, setIdToDelete }}
@@ -86,6 +88,7 @@ const GardenAreasOverview = ({
 
 GardenAreasOverview.propTypes = {
   data: PropTypes.arrayOf(areaPropTypes),
+  isRetrieving: PropTypes.bool,
   garden_id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   onAreaPost: PropTypes.func,
   onAreaUpdate: PropTypes.func,
@@ -102,6 +105,7 @@ GardenAreasOverview.propTypes = {
 
 GardenAreasOverview.defaultProps = {
   data: [],
+  isRetrieving: false,
   garden_id: '',
   onAreaPost: () => {},
   onAreaUpdate: () => {},

@@ -10,6 +10,7 @@ import submitStatusPropTypes from '../../../propTypes/submitStatus';
 
 const PlantsOverview = ({
   data,
+  isRetrieving,
   garden_id,
   onPlantPost,
   plantSubmitStatus,
@@ -64,6 +65,7 @@ const PlantsOverview = ({
         collection={(
           <PlantsCollection
             items={data}
+            isRetrieving={isRetrieving}
             garden_id={garden_id}
             filterString={collectionFilter}
             deleteControl={{ idToDelete, setIdToDelete }}
@@ -86,6 +88,7 @@ const PlantsOverview = ({
 
 PlantsOverview.propTypes = {
   data: PropTypes.arrayOf(plantPropTypes),
+  isRetrieving: PropTypes.bool,
   garden_id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   onPlantPost: PropTypes.func,
   onPlantUpdate: PropTypes.func,
@@ -98,6 +101,7 @@ PlantsOverview.propTypes = {
 
 PlantsOverview.defaultProps = {
   data: [],
+  isRetrieving: false,
   garden_id: '',
   onPlantPost: () => {},
   onPlantUpdate: () => {},

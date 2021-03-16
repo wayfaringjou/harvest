@@ -1,5 +1,34 @@
 @import url("https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,600;0,700;0,800;1,300;1,400;1,600;1,700;1,800&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
 
+:root {
+  /* Design tokens */
+  /* Colors */
+
+  --dark: #2e2c2f;
+  --light: #f9f8f8;
+  --shade: #e1e3e5;
+  --shade-dark: #c0c1c3;
+  --shade-light: #eaecf0;
+  --primary: #8fff8f;
+  --primary-shade: #0000ad;
+  --secondary: #0daf94;
+  --secondary-shade: #0091a0;
+  --tertiary: #f9e900;
+  --tertiary-shade: #c2b700;
+
+  /* Scale */
+  --s300: 0.833rem;
+  --s400: 1rem;
+  --s500: 1.2rem;
+  --s600: 1.44rem;
+  --s700: 1.728rem;
+  --s800: 2.074rem;
+  --s900: 2.488rem;
+
+  /* Flow */
+  --metric-rythm: 1.5rem;
+}
+
 html {
   font-size: 100%;
 } /*16px*/
@@ -60,24 +89,36 @@ ul {
 li {
   border: thin solid #cfcfcf;
   margin: 16px 0;
+  list-style: none;
 }
 
 .planted-list li {
-display: inline;
-margin: 8px;
-padding: 2px;
-background-color: #cfcfcf;
+  display: inline;
+  margin: 8px;
+  padding: 2px;
+  background-color: #cfcfcf;
 }
 
 button {
   margin: 8px;
 }
 
+fieldset {
+  border: 0;
+  padding: 0;
+  margin: 0;
+}
 
 textarea {
   width: 100%;
   height: 200px;
   overflow-y: auto;
+  background-color: var(--shade-light);
+}
+
+input {
+  width: 100%;
+  background-color: var(--shade-light);
 }
 
 hr {
@@ -88,7 +129,8 @@ hr {
   background-color: #cfcfcf;
 }
 
-input, textarea {
+input,
+textarea {
   border: 0;
   border-bottom: medium solid black;
 }

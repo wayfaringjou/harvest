@@ -30,7 +30,7 @@ const Notes = () => {
     submitResponse,
   } = requestState;
 
-  if (isRetrieving) return <p>Loading</p>;
+  // if (isRetrieving) return <p>Loading</p>;
 
   if (isFailed) {
     return (
@@ -64,30 +64,33 @@ const Notes = () => {
   };
 
   return (
-    <NotesOverview
-      data={data}
-      onNotePost={(e, newPlant) => {
-        handleNoteRequest(e, newPlant, 'POST');
-      }}
-      onNoteUpdate={(e, updatePlant) => {
-        handleNoteRequest(e, updatePlant, 'PATCH');
-      }}
-      onNoteDelete={(e, idToDelete) => {
-        handleNoteRequest(e, idToDelete, 'DELETE');
-      }}
-      noteSubmitStatus={{
-        isSubmitting,
-        submitError,
-        submitSuccess,
-        submitResponse,
-        setSubmitSuccess: (value) => setRequestState(
-          { ...requestState, submitSuccess: value },
-        ),
-        setSubmitError: (value) => setRequestState(
-          { ...requestState, submitError: value },
-        ),
-      }}
-    />
+    <>
+      <NotesOverview
+        data={data}
+        isRetrieving={isRetrieving}
+        onNotePost={(e, newPlant) => {
+          handleNoteRequest(e, newPlant, 'POST');
+        }}
+        onNoteUpdate={(e, updatePlant) => {
+          handleNoteRequest(e, updatePlant, 'PATCH');
+        }}
+        onNoteDelete={(e, idToDelete) => {
+          handleNoteRequest(e, idToDelete, 'DELETE');
+        }}
+        noteSubmitStatus={{
+          isSubmitting,
+          submitError,
+          submitSuccess,
+          submitResponse,
+          setSubmitSuccess: (value) => setRequestState(
+            { ...requestState, submitSuccess: value },
+          ),
+          setSubmitError: (value) => setRequestState(
+            { ...requestState, submitError: value },
+          ),
+        }}
+      />
+    </>
   );
 };
 

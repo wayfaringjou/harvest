@@ -11,6 +11,7 @@ import useGardenContext from '../../../hooks/useGardenContext';
 
 const NotesOverview = ({
   data,
+  isRetrieving,
   onNotePost,
   noteSubmitStatus,
   onNoteUpdate,
@@ -75,6 +76,7 @@ const NotesOverview = ({
         collection={(
           <NotesCollection
             items={data}
+            isRetrieving={isRetrieving}
             filterString={collectionFilter}
             deleteControl={{ idToDelete, setIdToDelete }}
             editControl={{ idToEdit, setIdToEdit }}
@@ -96,6 +98,7 @@ const NotesOverview = ({
 
 NotesOverview.propTypes = {
   data: PropTypes.arrayOf(notePropTypes),
+  isRetrieving: PropTypes.bool,
   onNotePost: PropTypes.func,
   onNoteUpdate: PropTypes.func,
   onNoteDelete: PropTypes.func,
@@ -107,6 +110,7 @@ NotesOverview.propTypes = {
 
 NotesOverview.defaultProps = {
   data: [],
+  isRetrieving: false,
   onNotePost: () => {},
   onNoteUpdate: () => {},
   onNoteDelete: () => {},

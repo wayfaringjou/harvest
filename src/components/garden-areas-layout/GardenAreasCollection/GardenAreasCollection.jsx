@@ -8,6 +8,7 @@ import PlantsListSimple from '../PlantsListSimple/PlantsListSimple';
 
 const GardenAreasCollection = ({
   items,
+  isRetrieving,
   garden_id,
   filterString,
   deleteControl,
@@ -16,27 +17,32 @@ const GardenAreasCollection = ({
   onAreaDelete,
   areaSubmitStatus,
 }) => {
-  let itemsToRender = items;
-  itemsToRender.sort((a, b) => a.id - b.id);
+  let itemsToRender = [];
 
-  if (items.length === 0) {
-    return (
-      <p>
-        No garden areas added yet.
-      </p>
-    );
-  }
-  if (filterString) {
-    itemsToRender = itemsToRender
-      .filter((i) => i.name.toLowerCase().includes(filterString.toLowerCase()));
-    if (itemsToRender.length === 0) {
+  if (!isRetrieving) {
+    itemsToRender = items;
+    itemsToRender.sort((a, b) => a.id - b.id);
+
+    if (items.length === 0) {
       return (
         <p>
-          No matches.
+          No garden areas added yet.
         </p>
       );
     }
+    if (filterString) {
+      itemsToRender = itemsToRender
+        .filter((i) => i.name.toLowerCase().includes(filterString.toLowerCase()));
+      if (itemsToRender.length === 0) {
+        return (
+          <p>
+            No matches.
+          </p>
+        );
+      }
+    }
   }
+
   const lastStatus = usePrevious(areaSubmitStatus.isSubmitting);
 
   useEffect(() => {
@@ -147,6 +153,7 @@ const GardenAreasCollection = ({
 
 GardenAreasCollection.propTypes = {
   items: PropTypes.arrayOf(areaPropTypes),
+  isRetrieving: PropTypes.bool,
   garden_id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   filterString: PropTypes.string,
   deleteControl: PropTypes.shape({
@@ -171,6 +178,7 @@ GardenAreasCollection.propTypes = {
 
 GardenAreasCollection.defaultProps = {
   items: [],
+  isRetrieving: false,
   garden_id: '',
   filterString: '',
   editControl: {

@@ -1,0 +1,13 @@
+.plant-images {
+  overflow-x: auto;
+  width: 100vw;
+}
+.plant-images-wrapper {
+  display: flex;
+  width: fit-content;
+}
+
+.plant-images-wrapper > li {
+  width: 8rem;
+  list-style: none;
+}

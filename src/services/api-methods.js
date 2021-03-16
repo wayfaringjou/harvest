@@ -1,8 +1,14 @@
 /* eslint-disable no-param-reassign */
+import localStorage from './localStorage-methods';
+import config from '../config/api';
+
+const ls = localStorage(config.AUTH_TOKEN_KEY);
+
 const composeOptions = (method, body) => ({
   method,
   headers: {
     'content-type': 'application/json',
+    authorization: `bearer ${ls.getItem()}`,
   },
   body: body && JSON.stringify(body),
 });

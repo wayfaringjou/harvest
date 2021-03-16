@@ -30,7 +30,7 @@ const Plants = ({ garden_id }) => {
     submitResponse,
   } = requestState;
 
-  if (isRetrieving) return <p>Loading</p>;
+  // if (isRetrieving) return <p>Loading</p>;
 
   if (isFailed) {
     return (
@@ -66,6 +66,7 @@ const Plants = ({ garden_id }) => {
   return (
     <PlantsOverview
       data={data}
+      isRetrieving={isRetrieving}
       garden_id={garden_id}
       onPlantPost={(e, newPlant) => {
         handlePlantRequest(e, newPlant, 'POST');

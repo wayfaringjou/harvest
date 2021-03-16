@@ -61,6 +61,7 @@ const GardenAreaDetail = ({ match: { params: { areaId } } }) => {
   }
   return (
     <article className="area">
+
       <form>
         <button type="button" onClick={() => history.goBack()}>Back</button>
         <fieldset>

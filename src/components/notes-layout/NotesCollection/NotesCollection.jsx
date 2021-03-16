@@ -7,30 +7,34 @@ import { NOTES } from '../../../config/routes';
 
 const NotesCollection = ({
   items,
+  isRetrieving,
   filterString,
   deleteControl,
   onNoteDelete,
   noteSubmitStatus,
 }) => {
-  let itemsToRender = items;
-  itemsToRender.sort((a, b) => a.id - b.id);
+  let itemsToRender = [];
+  if (!isRetrieving) {
+    itemsToRender = items;
+    itemsToRender.sort((a, b) => a.id - b.id);
 
-  if (items.length === 0) {
-    return (
-      <p>
-        No notes added yet.
-      </p>
-    );
-  }
-  if (filterString) {
-    itemsToRender = itemsToRender
-      .filter((i) => i.title.toLowerCase().includes(filterString.toLowerCase()));
-    if (itemsToRender.length === 0) {
+    if (items.length === 0) {
       return (
         <p>
-          No matches.
+          No notes added yet.
         </p>
       );
+    }
+    if (filterString) {
+      itemsToRender = itemsToRender
+        .filter((i) => i.title.toLowerCase().includes(filterString.toLowerCase()));
+      if (itemsToRender.length === 0) {
+        return (
+          <p>
+            No matches.
+          </p>
+        );
+      }
     }
   }
   const lastStatus = usePrevious(noteSubmitStatus.isSubmitting);
@@ -106,6 +110,7 @@ const NotesCollection = ({
 
 NotesCollection.propTypes = {
   items: PropTypes.arrayOf(notePropTypes),
+  isRetrieving: PropTypes.bool,
   filterString: PropTypes.string,
   deleteControl: PropTypes.shape({
     setIdToDelete: PropTypes.func,
@@ -124,6 +129,7 @@ NotesCollection.propTypes = {
 
 NotesCollection.defaultProps = {
   items: [],
+  isRetrieving: false,
   filterString: '',
   deleteControl: {
     setIdToDelete: () => {},
