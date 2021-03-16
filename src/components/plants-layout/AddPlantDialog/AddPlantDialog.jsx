@@ -1,3 +1,5 @@
+/* eslint-disable no-return-assign */
+/* eslint-disable no-multi-assign */
 /* eslint-disable prefer-destructuring */
 /* eslint-disable no-unused-vars */
 import React, { useState, useEffect } from 'react';
@@ -11,42 +13,41 @@ import useGardenContext from '../../../hooks/useGardenContext';
 import RelationSelector from '../../notes-layout/RelationSelector';
 
 const serializeNewPlantData = (newPlantData) => {
-  const growthData = {};
+  const growth = {
+    sowing: '',
+    light: '',
+    days_to_harvest: '',
+    row_spacing: '',
+    spread: '',
+    fruit_months: '',
+  };
+
   const images = {};
 
-  /*
-    Object.keys(newPlantData.growth).forEach((key) => {
-      if (newPlantData.growth[key]) {
-        growthData[key] = newPlantData.growth[key];
+  if (newPlantData.images) {
+    Object.keys(newPlantData.images).forEach((key) => {
+      if (newPlantData.images[key] && key !== '') {
+        images[key] = newPlantData.images[key][0];
       }
     });
-    */
-  Object.keys(newPlantData.images).forEach((key) => {
-    if (newPlantData.images[key] && key !== '') {
-      images[key] = newPlantData.images[key][0];
-    }
-  });
+  }
 
-  const {
-    sowing,
-    light,
-    days_to_harvest,
-    row_spacing,
-    spread,
-    fruit_months,
-  } = newPlantData.growth;
+  if (newPlantData.growth) {
+    Object.keys(growth).forEach((key) => growth[key] = newPlantData.growth[key]);
+  } else {
+    Object.keys(growth).forEach((key) => growth[key] = newPlantData[key]);
+  }
 
   return ({
-    name: newPlantData.common_name || '',
-    names: newPlantData.common_names.eng || [],
+    name: newPlantData.name ? newPlantData.name : newPlantData.common_name || '',
+    names: newPlantData.common_names ? newPlantData.common_names.eng || [] : [],
     scientific_name: newPlantData.scientific_name || '',
-    sowing: sowing || '',
-    light: light || '',
-    days_to_harvest: days_to_harvest || '',
-    row_spacing: row_spacing.cm || '',
-    spread: spread.cm || '',
-    fruit_months: fruit_months ? fruit_months.join(', ') : '',
-    native: newPlantData.distribution.native || [],
+    sowing: growth.sowing || '',
+    light: growth.light || '',
+    days_to_harvest: growth.days_to_harvest || '',
+    row_spacing: growth.row_spacing ? growth.row_spacing.cm || '' : '',
+    spread: growth.spread ? growth.spread.cm || '' : '',
+    fruit_months: growth.fruit_months ? growth.fruit_months.join(', ') : '',
     images: images || {},
   });
 };
@@ -58,8 +59,12 @@ const AddPlantDialog = ({
   plantData,
 }) => {
   const garden = useGardenContext().gardenData.current;
-
-  const [newPlant, setNewPlant] = useState({ ...plantData, garden_id: garden.id });
+  const parsedPlantData = serializeNewPlantData(plantData);
+  const [newPlant, setNewPlant] = useState({
+    ...plantData,
+    ...parsedPlantData,
+    garden_id: garden.id,
+  });
   const [selectedPlant, setSelectedPlant] = useState('');
 
   const plant = plantSingleton({ ...newPlant });
@@ -72,7 +77,6 @@ const AddPlantDialog = ({
   } = useAPIRetrieve(() => plant.getDataWithPath(selectedPlant), selectedPlant, (!selectedPlant));
 
   const lastStatus = usePrevious(plantSubmitStatus.isSubmitting);
-  const lastSelected = usePrevious(setSelectedPlant);
 
   useEffect(() => {
     if (lastStatus === true && plantSubmitStatus.isSubmitting === false) {
@@ -89,11 +93,18 @@ const AddPlantDialog = ({
   if (plantSubmitStatus.submitSuccess) {
     return <p>Success</p>;
   }
-  /*
-  if (newPlant) {
-    console.log(newPlant);
+
+  if (isRetrieving) return <p>Loading</p>;
+
+  if (isFailed) {
+    return (
+      <p>
+        There was an error:
+        {error.message}
+      </p>
+    );
   }
-*/
+
   return (
     <form onSubmit={(e) => onPlantSubmit(e, newPlant)}>
       <button
@@ -111,6 +122,7 @@ const AddPlantDialog = ({
           scientific or common name here to gather it&apos;s data:
         </p>
         <ApiAutocomplete setSelected={setSelectedPlant} />
+        <hr />
         <label htmlFor="plant-name">
           <p>New plant name:</p>
           <input
@@ -139,7 +151,6 @@ const AddPlantDialog = ({
         <label htmlFor="plant-scientific-name">
           <p>Scientific name:</p>
           <input
-            required
             id="plant-scientific-name"
             type="text"
             onChange={({ target: { value } }) => setNewPlant(
@@ -151,19 +162,7 @@ const AddPlantDialog = ({
         </label>
 
       </section>
-      {(newPlant.native.length > 0)
-      && (
-      <section className="plant-native">
-        <p>Native to:</p>
-        <ul>
-          {newPlant.native.map((place) => (
-            <li key={place}>
-              <small>{place}</small>
-            </li>
-          ))}
-        </ul>
-      </section>
-      )}
+
       <section className="plant-images">
         <ul>
           {newPlant.images && Object.keys(newPlant.images).map((key) => (
@@ -182,7 +181,6 @@ const AddPlantDialog = ({
         <label htmlFor="plant-sowing">
           <p>Sowing recommendations:</p>
           <textarea
-            required
             id="plant-sowing"
             type="text"
             onChange={({ target: { value } }) => setNewPlant(
@@ -196,7 +194,6 @@ const AddPlantDialog = ({
           <p>Required amount of light:</p>
           <p>{'On a scale from 0 (no light, <= 10 lux) to 10 (very intensive insolation, >= 100 000 lux)'}</p>
           <input
-            required
             id="plant-light"
             type="number"
             onChange={({ target: { value } }) => setNewPlant(
@@ -209,7 +206,6 @@ const AddPlantDialog = ({
         <label htmlFor="plant-days-to-harvest">
           <p>Average days to harvest:</p>
           <input
-            required
             id="plant-days-to-harvest"
             type="number"
             onChange={({ target: { value } }) => setNewPlant(
@@ -223,7 +219,6 @@ const AddPlantDialog = ({
           <p>Row spacing:</p>
           <p>The minimum spacing between each rows of plants, in centimeters</p>
           <input
-            required
             id="plant-row-spacing"
             type="number"
             onChange={({ target: { value } }) => setNewPlant(
@@ -237,7 +232,6 @@ const AddPlantDialog = ({
           <p>Spread:</p>
           <p>The average spreading of the plant, in centimeters</p>
           <input
-            required
             id="plant-spread"
             type="number"
             onChange={({ target: { value } }) => setNewPlant(
@@ -251,7 +245,6 @@ const AddPlantDialog = ({
           <p>Fruit months:</p>
           <p>The months the species usually produces fruits</p>
           <input
-            required
             id="plant-fruit-months"
             type="text"
             onChange={({ target: { value } }) => setNewPlant(
@@ -273,7 +266,12 @@ const AddPlantDialog = ({
         type="submit"
         disabled={plantSubmitStatus.isSubmitting}
       >
-        {plantSubmitStatus.isSubmitting ? 'Saving...' : 'Submit'}
+        {plantSubmitStatus.isSubmitting && 'Saving...'}
+        {!plantSubmitStatus.isSubmitting && (
+          plantSubmitStatus.submitSuccess
+            ? 'Success'
+            : 'Submit'
+        )}
       </button>
     </form>
 
@@ -317,10 +315,9 @@ AddPlantDialog.defaultProps = {
     row_spacing: '',
     spread: '',
     fruit_months: '',
-    native: [],
     images: {},
     treflePath: '',
-    gbifSpeciesKey: '',
+    gbifspecieskey: '',
   },
 };
 export default AddPlantDialog;

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import areaPropTypes from '../../../propTypes/gardenArea';
+import useGardenContext from '../../../hooks/useGardenContext';
 
 // onAreaSubmit can be used for POST or PATCH methods
 const AddGardenAreaDialog = ({
@@ -9,7 +10,9 @@ const AddGardenAreaDialog = ({
   closeDialog,
   areaData,
 }) => {
-  const [newArea, setNewArea] = useState(areaData);
+  const garden = useGardenContext().gardenData.current;
+
+  const [newArea, setNewArea] = useState({ ...areaData, garden_id: garden.id });
 
   useEffect(() => () => {
     areaSubmitStatus.setSubmitSuccess(false);
@@ -106,6 +109,7 @@ AddGardenAreaDialog.defaultProps = {
   areaData: {
     id: '',
     name: '',
+    garden_id: '',
     length_cm: '',
     width_cm: '',
   },

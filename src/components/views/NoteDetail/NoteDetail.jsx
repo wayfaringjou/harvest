@@ -84,7 +84,6 @@ const NoteDetail = ({ match: { params: { noteId } } }) => {
         plant_id: data.plant_id || '',
       });
     }
-    console.log(deleted);
     if (lastSubmitStatus === true && isSubmitting === false && deleted === true && submitSuccess) {
       history.push('/garden');
     }

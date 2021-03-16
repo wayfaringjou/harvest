@@ -2,6 +2,7 @@
 import React, { useRef } from 'react';
 import PropTypes from 'prop-types';
 import PromptCard from '../PromptCard';
+import './ElementOverview.css';
 
 const renderPrompts = (
   prompts,

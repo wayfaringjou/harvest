@@ -13,8 +13,7 @@ export default PropTypes.shape({
   row_spacing: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
   spread: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
   fruit_months: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
-  native: PropTypes.arrayOf(PropTypes.string),
   images: PropTypes.objectOf(PropTypes.object),
   treflePath: PropTypes.string,
-  gbifSpeciesKey: PropTypes.string,
+  gbifspecieskey: PropTypes.string,
 });

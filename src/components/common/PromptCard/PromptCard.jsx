@@ -1,6 +1,7 @@
 /* eslint-disable react/prop-types */
 import React from 'react';
 import PropTypes from 'prop-types';
+import './PromptCard.css';
 
 const actionClickHandler = (diagCont, currDiagCont, promptId) => {
   if (currDiagCont.activeDialogId === undefined) {
@@ -26,8 +27,7 @@ const PromptCard = ({
   currentDialogControls,
   promptId,
 }) => (
-  <article>
-    <h4>{description}</h4>
+  <article className="prompt-card">
     <button
       onClick={() => {
         actionClickHandler(
@@ -40,6 +40,11 @@ const PromptCard = ({
     >
       {action}
     </button>
+    <p>
+      <small>
+        {description}
+      </small>
+    </p>
   </article>
 );
 

@@ -66,10 +66,9 @@ export const plantSingleton = ({
   row_spacing = '',
   spread = '',
   fruit_months = '',
-  native = [],
   images = {},
   treflePath = '',
-  gbifSpeciesKey = '',
+  gbifspecieskey = '',
 } = {}) => {
   const data = {
     id,
@@ -85,17 +84,15 @@ export const plantSingleton = ({
     row_spacing,
     spread,
     fruit_months,
-    native,
     images,
     treflePath,
-    gbifSpeciesKey,
+    gbifspecieskey,
   };
-  console.log(data);
   return {
     ...data,
     ...apiSingleton({ data }),
     ...trefleSingleton(),
-    ...gbifSingleton({ speciesKey: gbifSpeciesKey }),
+    ...gbifSingleton({ speciesKey: gbifspecieskey }),
   };
 };
 

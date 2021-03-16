@@ -17,6 +17,7 @@ const GardenAreasCollection = ({
   areaSubmitStatus,
 }) => {
   let itemsToRender = items;
+  itemsToRender.sort((a, b) => a.id - b.id);
 
   if (items.length === 0) {
     return (

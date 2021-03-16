@@ -9,6 +9,7 @@ import usePrevious from '../../../hooks/usePrevious';
 import Plants from '../Plants';
 import useGardenContext from '../../../hooks/useGardenContext';
 import AreaPlantsCollection from '../../garden-areas-layout/AreaPlantsCollection';
+import RelatedNotes from '../../common/RelatedNotes/RelatedNotes';
 
 const area = gardenAreaSingleton();
 const GardenAreaDetail = ({ match: { params: { areaId } } }) => {
@@ -79,6 +80,7 @@ const GardenAreaDetail = ({ match: { params: { areaId } } }) => {
         </fieldset>
       </form>
       <AreaPlantsCollection garden_id={gardenData.current.id} area_id={areaId} />
+      <RelatedNotes area_id={areaId} />
     </article>
   );
 };

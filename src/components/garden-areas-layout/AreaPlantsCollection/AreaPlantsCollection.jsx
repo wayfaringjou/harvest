@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
 import { plantsCollection } from '../../../services/resources';
 import useAPIRetrieve from '../../../hooks/useAPIRetrieve';
+import { PLANTS } from '../../../config/routes';
 
 const AreaPlantsCollection = ({ garden_id, area_id }) => {
   const plants = plantsCollection(garden_id);
@@ -64,7 +66,9 @@ const AreaPlantsCollection = ({ garden_id, area_id }) => {
       <ul>
         {itemsToRender.map((item) => (
           <li key={item.id}>
-            <h4>{item.name}</h4>
+            <Link to={`${PLANTS}/${item.id}`}>
+              <h4>{item.name}</h4>
+            </Link>
           </li>
         ))}
       </ul>

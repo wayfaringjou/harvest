@@ -35,8 +35,6 @@ const ApiAutocomplete = ({ setSelected }) => {
     // If string is longer than 3 characters
     // and after 1 seconds of input trigger search string in api
     if (string.length >= 3) {
-      console.log('retrieving');
-
       setPreventFetch(false);
       setClear(false);
       setTimeout(setReload(!reload), 1000);

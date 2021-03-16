@@ -1,0 +1,8 @@
+.overview-prompts {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.dialog-wrapper {
+  width: 100%;
+}

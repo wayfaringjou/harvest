@@ -7,7 +7,6 @@ import { plantsCollection, plantSingleton } from '../../../services/resources';
 
 const Plants = ({ garden_id }) => {
   const plants = plantsCollection(garden_id);
-  // plants.searchPlantsData('strawberry').then((res) => console.log(res));
   const [reload, setReload] = useState(false);
   const [request, setRequest] = useState(false);
   const [requestFunction, setRequestFunction] = useState(null);
