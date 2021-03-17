@@ -25,7 +25,7 @@ const Notes = () => {
     isRetrieving,
     isFailed,
     error,
-  } = useAPIRetrieve(notes.getAll, logedUser, !logedUser);
+  } = useAPIRetrieve(notes.getAll, reload, !logedUser);
 
   const {
     requestState,
