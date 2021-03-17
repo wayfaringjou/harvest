@@ -42,7 +42,7 @@ const composeOptions = (method, token, body) => ({
   headers: {
     'content-type': 'application/json',
     Authorization: `Bearer ${token}`,
-    'Access-Control-Allow-Origin': 'http://localhost:3000',
+    'Access-Control-Allow-Origin': config.CLIENT_ORIGIN,
   },
   body: body && JSON.stringify(body),
 });

@@ -11,7 +11,6 @@ const useDialog = (
       toggleDialog: () => setIsDialogOpen(!isDialogOpen),
       openDialog: () => setIsDialogOpen(true),
       closeDialog: () => {
-        console.log('Close dialog invoked');
         setIsDialogOpen(false);
       },
     }

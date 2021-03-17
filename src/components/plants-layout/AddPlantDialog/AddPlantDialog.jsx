@@ -169,7 +169,6 @@ const AddPlantDialog = ({
 
         <section className="plant-images">
           <ul className="plant-images-wrapper">
-            {console.log(newPlant)}
             {newPlant.images && Object.keys(newPlant.images).map((key) => (
               <li key={newPlant.images[key][0].id}>
                 <p>{key}</p>

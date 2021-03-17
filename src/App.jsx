@@ -32,7 +32,6 @@ const Plants = lazy(() => import('./components/views/Plants'));
 const NoteDetail = lazy(() => import('./components/views/NoteDetail'));
 const GardenAreaDetail = lazy(() => import('./components/views/GardenAreaDetail/GardenAreaDetail'));
 const PlantDetail = lazy(() => import('./components/views/PlantDetail'));
-
 function App() {
   // eslint-disable-next-line no-unused-vars
   const [errorMsg, setErrorMsg] = useState(null);

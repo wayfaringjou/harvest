@@ -162,7 +162,6 @@ const PlantDetail = ({ match: { params: { plantId } } }) => {
 
           <section className="plant-images">
             <ul className="plant-images-wrapper">
-              {console.log(plantData)}
               {plantData.images && Object.keys(plantData.images).map((key) => (
                 <li key={plantData.images[key][0].id}>
                   <p>{key}</p>
