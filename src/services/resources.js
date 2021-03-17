@@ -97,9 +97,12 @@ export const plantSingleton = ({
 };
 
 // Notes
-export const notesCollection = () => ({
-  ...apiCollection({ path: notesPath }),
-});
+export const notesCollection = ({ path = notesPath } = {}) => {
+  const data = { path };
+  return {
+    ...apiCollection({ ...data }),
+  };
+};
 
 export const noteSingleton = ({
   id = '',
@@ -125,12 +128,13 @@ export const gardenSingleton = ({
   id = '',
   user_id = '',
   name = '',
+  path = userGardensPath,
 } = {}) => {
   const data = {
     id,
     user_id,
     name,
-    path: userGardensPath,
+    path,
   };
   return {
     ...data,

@@ -1,8 +1,8 @@
 import React, { createContext, useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-// import { useHistory } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import config from '../config/api';
-// import { HOME } from '../config/routes';
+import { HOME } from '../config/routes';
 import storageAccess from '../services/localStorage-methods';
 import credentials from '../services/api-auth-service';
 import useAPISend from '../hooks/useAPISend';
@@ -56,13 +56,13 @@ const AuthProvider = ({ children }) => {
   };
 
   // logout is removing the token from local storage
-  // const history = useHistory();
+  const history = useHistory();
   const logout = () => {
     // e.preventDefault();
     token.removeItem();
     setIsAuthenticated(false);
     setLogedUser(null);
-    // return history.push(HOME);
+    return history.push(HOME);
   };
 
   // Add user

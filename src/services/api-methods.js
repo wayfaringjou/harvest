@@ -15,6 +15,7 @@ const composeOptions = (method, body) => ({
 
 const apiRequest = async (url = '', options = {}) => {
   try {
+    if (!url) throw new Error('Empty url in fetch request');
     const res = await fetch(url, options);
     if (!res.ok) {
       const body = await res.json();

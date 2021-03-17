@@ -3,20 +3,29 @@ import NotesOverview from '../../notes-layout/NotesOverview';
 import useAPIRetrieve from '../../../hooks/useAPIRetrieve';
 import useAPISend from '../../../hooks/useAPISend';
 import { notesCollection, noteSingleton } from '../../../services/resources';
-
-const notes = notesCollection();
+import useAuthContext from '../../../hooks/useAuthContext';
+import config from '../../../config/api';
 
 const Notes = () => {
   const [reload, setReload] = useState(false);
   const [request, setRequest] = useState(false);
   const [requestFunction, setRequestFunction] = useState(null);
 
+  const { logedUser } = useAuthContext();
+
+  let notes = notesCollection();
+
+  if (logedUser) {
+    notes = notesCollection({
+      path: `${config.API_BASEPATH}/users/${logedUser.user_id}/garden/notes`,
+    });
+  }
   const {
     data,
     isRetrieving,
     isFailed,
     error,
-  } = useAPIRetrieve(notes.getAll, reload);
+  } = useAPIRetrieve(notes.getAll, logedUser, !logedUser);
 
   const {
     requestState,
