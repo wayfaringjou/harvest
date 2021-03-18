@@ -35,7 +35,10 @@ const GardenProvider = ({ children }) => {
       // eslint-disable-next-line prefer-destructuring
       gardenData.current = data[0];
     }
+  } else if (!isAuthenticated && (gardenData.current)) {
+    gardenData.current = '';
   }
+
   const value = {
     gardenData,
     isRetrieving,
