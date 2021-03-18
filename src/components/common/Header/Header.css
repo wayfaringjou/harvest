@@ -1,0 +1,7 @@
+.logotype {
+  display: inline-flex;
+  padding-left: 1rem;
+}
+.logotype img {
+  height: 1.5em;
+}

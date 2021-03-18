@@ -1,7 +1,9 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import useAuthContext from '../../../hooks/useAuthContext';
+import './RegistrationForm.css';
 
-const RegistrationForm = () => {
+const RegistrationForm = ({ onCancel }) => {
   const {
     addNewUser,
     setUserName,
@@ -13,7 +15,7 @@ const RegistrationForm = () => {
 
   return (
     <form onSubmit={(e) => addNewUser(e)}>
-      <fieldset className="registration-fieldset">
+      <fieldset className="registration-fieldset flow-all">
         <legend><h2>Sign up</h2></legend>
         {authStatus.submitError && (
         <p>
@@ -41,10 +43,26 @@ const RegistrationForm = () => {
         <button type="submit">
           Sign up
         </button>
+        <button
+          className="text"
+          type="button"
+          onClick={onCancel}
+        >
+          <span className="btn-label">
+            Cancel
+          </span>
+        </button>
       </fieldset>
-
     </form>
   );
+};
+
+RegistrationForm.propTypes = {
+  onCancel: PropTypes.func,
+};
+
+RegistrationForm.defaultProps = {
+  onCancel: () => {},
 };
 
 export default RegistrationForm;

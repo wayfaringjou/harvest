@@ -4,18 +4,19 @@
   /* Design tokens */
   /* Colors */
 
-  --dark: #2e2c2f;
+  --dark: #073b3a;
   --light: #f9f8f8;
   --shade: #e1e3e5;
   --shade-dark: #c0c1c3;
   --shade-light: #eaecf0;
   --primary: #8fff8f;
-  --primary-shade: #0000ad;
-  --secondary: #0daf94;
-  --secondary-shade: #0091a0;
+  --primary-shade: #5acb60;
+  --secondary: #db5a42;
+  --secondary-shade: #b35320;
   --tertiary: #f9e900;
   --tertiary-shade: #c2b700;
-
+  --blue: #b8ebff;
+  --dark-alt: rgb(58, 64, 58);
   /* Scale */
   --s300: 0.833rem;
   --s400: 1rem;
@@ -34,15 +35,12 @@ html {
 } /*16px*/
 
 body {
-  background: white;
+  background: var(--light);
   font-family: "Open sans", sans-serif;
   font-weight: 400;
+  letter-spacing: 0.03125rem;
   line-height: 1.75;
-  color: #000000;
-}
-
-p {
-  margin-bottom: 1rem;
+  color: var(--dark);
 }
 
 h1,
@@ -50,31 +48,42 @@ h2,
 h3,
 h4,
 h5 {
-  margin: 1.75rem 0 1.38rem;
+  margin: 1.75rem 0 1.25rem;
   font-family: "Playfair Display", serif;
   font-weight: 400;
-  line-height: 1.3;
+  line-height: 1.75;
 }
 
 h1 {
-  margin-top: 0;
   font-size: 3.052rem;
+  font-weight: 400;
+  letter-spacing: 0.09375rem;
 }
 
 h2 {
   font-size: 2.441rem;
+  letter-spacing: 0.03125rem;
 }
 
 h3 {
   font-size: 1.953rem;
+  letter-spacing: 0;
 }
 
 h4 {
   font-size: 1.563rem;
+  letter-spacing: 0.015625rem;
 }
 
 h5 {
   font-size: 1.25rem;
+  letter-spacing: 0;
+}
+
+h6 {
+  font-size: 1.0833rem;
+  font-weight: 500;
+  letter-spacing: 0.009375rem;
 }
 
 small,
@@ -82,25 +91,82 @@ small,
   font-size: 0.8rem;
 }
 
+.caption {
+  font-weight: 400;
+  font-size: 0.75rem;
+  letter-spacing: 0.025rem;
+}
+
+.overline {
+  font-weight: 600;
+  font-size: 0.625rem;
+  letter-spacing: 0.09375rem;
+}
+
 ul {
   padding: 0;
 }
 
 li {
-  border: thin solid #cfcfcf;
-  margin: 16px 0;
   list-style: none;
 }
 
-.planted-list li {
-  display: inline;
-  margin: 8px;
-  padding: 2px;
-  background-color: #cfcfcf;
+button {
+  margin: 0.5rem;
+  background-color: var(--secondary);
+  color: var(--light);
+  border: 0;
+  padding: 0;
+  border-radius: 0.25rem;
+  padding-right: 1rem;
+  padding-left: 0.75rem;
+  font-weight: 600;
+  font-size: 0.875rem;
+  letter-spacing: 0.078125rem;
+  text-transform: uppercase;
+  min-width: 4rem;
+  height: 2.25rem;
+  width: max-content;
 }
 
-button {
-  margin: 8px;
+button > .btn-label {
+  margin-left: 0.25rem;
+}
+
+button > * {
+  vertical-align: middle;
+}
+
+button:disabled {
+  background-color: var(--shade);
+  color: var(--dark);
+}
+
+button.outlined {
+  background-color: unset;
+  border: thin solid var(--shade-dark);
+  color: var(--primary);
+}
+
+button.text {
+  background-color: unset;
+  border: 0;
+  color: var(--secondary);
+}
+
+button.outlined:disabled,
+button.text:disabled {
+  color: var(--shade-dark);
+}
+
+button.toggle {
+  padding: 0.75rem;
+  margin: 0 0.0625rem;
+  height: unset;
+  min-width: unset;
+  background-color: var(--light);
+  color: currentColor;
+  border: thin solid var(--shade-dark);
 }
 
 fieldset {
@@ -121,16 +187,95 @@ input {
   background-color: var(--shade-light);
 }
 
-hr {
-  border: solid thin #cfcfcf;
-}
-
-.planted-on-flair {
-  background-color: #cfcfcf;
-}
-
 input,
 textarea {
   border: 0;
-  border-bottom: medium solid black;
+  border-bottom: medium solid var(--dark);
+}
+
+hr {
+  border: solid thin var(--blue);
+}
+
+/* Composition */
+.flow {
+  --flow-space: var(--metric-rythm);
+}
+
+.flow > * + * {
+  margin-top: 1rem;
+  margin-top: var(--flow-space, 1rem);
+}
+
+.flow-all * + * {
+  margin-top: 1rem;
+  margin-top: var(--flow-space, 1rem);
+}
+
+/* Utilities */
+
+/* Position child elements relative to this element */
+.aspect-ratio-box {
+  position: relative;
+  overflow: hidden;
+}
+
+/* Create a pseudo element that uses padding-bottom to take up space */
+.aspect-ratio-box::after {
+  display: block;
+  content: "";
+  /* 16:9 aspect ratio */
+  /* padding-bottom: 56.25%; */
+  padding-bottom: 65%;
+}
+
+/* Image is positioned absolutely relative to the parent element */
+.aspect-ratio-box img {
+  /* Image should match parent box size */
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+}
+
+/* 576px */
+@media only screen and (min-width: 36em) {
+  h1 {
+    font-size: 4.209rem;
+  }
+
+  h2 {
+    font-size: 3.157rem;
+  }
+
+  h3 {
+    font-size: 2.369rem;
+  }
+
+  h4 {
+    font-size: 1.777rem;
+  }
+
+  h5 {
+    font-size: 1.333rem;
+  }
+}
+
+/* 768px */
+@media only screen and (min-width: 48em) {
+  h1 {
+    font-size: 6.25rem;
+  }
+}
+
+/* 960px */
+@media only screen and (min-width: 60em) {
+  .App {
+    max-width: 60em;
+    margin: 0 auto;
+  }
+}
+
+/* 1200px */
+@media only screen and (min-width: 75em) {
 }

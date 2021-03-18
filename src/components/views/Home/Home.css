@@ -1,4 +1,72 @@
 .banner {
-  background-color: #8fff8f;
   text-align: center;
+  color: var(--light);
+  background-image: url("../../../images/banner.jpg");
+  background-size: cover;
+  padding: 1rem;
+}
+
+.banner-wrapper {
+  border: solid thin var(--blue);
+  padding: 1rem;
+}
+
+.banner button {
+  background-color: var(--primary);
+  color: var(--dark-alt);
+}
+
+.features {
+  margin: 3rem 0;
+}
+
+.feature-card {
+  margin: 1rem 0;
+}
+
+.feature-card header {
+  padding: 0 1rem;
+}
+
+.feature-card .card-description {
+  padding: 0 1rem;
+}
+
+.login-prompt,
+.registration-prompt {
+  padding: 0 1rem;
+}
+
+.login-prompt input,
+.registration-prompt input {
+  margin-bottom: 1rem;
+}
+
+@media only screen and (min-width: 36em) {
+  .features {
+    padding: 0 2rem;
+  }
+  .login-prompt,
+  .registration-prompt {
+    max-width: 75%;
+    margin: 0 auto;
+  }
+}
+
+@media only screen and (min-width: 48em) {
+  .features {
+    display: flex;
+    flex-wrap: wrap;
+    padding: 0 1rem;
+  }
+
+  .feature-card {
+    flex: 1 0 45%;
+    margin: 0.5rem;
+  }
+
+  .login-prompt,
+  .registration-prompt {
+    max-width: 50%;
+  }
 }

@@ -1,7 +1,9 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import useAuthContext from '../../../hooks/useAuthContext';
+import './LoginForm.css';
 
-const LoginForm = () => {
+const LoginForm = ({ onCancel }) => {
   const {
     login,
     setUserName,
@@ -13,7 +15,7 @@ const LoginForm = () => {
 
   return (
     <form onSubmit={(e) => login(e)}>
-      <fieldset>
+      <fieldset className="flow-all">
         <legend>
           <h2>Sign in</h2>
         </legend>
@@ -41,11 +43,29 @@ const LoginForm = () => {
           />
         </label>
         <button type="submit">
-          Sign in
+          <span className="btn-label">
+            Sign in
+          </span>
+        </button>
+        <button
+          className="text"
+          type="button"
+          onClick={onCancel}
+        >
+          <span className="btn-label">
+            Cancel
+          </span>
         </button>
       </fieldset>
     </form>
-
   );
+};
+
+LoginForm.propTypes = {
+  onCancel: PropTypes.func,
+};
+
+LoginForm.defaultProps = {
+  onCancel: () => {},
 };
 export default LoginForm;
