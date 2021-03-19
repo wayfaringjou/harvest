@@ -5,6 +5,7 @@ import AddGardenAreaDialog from '../AddGardenAreaDialog';
 import areaPropTypes from '../../../propTypes/gardenArea';
 import usePrevious from '../../../hooks/usePrevious';
 import PlantsListSimple from '../PlantsListSimple/PlantsListSimple';
+import './GardenAreasCollection.css';
 
 const GardenAreasCollection = ({
   items,
@@ -57,13 +58,13 @@ const GardenAreasCollection = ({
 
   return (
     <section className="areas-collection">
-      <h3>Areas list:</h3>
+      <h3>Your Areas:</h3>
       <ul className="garden-areas-list">
         {itemsToRender.map((item) => {
           if (item.id === deleteControl.idToDelete) {
             if (areaSubmitStatus.submitSuccess) {
               return (
-                <p key={item.id}>
+                <p className="submit-response" key={item.id}>
                   {`${areaSubmitStatus.submitResponse.name} Deleted`}
                 </p>
               );
@@ -77,18 +78,23 @@ const GardenAreasCollection = ({
                 <p>Confirm delete:</p>
                 {areaSubmitStatus.submitError && <p>There was an error</p>}
                 <button
+                  className="text"
                   type="button"
                   disabled={areaSubmitStatus.isSubmitting}
                   onClick={(e) => onAreaDelete(e, { id: item.id })}
                 >
-                  Confirm
+                  <span className="btn-label">
+                    Confirm
+                  </span>
                 </button>
                 <button
                   type="button"
                   disabled={areaSubmitStatus.isSubmitting}
                   onClick={() => deleteControl.setIdToDelete('')}
                 >
-                  Cancel
+                  <span className="btn-label">
+                    Cancel
+                  </span>
                 </button>
               </li>
             );
@@ -118,31 +124,43 @@ const GardenAreasCollection = ({
                   {item.name}
                 </Link>
               </h4>
-              <p>
-                {item.length_cm && `Lenght: ${item.length_cm}cm`}
-              </p>
-              <p>
-                {item.width_cm && `Width: ${item.width_cm}cm`}
-              </p>
+
+              <section className="area-info">
+                <p>
+                  {item.length_cm && `Length: ${item.length_cm}cm`}
+                </p>
+                <p>
+                  {item.width_cm && `Width: ${item.width_cm}cm`}
+                </p>
+              </section>
+
               <PlantsListSimple area_id={item.id} garden_id={garden_id} />
-              <button
-                type="button"
-                onClick={() => {
-                  deleteControl.setIdToDelete(item.id);
-                  editControl.setIdToEdit('');
-                }}
-              >
-                Delete
-              </button>
-              <button
-                type="button"
-                onClick={() => {
-                  editControl.setIdToEdit(item.id);
-                  deleteControl.setIdToDelete('');
-                }}
-              >
-                Edit
-              </button>
+              <section className="area-actions">
+                <button
+                  type="button"
+                  onClick={() => {
+                    editControl.setIdToEdit(item.id);
+                    deleteControl.setIdToDelete('');
+                  }}
+                >
+                  <span className="btn-label">
+                    Edit
+                  </span>
+                </button>
+                <button
+                  type="button"
+                  className="text"
+                  onClick={() => {
+                    deleteControl.setIdToDelete(item.id);
+                    editControl.setIdToEdit('');
+                  }}
+                >
+                  <span className="btn-label">
+                    Delete
+                  </span>
+                </button>
+              </section>
+
             </li>
           );
         })}

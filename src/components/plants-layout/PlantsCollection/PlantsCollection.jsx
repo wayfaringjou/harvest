@@ -6,6 +6,7 @@ import plantPropTypes from '../../../propTypes/plant';
 import usePrevious from '../../../hooks/usePrevious';
 import { PLANTS } from '../../../config/routes';
 import AreaFlair from '../AreaFlair';
+import './PlantsCollection.css';
 
 const PlantsCollection = ({
   items,
@@ -55,93 +56,110 @@ const PlantsCollection = ({
   }, [plantSubmitStatus.isSubmitting]);
 
   return (
-    <ul className="plants-list">
-      {itemsToRender.map((item) => {
-        if (item.id === deleteControl.idToDelete) {
-          if (plantSubmitStatus.submitSuccess) {
+    <section className="plants-collection">
+      <h3>Your plants:</h3>
+      <ul className="plants-list">
+        {itemsToRender.map((item) => {
+          if (item.id === deleteControl.idToDelete) {
+            if (plantSubmitStatus.submitSuccess) {
+              return (
+                <p key={item.id}>
+                  {`${plantSubmitStatus.submitResponse.name} Deleted`}
+                </p>
+              );
+            }
+
             return (
-              <p key={item.id}>
-                {`${plantSubmitStatus.submitResponse.name} Deleted`}
-              </p>
+              <li key={item.id}>
+                <h4>
+                  {item.name}
+                </h4>
+                <p>Confirm delete:</p>
+                {plantSubmitStatus.submitError && <p>There was an error</p>}
+                <button
+                  type="button"
+                  disabled={plantSubmitStatus.isSubmitting}
+                  onClick={(e) => onPlantDelete(e, { id: item.id })}
+                >
+                  <span className="btn-label">
+                    Confirm
+                  </span>
+                </button>
+                <button
+                  className="text"
+                  type="button"
+                  disabled={plantSubmitStatus.isSubmitting}
+                  onClick={() => deleteControl.setIdToDelete('')}
+                >
+                  <span className="btn-label">
+                    Cancel
+                  </span>
+                </button>
+              </li>
+            );
+          }
+
+          if (item.id === editControl.idToEdit) {
+            return (
+              <li key={item.id}>
+                <p>Edit info:</p>
+                <h4>
+                  {item.name}
+                </h4>
+                <AddPlantDialog
+                  key={item.id}
+                  plantData={item}
+                  closeDialog={() => editControl.setIdToEdit('')}
+                  onPlantSubmit={onPlantUpdate}
+                  plantSubmitStatus={plantSubmitStatus}
+                />
+              </li>
             );
           }
 
           return (
             <li key={item.id}>
               <h4>
-                {item.name}
+                <Link to={`${PLANTS}/${item.id}`}>
+                  {item.name}
+                </Link>
               </h4>
-              <p>Confirm delete:</p>
-              {plantSubmitStatus.submitError && <p>There was an error</p>}
-              <button
-                type="button"
-                disabled={plantSubmitStatus.isSubmitting}
-                onClick={(e) => onPlantDelete(e, { id: item.id })}
-              >
-                Confirm
-              </button>
-              <button
-                type="button"
-                disabled={plantSubmitStatus.isSubmitting}
-                onClick={() => deleteControl.setIdToDelete('')}
-              >
-                Cancel
-              </button>
+              {item.area_id && (
+                <section className="plant-info">
+                  <p>Planted in:</p>
+                  <AreaFlair garden_id={garden_id} area_id={item.area_id} />
+                </section>
+              )}
+              <section className="plant-actions">
+                <button
+                  type="button"
+                  onClick={() => {
+                    editControl.setIdToEdit(item.id);
+                    deleteControl.setIdToDelete('');
+                  }}
+                >
+                  <span className="btn-label">
+                    Edit
+                  </span>
+                </button>
+                <button
+                  type="button"
+                  className="text"
+                  onClick={() => {
+                    deleteControl.setIdToDelete(item.id);
+                    editControl.setIdToEdit('');
+                  }}
+                >
+                  <span className="btn-label">
+                    Delete
+                  </span>
+                </button>
+              </section>
             </li>
           );
-        }
-
-        if (item.id === editControl.idToEdit) {
-          return (
-            <li key={item.id}>
-              <p>Edit info:</p>
-              <h4>
-                {item.name}
-              </h4>
-              <AddPlantDialog
-                key={item.id}
-                plantData={item}
-                closeDialog={() => editControl.setIdToEdit('')}
-                onPlantSubmit={onPlantUpdate}
-                plantSubmitStatus={plantSubmitStatus}
-              />
-            </li>
-          );
-        }
-
-        return (
-          <li key={item.id}>
-            <h4>
-              <Link to={`${PLANTS}/${item.id}`}>
-                {item.name}
-              </Link>
-            </h4>
-            {item.area_id && (
-            <AreaFlair garden_id={garden_id} area_id={item.area_id} />
-            )}
-            <hr />
-            <button
-              type="button"
-              onClick={() => {
-                deleteControl.setIdToDelete(item.id);
-                editControl.setIdToEdit('');
-              }}
-            >
-              Delete
-            </button>
-            <button
-              type="button"
-              onClick={() => {
-                editControl.setIdToEdit(item.id);
-                deleteControl.setIdToDelete('');
-              }}
-            >
-              Edit
-            </button>
-          </li>
-        );
-      })}
-    </ul>
+        })}
+      </ul>
+    </section>
   );
 };
 

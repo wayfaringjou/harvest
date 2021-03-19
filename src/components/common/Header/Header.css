@@ -1,7 +1,17 @@
 .logotype {
   display: inline-flex;
-  padding-left: 1rem;
+  margin-left: -1rem;
 }
 .logotype img {
   height: 1.5em;
+}
+
+.logout {
+  display: block;
+  text-align: right;
+  padding: 0 1rem;
+}
+
+.app-header {
+  text-align: center;
 }

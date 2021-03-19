@@ -8,6 +8,7 @@ import SearchNoteDialog from '../SearchNoteDialog';
 import notePropTypes from '../../../propTypes/note';
 import submitStatusPropTypes from '../../../propTypes/submitStatus';
 import useGardenContext from '../../../hooks/useGardenContext';
+import notesImg from '../../../images/notes.jpg';
 
 const NotesOverview = ({
   data,
@@ -33,11 +34,13 @@ const NotesOverview = ({
   const notesElement = () => ({
     id: 'notes-overview',
     name: 'Notes',
+    img: notesImg,
+    imgDesc: 'Shovel in the ground',
     // collection: data,
     prompts: {
       addNote: {
         id: 1,
-        action: 'Add new note',
+        action: 'Add note',
         desc: 'Add a note for your garden, area or plant',
         dialogComponent: AddNoteDialog,
         dialogProps: {

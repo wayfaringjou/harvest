@@ -6,6 +6,7 @@ import AddGardenAreaDialog from '../AddGardenAreaDialog';
 import GardenAreasCollection from '../GardenAreasCollection';
 import SearchAreaDialog from '../SearchAreaDialog';
 import useDialog from '../../../hooks/useDialog';
+import areasImg from '../../../images/areas.jpg';
 
 const GardenAreasOverview = ({
   data,
@@ -31,12 +32,14 @@ const GardenAreasOverview = ({
   const gardenAreasElement = () => ({
     id: 'areas-overview',
     name: 'Garden Areas',
+    img: areasImg,
+    imgDesc: 'Raised bed garden plot',
     // collection: data,
     prompts: {
       addArea: {
         id: 1,
-        action: 'Add new area',
-        desc: 'Add a representation of an area of your garden',
+        action: 'Add area',
+        desc: 'Add an area of your garden',
         dialogComponent: AddGardenAreaDialog,
         dialogProps: {
           onAreaSubmit: onAreaPost,
@@ -46,7 +49,7 @@ const GardenAreasOverview = ({
       },
       filterAreaList: {
         id: 2,
-        action: 'Filter',
+        action: 'Search',
         desc: 'Enter a name to filter the list',
         dialogComponent: SearchAreaDialog,
         dialogProps: {

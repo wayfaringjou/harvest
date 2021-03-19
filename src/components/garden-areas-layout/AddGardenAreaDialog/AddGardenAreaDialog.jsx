@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import areaPropTypes from '../../../propTypes/gardenArea';
 import useGardenContext from '../../../hooks/useGardenContext';
+import './AddGardenAreaDialog.css';
 
 // onAreaSubmit can be used for POST or PATCH methods
 const AddGardenAreaDialog = ({
@@ -24,15 +25,10 @@ const AddGardenAreaDialog = ({
   }
 
   return (
-    <form onSubmit={(e) => onAreaSubmit(e, newArea)}>
-      <button
-        type="button"
-        onClick={() => {
-          closeDialog();
-        }}
-      >
-        X
-      </button>
+    <form
+      className="flow-all add-garden"
+      onSubmit={(e) => onAreaSubmit(e, newArea)}
+    >
       {areaSubmitStatus.submitError && <h4>There was an error</h4>}
       <label htmlFor="area-name">
         <p>New area name:</p>
@@ -71,12 +67,23 @@ const AddGardenAreaDialog = ({
           placeholder="125"
         />
       </label>
-      <button
-        type="submit"
-        disabled={areaSubmitStatus.isSubmitting}
-      >
-        {areaSubmitStatus.isSubmitting ? 'Saving...' : 'Submit'}
-      </button>
+      <section className="dialog-actions">
+        <button
+          type="submit"
+          disabled={areaSubmitStatus.isSubmitting}
+        >
+          {areaSubmitStatus.isSubmitting ? 'Saving...' : 'Submit'}
+        </button>
+        <button
+          type="button"
+          className="text"
+          onClick={() => {
+            closeDialog();
+          }}
+        >
+          Cancel
+        </button>
+      </section>
     </form>
   );
 };

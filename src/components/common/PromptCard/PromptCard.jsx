@@ -22,7 +22,7 @@ const actionClickHandler = (diagCont, currDiagCont, promptId) => {
 
 const PromptCard = ({
   action,
-  description,
+  // description,
   dialogControls,
   currentDialogControls,
   promptId,
@@ -38,13 +38,17 @@ const PromptCard = ({
       }}
       type="button"
     >
-      {action}
+      <span className="btn-label">
+        {action}
+      </span>
     </button>
-    <p>
-      <small>
+    {/*
+    <p className="prompt-card-description">
+      <span className="caption">
         {description}
-      </small>
+      </span>
     </p>
+    */}
   </article>
 );
 
@@ -52,7 +56,7 @@ export default PromptCard;
 
 PromptCard.propTypes = {
   action: PropTypes.string,
-  description: PropTypes.string,
+  // description: PropTypes.string,
   // handler: PropTypes.func,
   // eslint-disable-next-line react/forbid-prop-types
   // dialog: PropTypes.func.isRequired,
@@ -61,7 +65,7 @@ PromptCard.propTypes = {
 
 PromptCard.defaultProps = {
   action: '',
-  description: '',
+  // description: '',
   // handler: () => {},
   // dialog: Symbol(''),
   // dialogHandler: () => {},

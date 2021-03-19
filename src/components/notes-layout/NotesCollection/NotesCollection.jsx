@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import notePropTypes from '../../../propTypes/note';
 import usePrevious from '../../../hooks/usePrevious';
 import { NOTES } from '../../../config/routes';
+import './NotesCollection.css';
 
 const NotesCollection = ({
   items,
@@ -50,61 +51,71 @@ const NotesCollection = ({
   }, [noteSubmitStatus.isSubmitting]);
 
   return (
-    <ul className="notes-list">
-      {itemsToRender.map((item) => {
-        if (item.id === deleteControl.idToDelete) {
-          if (noteSubmitStatus.submitSuccess) {
+    <section className="notes-collection">
+      <h3>Your Notes:</h3>
+      <ul className="notes-list">
+        {itemsToRender.map((item) => {
+          if (item.id === deleteControl.idToDelete) {
+            if (noteSubmitStatus.submitSuccess) {
+              return (
+                <p key={item.id}>
+                  {`${noteSubmitStatus.submitResponse.title} Deleted`}
+                </p>
+              );
+            }
+
             return (
-              <p key={item.id}>
-                {`${noteSubmitStatus.submitResponse.title} Deleted`}
-              </p>
+              <li key={item.id}>
+                <h4>
+                  {item.title}
+                </h4>
+                <p>Confirm delete:</p>
+                {noteSubmitStatus.submitError && <p>There was an error</p>}
+                <button
+                  type="button"
+                  disabled={noteSubmitStatus.isSubmitting}
+                  onClick={(e) => onNoteDelete(e, { id: item.id })}
+                >
+                  <span className="btn-label">
+                    Confirm
+                  </span>
+                </button>
+                <button
+                  type="button"
+                  className="text"
+                  disabled={noteSubmitStatus.isSubmitting}
+                  onClick={() => deleteControl.setIdToDelete('')}
+                >
+                  <span className="btn-label">
+                    Cancel
+                  </span>
+                </button>
+              </li>
             );
           }
 
           return (
             <li key={item.id}>
               <h4>
-                {item.title}
+                <Link to={`${NOTES}/${item.id}`}>
+                  {item.title}
+                </Link>
               </h4>
-              <p>Confirm delete:</p>
-              {noteSubmitStatus.submitError && <p>There was an error</p>}
-              <button
-                type="button"
-                disabled={noteSubmitStatus.isSubmitting}
-                onClick={(e) => onNoteDelete(e, { id: item.id })}
-              >
-                Confirm
-              </button>
-              <button
-                type="button"
-                disabled={noteSubmitStatus.isSubmitting}
-                onClick={() => deleteControl.setIdToDelete('')}
-              >
-                Cancel
-              </button>
+              <section className="note-actions">
+                <button
+                  type="button"
+                  onClick={() => {
+                    deleteControl.setIdToDelete(item.id);
+                  }}
+                >
+                  Delete
+                </button>
+              </section>
             </li>
           );
-        }
-
-        return (
-          <li key={item.id}>
-            <h4>
-              <Link to={`${NOTES}/${item.id}`}>
-                {item.title}
-              </Link>
-            </h4>
-            <button
-              type="button"
-              onClick={() => {
-                deleteControl.setIdToDelete(item.id);
-              }}
-            >
-              Delete
-            </button>
-          </li>
-        );
-      })}
-    </ul>
+        })}
+      </ul>
+    </section>
   );
 };
 

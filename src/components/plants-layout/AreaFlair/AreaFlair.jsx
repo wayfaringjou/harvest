@@ -26,9 +26,7 @@ const AreaFlair = ({ garden_id, area_id }) => {
 
   return (
     <span className="planted-on-flair">
-      <small>
-        {data.name}
-      </small>
+      {data.name}
     </span>
   );
 };

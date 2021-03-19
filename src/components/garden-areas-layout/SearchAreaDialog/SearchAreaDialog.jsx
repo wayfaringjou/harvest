@@ -1,18 +1,11 @@
 import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
+import './SearchAreaDialog.css';
 
 const SearchAreaDialog = ({ filter, filterHandler, closeDialog }) => {
   useEffect(() => () => filterHandler(''), []);
   return (
-    <form>
-      <button
-        type="button"
-        onClick={() => {
-          closeDialog();
-        }}
-      >
-        X
-      </button>
+    <form className="add-garden flow-all">
       <label htmlFor="filter-areas">
         <p>Filter list of areas by name:</p>
         <input
@@ -22,6 +15,18 @@ const SearchAreaDialog = ({ filter, filterHandler, closeDialog }) => {
           onChange={({ target: { value } }) => filterHandler(value)}
         />
       </label>
+      <section className="dialog-actions">
+        <button
+          type="button"
+          className="text"
+          onClick={() => {
+            closeDialog();
+          }}
+        >
+          Cancel
+        </button>
+      </section>
+
     </form>
   );
 };

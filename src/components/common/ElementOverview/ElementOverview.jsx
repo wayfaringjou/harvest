@@ -48,6 +48,9 @@ const ElementOverview = ({
         className="overview-header"
       >
         <h2>{element.name}</h2>
+        <div className="aspect-ratio-box">
+          <img src={element.img} alt={element.imgDesc} />
+        </div>
       </header>
       <section
         className="overview-prompts"

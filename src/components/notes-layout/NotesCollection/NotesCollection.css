@@ -1,0 +1,25 @@
+.notes-collection > h3 {
+  margin: 1rem 0 0 1rem;
+}
+.notes-list {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.notes-list > li {
+  grid-column: auto / span 4;
+  margin: 0 0.5rem;
+  padding: 1rem;
+  border: thin solid var(--blue);
+}
+
+.note-info {
+  color: var(--dark-alt);
+  border-radius: 0.25rem;
+}
+
+.note-actions {
+  margin-top: 2rem;
+  text-align: right;
+}

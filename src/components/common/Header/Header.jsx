@@ -8,13 +8,14 @@ const Header = () => {
   // eslint-disable-next-line no-unused-vars
   const { isAuthenticated, logout } = useAuthContext();
   return (
-    <header>
+    <header className="app-header">
       <h2 className="logotype">
         <img src={logo} alt="Sprig" />
         Harvest
       </h2>
       {isAuthenticated && (
       <Link
+        className="logout"
         to="/"
         onClick={() => logout()}
       >

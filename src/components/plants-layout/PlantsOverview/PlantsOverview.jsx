@@ -7,6 +7,7 @@ import AddPlantDialog from '../AddPlantDialog';
 import SearchPlantDialog from '../SearchPlantDialog';
 import plantPropTypes from '../../../propTypes/plant';
 import submitStatusPropTypes from '../../../propTypes/submitStatus';
+import plantsImg from '../../../images/plants.jpg';
 
 const PlantsOverview = ({
   data,
@@ -30,12 +31,14 @@ const PlantsOverview = ({
 
   const plantsElement = () => ({
     id: 'plants-overview',
-    name: 'Your plants',
+    name: 'Garden plants',
+    img: plantsImg,
+    imgDesc: 'Plants in pots',
     // collection: data,
     prompts: {
       addPlant: {
         id: 1,
-        action: 'Add new plant',
+        action: 'Add plant',
         desc: 'Add a representation of a plant in your garden',
         dialogComponent: AddPlantDialog,
         dialogProps: {
