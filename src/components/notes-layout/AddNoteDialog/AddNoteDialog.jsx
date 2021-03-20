@@ -26,14 +26,7 @@ const AddNoteDialog = ({
 
   return (
     <form onSubmit={(e) => onNoteSubmit(e, newNote)}>
-      <button
-        type="button"
-        onClick={() => {
-          closeDialog();
-        }}
-      >
-        X
-      </button>
+
       {noteSubmitStatus.submitError && <h4>There was an error</h4>}
       <label htmlFor="note-title">
         <p>New note title:</p>
@@ -48,13 +41,23 @@ const AddNoteDialog = ({
           placeholder="'Chores', 'Soil description'"
         />
       </label>
-
-      <button
-        type="submit"
-        disabled={noteSubmitStatus.isSubmitting}
-      >
-        {noteSubmitStatus.isSubmitting ? 'Saving...' : 'Submit'}
-      </button>
+      <section className="dialog-actions">
+        <button
+          type="submit"
+          disabled={noteSubmitStatus.isSubmitting}
+        >
+          {noteSubmitStatus.isSubmitting ? 'Saving...' : 'Submit'}
+        </button>
+        <button
+          type="button"
+          className="text"
+          onClick={() => {
+            closeDialog();
+          }}
+        >
+          Cancel
+        </button>
+      </section>
     </form>
   );
 };

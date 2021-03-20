@@ -1,0 +1,56 @@
+.plant {
+  margin: 0 1rem;
+}
+.plant-images {
+  overflow-x: auto;
+  max-width: 100%;
+}
+
+.plant-images-wrapper {
+  display: flex;
+  width: fit-content;
+}
+
+.plant-images-wrapper > li {
+  width: 16rem;
+  list-style: none;
+}
+
+.plant .grid-wrapper {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.plant-form input {
+  margin-bottom: 1rem;
+}
+
+.plant-img-caption {
+  text-transform: uppercase;
+}
+
+.plant-name-data,
+.plant-images,
+.growth-data,
+.plant-area,
+.dialog-actions {
+  grid-column: auto / span 4;
+}
+
+.plant-area {
+  text-align: center;
+}
+
+.common-names ul {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.common-names li {
+  margin: 0.25rem;
+  padding: 0.25rem;
+  text-transform: uppercase;
+  background-color: var(--dark-alt);
+  color: var(--light);
+}

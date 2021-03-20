@@ -106,15 +106,10 @@ const AddPlantDialog = ({
   }
 
   return (
-    <form onSubmit={(e) => onPlantSubmit(e, newPlant)}>
-      <button
-        type="button"
-        onClick={() => {
-          closeDialog();
-        }}
-      >
-        X
-      </button>
+    <form
+      onSubmit={(e) => onPlantSubmit(e, newPlant)}
+      className="plant-form"
+    >
       {plantSubmitStatus.submitError && <h4>There was an error</h4>}
       <section className="plant-lookup">
         <h4>Plant lookup</h4>
@@ -127,157 +122,172 @@ const AddPlantDialog = ({
       </section>
       <fieldset>
         <legend><h4>Fill plant data</h4></legend>
-        <section className="plant-name-data">
-          <label htmlFor="plant-name">
-            <p>New plant name:</p>
-            <input
-              required
-              id="plant-name"
-              type="text"
-              onChange={({ target: { value } }) => setNewPlant(
-                { ...newPlant, name: value },
-              )}
-              value={newPlant.name}
-              placeholder="'Garden tomato'"
-            />
-          </label>
-          {(newPlant.names && newPlant.names.length > 0) && (
-          <section className="common-names">
-            <p>Other names:</p>
-            <ul>
-              {newPlant.names.map((name) => (
-                <li key={name}>
-                  <small>{name}</small>
+        <div className="grid-wrapper">
+
+          <section className="plant-name-data flow">
+            <label htmlFor="plant-name">
+              <p>New plant name:</p>
+              <input
+                required
+                id="plant-name"
+                type="text"
+                onChange={({ target: { value } }) => setNewPlant(
+                  { ...newPlant, name: value },
+                )}
+                value={newPlant.name}
+                placeholder="'Garden tomato'"
+              />
+            </label>
+            {(newPlant.names && newPlant.names.length > 0) && (
+            <section className="common-names">
+              <p>Other names:</p>
+              <ul>
+                {newPlant.names.map((name) => (
+                  <li key={name}>
+                    <span className="caption">{name}</span>
+                  </li>
+                ))}
+              </ul>
+            </section>
+            )}
+            <label htmlFor="plant-scientific-name">
+              <p>Scientific name:</p>
+              <input
+                id="plant-scientific-name"
+                type="text"
+                onChange={({ target: { value } }) => setNewPlant(
+                  { ...newPlant, scientific_name: value },
+                )}
+                value={newPlant.scientific_name}
+                placeholder="'Solanum lycopersicum'"
+              />
+            </label>
+          </section>
+
+          <section className="plant-images">
+            <ul className="plant-images-wrapper">
+              {newPlant.images && Object.keys(newPlant.images).map((key) => (
+                <li key={newPlant.images[key][0].id}>
+                  <span className="plant-img-caption caption">{key}</span>
+                  <div className="aspect-ratio-box">
+                    <img
+                      src={newPlant.images[key][0].image_url}
+                      alt={`${newPlant.name} ${key}`}
+                    />
+                  </div>
                 </li>
               ))}
             </ul>
           </section>
-          )}
-          <label htmlFor="plant-scientific-name">
-            <p>Scientific name:</p>
-            <input
-              id="plant-scientific-name"
-              type="text"
-              onChange={({ target: { value } }) => setNewPlant(
-                { ...newPlant, scientific_name: value },
-              )}
-              value={newPlant.scientific_name}
-              placeholder="'Solanum lycopersicum'"
+          <section className="growth-data flow-all">
+            <label htmlFor="plant-sowing">
+              <p>Sowing recommendations:</p>
+              <textarea
+                id="plant-sowing"
+                type="text"
+                onChange={({ target: { value } }) => setNewPlant(
+                  { ...newPlant, sowing: value },
+                )}
+                value={newPlant.sowing}
+                placeholder="'Sowing info'"
+              />
+            </label>
+            <label htmlFor="plant-light">
+              <p>Required amount of light:</p>
+              <span className="caption">{'On a scale from 0 (no light, <= 10 lux) to 10 (very intensive insolation, >= 100 000 lux)'}</span>
+              <input
+                id="plant-light"
+                type="number"
+                onChange={({ target: { value } }) => setNewPlant(
+                  { ...newPlant, light: value },
+                )}
+                value={newPlant.light}
+                placeholder="'8'"
+              />
+            </label>
+            <label htmlFor="plant-days-to-harvest">
+              <p>Average days to harvest:</p>
+              <input
+                id="plant-days-to-harvest"
+                type="number"
+                onChange={({ target: { value } }) => setNewPlant(
+                  { ...newPlant, days_to_harvest: value },
+                )}
+                value={newPlant.days_to_harvest}
+                placeholder="'80'"
+              />
+            </label>
+            <label htmlFor="plant-row-spacing">
+              <p>Row spacing:</p>
+              <span className="caption">The minimum spacing between each rows of plants, in centimeters</span>
+              <input
+                id="plant-row-spacing"
+                type="number"
+                onChange={({ target: { value } }) => setNewPlant(
+                  { ...newPlant, row_spacing: value },
+                )}
+                value={newPlant.row_spacing}
+                placeholder="'54'"
+              />
+            </label>
+            <label htmlFor="plant-spread">
+              <p>Spread:</p>
+              <span className="caption">The average spreading of the plant, in centimeters</span>
+              <input
+                id="plant-spread"
+                type="number"
+                onChange={({ target: { value } }) => setNewPlant(
+                  { ...newPlant, spread: value },
+                )}
+                value={newPlant.spread}
+                placeholder="'76'"
+              />
+            </label>
+            <label htmlFor="plant-fruit-months">
+              <p>Fruit months:</p>
+              <span className="caption">The months the species usually produces fruits</span>
+              <input
+                id="plant-fruit-months"
+                type="text"
+                onChange={({ target: { value } }) => setNewPlant(
+                  { ...newPlant, fruit_months: value },
+                )}
+                value={newPlant.fruit_months}
+                placeholder="'June, July, August'"
+              />
+            </label>
+          </section>
+          <section className="plant-area">
+            <RelationSelector
+              type="Area"
+              onSelect={(value) => setNewPlant({ ...newPlant, area_id: value })}
+              selection={newPlant.area_id || ''}
             />
-          </label>
-        </section>
-
-        <section className="plant-images">
-          <ul className="plant-images-wrapper">
-            {newPlant.images && Object.keys(newPlant.images).map((key) => (
-              <li key={newPlant.images[key][0].id}>
-                <p>{key}</p>
-                <img
-                  src={newPlant.images[key][0].image_url}
-                  alt={`${newPlant.name} ${key}`}
-                />
-              </li>
-            ))}
-          </ul>
-        </section>
-        <section className="growth-data">
-          <label htmlFor="plant-sowing">
-            <p>Sowing recommendations:</p>
-            <textarea
-              id="plant-sowing"
-              type="text"
-              onChange={({ target: { value } }) => setNewPlant(
-                { ...newPlant, sowing: value },
+          </section>
+          <section className="dialog-actions">
+            <button
+              type="submit"
+              disabled={plantSubmitStatus.isSubmitting}
+            >
+              {plantSubmitStatus.isSubmitting && 'Saving...'}
+              {!plantSubmitStatus.isSubmitting && (
+                plantSubmitStatus.submitSuccess
+                  ? 'Success'
+                  : 'Submit'
               )}
-              value={newPlant.sowing}
-              placeholder="'Sowing info'"
-            />
-          </label>
-          <label htmlFor="plant-light">
-            <p>Required amount of light:</p>
-            <p>{'On a scale from 0 (no light, <= 10 lux) to 10 (very intensive insolation, >= 100 000 lux)'}</p>
-            <input
-              id="plant-light"
-              type="number"
-              onChange={({ target: { value } }) => setNewPlant(
-                { ...newPlant, light: value },
-              )}
-              value={newPlant.light}
-              placeholder="'8'"
-            />
-          </label>
-          <label htmlFor="plant-days-to-harvest">
-            <p>Average days to harvest:</p>
-            <input
-              id="plant-days-to-harvest"
-              type="number"
-              onChange={({ target: { value } }) => setNewPlant(
-                { ...newPlant, days_to_harvest: value },
-              )}
-              value={newPlant.days_to_harvest}
-              placeholder="'80'"
-            />
-          </label>
-          <label htmlFor="plant-row-spacing">
-            <p>Row spacing:</p>
-            <p>The minimum spacing between each rows of plants, in centimeters</p>
-            <input
-              id="plant-row-spacing"
-              type="number"
-              onChange={({ target: { value } }) => setNewPlant(
-                { ...newPlant, row_spacing: value },
-              )}
-              value={newPlant.row_spacing}
-              placeholder="'54'"
-            />
-          </label>
-          <label htmlFor="plant-spread">
-            <p>Spread:</p>
-            <p>The average spreading of the plant, in centimeters</p>
-            <input
-              id="plant-spread"
-              type="number"
-              onChange={({ target: { value } }) => setNewPlant(
-                { ...newPlant, spread: value },
-              )}
-              value={newPlant.spread}
-              placeholder="'76'"
-            />
-          </label>
-          <label htmlFor="plant-fruit-months">
-            <p>Fruit months:</p>
-            <p>The months the species usually produces fruits</p>
-            <input
-              id="plant-fruit-months"
-              type="text"
-              onChange={({ target: { value } }) => setNewPlant(
-                { ...newPlant, fruit_months: value },
-              )}
-              value={newPlant.fruit_months}
-              placeholder="'June, July, August'"
-            />
-          </label>
-        </section>
-        <section className="plant-area">
-          <RelationSelector
-            type="Area"
-            onSelect={(value) => setNewPlant({ ...newPlant, area_id: value })}
-            selection={newPlant.area_id || ''}
-          />
-        </section>
-        <button
-          type="submit"
-          disabled={plantSubmitStatus.isSubmitting}
-        >
-          {plantSubmitStatus.isSubmitting && 'Saving...'}
-          {!plantSubmitStatus.isSubmitting && (
-            plantSubmitStatus.submitSuccess
-              ? 'Success'
-              : 'Submit'
-          )}
-        </button>
+            </button>
+            <button
+              type="button"
+              className="text"
+              onClick={() => {
+                closeDialog();
+              }}
+            >
+              Cancel
+            </button>
+          </section>
+        </div>
       </fieldset>
-
     </form>
 
   );

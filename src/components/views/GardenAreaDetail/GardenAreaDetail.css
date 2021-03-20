@@ -1,0 +1,18 @@
+.area {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 1rem;
+  margin: 0 1rem;
+}
+
+.area > form {
+  grid-column: auto / span 4;
+}
+
+.area > .area-plants-collection{
+  grid-column: auto / span 4;
+}
+
+.area > .related-notes{
+  grid-column: auto / span 4;
+}

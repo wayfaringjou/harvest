@@ -10,6 +10,7 @@ import Plants from '../Plants';
 import useGardenContext from '../../../hooks/useGardenContext';
 import AreaPlantsCollection from '../../garden-areas-layout/AreaPlantsCollection';
 import RelatedNotes from '../../common/RelatedNotes/RelatedNotes';
+import './GardenAreaDetail.css';
 
 const area = gardenAreaSingleton();
 const GardenAreaDetail = ({ match: { params: { areaId } } }) => {
@@ -61,7 +62,6 @@ const GardenAreaDetail = ({ match: { params: { areaId } } }) => {
   }
   return (
     <article className="area">
-
       <form>
         <button type="button" onClick={() => history.goBack()}>Back</button>
         <fieldset>

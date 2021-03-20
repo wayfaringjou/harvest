@@ -30,7 +30,6 @@ const PlantsListSimple = ({ garden_id, area_id }) => {
       {data.length > 0 && <h5>Planted here:</h5>}
       <ul className="plants-symbols">
         {data.map((item) => {
-          console.log(item);
           const { images } = item;
           let image_url;
           if (images) {

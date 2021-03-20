@@ -8,8 +8,9 @@ import useAPISend from '../../../hooks/useAPISend';
 import usePrevious from '../../../hooks/usePrevious';
 import useGardenContext from '../../../hooks/useGardenContext';
 import RelationSelector from '../../notes-layout/RelationSelector';
-
-const note = noteSingleton();
+import localStorage from '../../../services/localStorage-methods';
+import config from '../../../config/api';
+import './NoteDetail.css';
 
 const NoteDetail = ({ match: { params: { noteId } } }) => {
   const [reload, setReload] = useState(false);
@@ -18,6 +19,11 @@ const NoteDetail = ({ match: { params: { noteId } } }) => {
   const [deleted, setDeleted] = useState(false);
 
   const garden = useGardenContext();
+
+  const ls = localStorage(config.AUTH_TOKEN_KEY);
+  const note = noteSingleton({
+    path: `${config.API_BASEPATH}/users/${ls.decodeUserData().user_id}/garden/notes`,
+  });
 
   const {
     data,
@@ -101,7 +107,7 @@ const NoteDetail = ({ match: { params: { noteId } } }) => {
     );
   }
   return (
-    <article className="note">
+    <article className="note flow-all">
       <form onSubmit={(e) => handleNoteRequest(e, noteData, 'PATCH')}>
         <button type="button" onClick={() => history.goBack()}>Back</button>
         <fieldset>
@@ -142,6 +148,7 @@ const NoteDetail = ({ match: { params: { noteId } } }) => {
         <button type="submit">Save changes</button>
         <button
           type="button"
+          className="text"
           onClick={(e) => handleNoteRequest(e, noteData, 'DELETE')}
         >
           Delete note

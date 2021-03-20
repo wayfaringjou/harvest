@@ -17,11 +17,14 @@
   margin-left: 0.5rem;
 }
 
-
 .overview-header > h2 {
     background-color: var(--dark);
     color: var(--light);
     padding: 0 0.5rem;
     margin: 1rem 0 0;
     border-bottom: solid thin var(--blue);
+}
+
+.overview-header > .aspect-ratio-box {
+  max-height: 18rem;
 }

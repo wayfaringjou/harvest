@@ -5,14 +5,7 @@ const SearchNoteDialog = ({ filter, filterHandler, closeDialog }) => {
   useEffect(() => () => filterHandler(''), []);
   return (
     <form>
-      <button
-        type="button"
-        onClick={() => {
-          closeDialog();
-        }}
-      >
-        X
-      </button>
+
       <label htmlFor="filter-areas">
         <p>Filter list of areas by name:</p>
         <input
@@ -22,6 +15,17 @@ const SearchNoteDialog = ({ filter, filterHandler, closeDialog }) => {
           onChange={({ target: { value } }) => filterHandler(value)}
         />
       </label>
+      <section className="dialog-actions">
+        <button
+          type="button"
+          className="text"
+          onClick={() => {
+            closeDialog();
+          }}
+        >
+          Cancel
+        </button>
+      </section>
     </form>
   );
 };

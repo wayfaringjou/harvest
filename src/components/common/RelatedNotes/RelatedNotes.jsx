@@ -5,10 +5,16 @@ import { notesCollection } from '../../../services/resources';
 import { NOTES } from '../../../config/routes';
 import useAPIRetrieve from '../../../hooks/useAPIRetrieve';
 import useGardenContext from '../../../hooks/useGardenContext';
+import config from '../../../config/api';
+import localStorage from '../../../services/localStorage-methods';
 
 const RelatedNotes = ({ area_id, plant_id }) => {
-  const notes = notesCollection();
   const garden = useGardenContext().gardenData.current;
+
+  const ls = localStorage(config.AUTH_TOKEN_KEY);
+  const notes = notesCollection({
+    path: `${config.API_BASEPATH}/users/${ls.decodeUserData().user_id}/garden/notes`,
+  });
 
   let requestFunction;
 

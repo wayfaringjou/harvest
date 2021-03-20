@@ -112,9 +112,10 @@ export const noteSingleton = ({
   plant_id = '',
   content = '',
   title = '',
+  path = notesPath,
 } = {}) => {
   const data = {
-    id, user_id, garden_id, area_id, plant_id, content, title, path: notesPath,
+    id, user_id, garden_id, area_id, plant_id, content, title, path,
   };
 
   return {
