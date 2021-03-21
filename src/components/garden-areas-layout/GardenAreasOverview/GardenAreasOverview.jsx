@@ -34,7 +34,6 @@ const GardenAreasOverview = ({
     name: 'Garden Areas',
     img: areasImg,
     imgDesc: 'Raised bed garden plot',
-    // collection: data,
     prompts: {
       addArea: {
         id: 1,

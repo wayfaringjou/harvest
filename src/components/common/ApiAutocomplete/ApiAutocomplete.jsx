@@ -8,7 +8,11 @@ import { plantsCollection } from '../../../services/resources';
 
 const ApiAutocomplete = ({ setSelected }) => {
   const garden = useGardenContext().gardenData.current;
-  const plants = plantsCollection(garden.id);
+
+  let plants;
+  if (garden) {
+    plants = plantsCollection(garden.id);
+  }
 
   // Fetch control
   const [reload, setReload] = useState(false);
@@ -46,10 +50,6 @@ const ApiAutocomplete = ({ setSelected }) => {
     }
   }, [string]);
 
-  /*  const handleKeyUp = () => {
-
-  };
-*/
   return (
     <article className="autocomplete-input">
       <input

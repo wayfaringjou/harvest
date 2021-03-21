@@ -17,9 +17,12 @@ const NotesCollection = ({
   let itemsToRender = [];
   if (!isRetrieving) {
     itemsToRender = items;
-    itemsToRender.sort((a, b) => a.id - b.id);
 
-    if (items.length === 0) {
+    if (itemsToRender) {
+      itemsToRender.sort((a, b) => a.id - b.id);
+    }
+
+    if (items && items.length === 0) {
       return (
         <p>
           No notes added yet.
@@ -54,7 +57,7 @@ const NotesCollection = ({
     <section className="notes-collection">
       <h3>Your Notes:</h3>
       <ul className="notes-list">
-        {itemsToRender.map((item) => {
+        {itemsToRender && itemsToRender.map((item) => {
           if (item.id === deleteControl.idToDelete) {
             if (noteSubmitStatus.submitSuccess) {
               return (

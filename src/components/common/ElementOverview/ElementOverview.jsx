@@ -1,4 +1,3 @@
-/* eslint-disable react/prop-types */
 import React, { useRef } from 'react';
 import PropTypes from 'prop-types';
 import PromptCard from '../PromptCard';
@@ -28,6 +27,7 @@ const ElementOverview = ({
   dialogControls,
 }) => {
   const actionDialog = useRef();
+
   const {
     isDialogOpen,
     openDialog,
@@ -86,12 +86,36 @@ const ElementOverview = ({
 
 ElementOverview.propTypes = {
   element: PropTypes.shape({
-    id: PropTypes.string,
+    id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
     name: PropTypes.string,
+    img: PropTypes.string,
+    imgDesc: PropTypes.string,
     prompts: PropTypes.objectOf(PropTypes.oneOfType([PropTypes.object, PropTypes.func])),
-    collection: PropTypes.arrayOf(PropTypes.object),
-  }).isRequired,
-  // renderCollection: PropTypes.func.isRequired,
+  }),
+  collection: PropTypes.oneOfType([PropTypes.object, PropTypes.func, PropTypes.element]),
+  dialogControls: PropTypes.shape({
+    isDialogOpen: PropTypes.bool,
+    openDialog: PropTypes.func,
+    closeDialog: PropTypes.func,
+    toggleDialog: PropTypes.func,
+  }),
+};
+
+ElementOverview.defaultProps = {
+  element: {
+    id: '',
+    name: '',
+    img: '',
+    imgDesc: '',
+    prompts: {},
+  },
+  collection: <></>,
+  dialogControls: {
+    isDialogOpen: false,
+    openDialog: () => {},
+    closeDialog: () => {},
+    toggleDialog: () => {},
+  },
 };
 
 export default ElementOverview;
