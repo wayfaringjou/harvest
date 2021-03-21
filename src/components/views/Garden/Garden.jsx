@@ -5,6 +5,8 @@ import Plants from '../Plants';
 import useGardenContext from '../../../hooks/useGardenContext';
 
 const Garden = () => {
+  // Get garden id referenced in context to be passed as prop for
+  // areas, plants and notes components
   const {
     gardenData, isRetrieving, isFailed, error,
   } = useGardenContext();
@@ -19,6 +21,12 @@ const Garden = () => {
       </p>
     );
   }
+
+  /*
+  Each component called below represents an entity used by the app.
+  For each entity there is a layout folder and inside an overview component.
+  The ElementOverview component is used as a wrapper for each entities collection of data.
+  */
 
   return (
     <section className="garden-overview">

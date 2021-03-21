@@ -3,6 +3,11 @@ import PropTypes from 'prop-types';
 import PromptCard from '../PromptCard';
 import './ElementOverview.css';
 
+/*
+This generic component uses element data passed as a prop to render
+a collection of that element and action prompts related to it.
+*/
+
 const renderPrompts = (
   prompts,
   dialogControls,

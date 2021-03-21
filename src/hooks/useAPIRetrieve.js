@@ -1,6 +1,8 @@
 /* eslint-disable consistent-return */
 /* eslint-disable no-return-assign */
 
+// Custom hook to wrap api fetch requests.
+// It works with the methods provided in ../services
 import { useEffect, useState } from 'react';
 
 export default function useAPIRetrieve(requestFunction, query, preventFetch = false) {

@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 /* eslint camelcase: "off" */
 import { apiCollection, apiSingleton } from './api-methods';
 import config from '../config/api';
