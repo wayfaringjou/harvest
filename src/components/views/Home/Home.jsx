@@ -21,6 +21,11 @@ const Home = () => {
           <h2>
             Let&apos;s get started:
           </h2>
+          <p>
+            A demo account is available with username:
+            &quot;demo1&quot;
+            and password: &quot;demo&quot;
+          </p>
           {(startPrompt === '') && (
           <button
             type="button"
