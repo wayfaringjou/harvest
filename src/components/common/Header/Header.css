@@ -2,8 +2,9 @@
   display: inline-flex;
   margin-left: -1rem;
 }
-.logotype img {
+.logotype svg {
   height: 1.5em;
+  width: auto;
 }
 
 .logout {

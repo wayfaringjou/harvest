@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import useAuthContext from '../../../hooks/useAuthContext';
-import logo from '../../../images/logo.svg';
+import Logo from './Logo';
 import './Header.css';
 
 const Header = () => {
@@ -10,7 +10,8 @@ const Header = () => {
   return (
     <header className="app-header">
       <h2 className="logotype">
-        <img src={logo} alt="Sprig" />
+        {/* <img src={logo} alt="Sprig" /> */}
+        <Logo />
         Harvest
       </h2>
       {isAuthenticated && (
